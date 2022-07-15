@@ -1,0 +1,19 @@
+<?php
+
+namespace App\Filament\Resources\SeasonResource\Pages;
+
+use App\Filament\Resources\SeasonResource;
+use Filament\Pages\Actions;
+use Filament\Resources\Pages\ManageRecords;
+
+class ManageSeasons extends ManageRecords
+{
+    protected static string $resource = SeasonResource::class;
+
+    protected function getActions(): array
+    {
+        return [
+            Actions\CreateAction::make(),
+        ];
+    }
+}
