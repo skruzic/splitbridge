@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Member extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'surname',
@@ -15,6 +17,11 @@ class Member extends Model
         'email',
         'crobridge',
     ];
+
+    public function ranks(): HasMany
+    {
+        return $this->hasMany(Rank::class);
+    }
 
     /**
      * Checks whether name is Member

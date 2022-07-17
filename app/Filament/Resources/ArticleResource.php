@@ -3,9 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ArticleResource\Pages;
-use App\Filament\Resources\ArticleResource\RelationManagers;
 use App\Models\Article;
-use Filament\Forms;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\Select;
@@ -16,8 +14,6 @@ use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ArticleResource extends Resource
 {
@@ -34,7 +30,7 @@ class ArticleResource extends Resource
                 MarkdownEditor::make('body')->required(),
                 Toggle::make('sticky'),
                 Select::make('status')->options([
-                    'DRAFT'     => 'Draft',
+                    'DRAFT' => 'Draft',
                     'PUBLISHED' => 'Published',
                 ])->required(),
                 DateTimePicker::make('published_date')->withoutSeconds()->default(now())->required(),
@@ -46,7 +42,7 @@ class ArticleResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('title'),
-                TextColumn::make('user.name')
+                TextColumn::make('user.name'),
             ])
             ->filters([
                 //
@@ -69,9 +65,9 @@ class ArticleResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index'  => Pages\ListArticles::route('/'),
+            'index' => Pages\ListArticles::route('/'),
             'create' => Pages\CreateArticle::route('/create'),
-            'edit'   => Pages\EditArticle::route('/{record}/edit'),
+            'edit' => Pages\EditArticle::route('/{record}/edit'),
         ];
     }
 }

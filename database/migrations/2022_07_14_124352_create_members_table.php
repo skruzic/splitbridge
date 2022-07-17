@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->nullable();
             $table->string('crobridge')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

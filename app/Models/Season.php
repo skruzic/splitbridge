@@ -14,7 +14,7 @@ class Season extends Model
 
     protected function current(): Attribute
     {
-        return Attribute::make(get: fn($value) => $value, set: function ($value) {
+        return Attribute::make(get: fn ($value) => $value, set: function ($value) {
             if ($value) {
                 $this->where('current', true)->update(['current' => false]);
             }
@@ -27,5 +27,4 @@ class Season extends Model
     {
         return self::where('current', true)->first();
     }
-
 }

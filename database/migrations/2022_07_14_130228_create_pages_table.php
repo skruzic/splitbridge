@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('slug')->unique();
             $table->text('body')->nullable();
-            $table->enum('status', array('DRAFT', 'PUBLISHED'))->default('DRAFT');
+            $table->enum('status', ['DRAFT', 'PUBLISHED'])->default('DRAFT');
             $table->foreignId('user_id');
             $table->timestamps();
         });

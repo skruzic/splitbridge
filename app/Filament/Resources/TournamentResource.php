@@ -3,21 +3,15 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\TournamentResource\Pages;
-use App\Filament\Resources\TournamentResource\RelationManagers;
-use App\Models\Season;
 use App\Models\Tournament;
-use Faker\Provider\Text;
-use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Tables\Columns\TextColumn;
 
 class TournamentResource extends Resource
 {
@@ -32,10 +26,10 @@ class TournamentResource extends Resource
                 FileUpload::make('results')->required()->disk('public')->directory('upload')->visibility('public'),
                 DatePicker::make('date')->required()->default(now()),
                 Select::make('type')->required()->options([
-                    'MP'   => 'MP',
-                    'IMP'  => 'IMP',
+                    'MP' => 'MP',
+                    'IMP' => 'IMP',
                     'XIMP' => 'Cross IMPs',
-                    'Tim'  => 'Tim',
+                    'Tim' => 'Tim',
                 ]),
             ])->columns(1);
     }
@@ -44,18 +38,24 @@ class TournamentResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('date')->date(),
-                Tables\Columns\TextColumn::make('type'),
+                TextColumn::make('date')->date()->sortable(),
+                TextColumn::make('type'),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('type')->options([
+                    'MP' => 'MP',
+                    'IMP' => 'IMP',
+                    'XIMP' => 'Cross IMPs',
+                    'Tim' => 'Tim',
+                ]),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
-            ]);
+            ])->defaultSort('date', 'desc');
     }
 
     public static function getRelations(): array
@@ -68,9 +68,9 @@ class TournamentResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index'  => Pages\ListTournaments::route('/'),
+            'index' => Pages\ListTournaments::route('/'),
             'create' => Pages\CreateTournament::route('/create'),
-            'edit'   => Pages\EditTournament::route('/{record}/edit'),
+            'edit' => Pages\EditTournament::route('/{record}/edit'),
         ];
     }
 }

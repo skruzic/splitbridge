@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use KubAT\PhpSimple\HtmlDomParser;
 
 class Tournament extends Model
@@ -13,6 +13,10 @@ class Tournament extends Model
     use HasFactory;
 
     protected $fillable = ['date', 'type', 'results'];
+
+    protected $casts = [
+        'data' => 'array',
+    ];
 
     protected static function booted()
     {
@@ -29,22 +33,34 @@ class Tournament extends Model
 
             if ($model->type == 'Tim') {
                 $players = self::getTeamNames($tr);
+                $results = self::getTeamResults($tr);
                 $ranks   = self::computeRanks(self::getTeamResults($tr));
                 $points  = self::computeTeamPoints($tr);
             } elseif ($model->type == 'IMP') {
                 $players = self::getNames($tr);
+                $results = self::getIMPResults($tr);
                 $points  = self::computePoints(self::getIMPResults($tr));
                 $ranks   = self::computeRanks(self::getIMPResults($tr));
             } elseif ($model->type == 'XIMP') {
                 $players = self::getNames($tr);
+                $results = self::getXIMPResults($tr);
                 $points  = self::computePoints(self::getXIMPResults($tr));
                 $ranks   = self::computeRanks(self::getXIMPResults($tr));
             } else {
                 $players = self::getNames($tr);
+                $results = self::getResults($tr);
                 $points  = self::computePoints(self::getResults($tr));
                 $ranks   = self::computeRanks(self::getResults($tr));
             }
 
+            $travellers = self::getTravellers($html);
+
+
+            // JSON
+            $model->data = self::resultsToJson($players, $ranks, $results, $travellers);
+            $model->save();
+
+            // Unos u rang listu
             for ($i = 0; $i < count($players); $i++) {
                 foreach ($players[$i] as $player) {
                     if (Member::isMember($player)) {
@@ -57,6 +73,7 @@ class Tournament extends Model
                     }
                 }
             }
+
         });
 
         static::deleting(function ($model) {
@@ -74,14 +91,10 @@ class Tournament extends Model
         return $this->belongsTo(Season::class);
     }
 
-    /* Atributi */
-    /*public function results(): Attribute
+    public function ranks(): HasMany
     {
-        return Attribute::make(get: fn($value) => $value, set: function ($value) {
-            //$this->uploadFileToDisk($value, 'results', 'public', 'upload');
-            \Log::info($value);
-        });
-    }*/
+        return $this->hasMany(Rank::class, 'tournament_id');
+    }
 
     /* Helper methods */
 
@@ -123,7 +136,6 @@ class Tournament extends Model
     private static function getIMPResults($table): array
     {
         $results = [];
-
 
         for ($i = 0; $i < count($table) - 1; $i++) {
             $results[] = trim($table[$i + 1]->find('td', 5)->plaintext);
@@ -269,8 +281,8 @@ class Tournament extends Model
      * @param $array
      *
      * @return array
-     * @see array_map
      *
+     * @see array_map
      */
     private static function array_map_recursive($callback, $array): array
     {
@@ -285,4 +297,56 @@ class Tournament extends Model
         return $array;
     }
 
+    /**
+     * Vraća zadnjih N turnira
+     *
+     * @param $limit broj zadnjih turnira koje vraća
+     *
+     * @return mixed
+     */
+    public static function recent($limit)
+    {
+        return self::where('season_id', Season::getCurrent()->id)->orderBy('date', 'desc')->limit($limit);
+    }
+
+    private static function resultsToJson($names, $ranks, $results, $travellers)
+    {
+        $table = [];
+
+        for ($i = 0; $i < min(count($names), count($results)); $i++) {
+            $table[$i] = [
+                'rank'   => $ranks[$i],
+                'names'  => $names[$i],
+                'result' => $results[$i],
+            ];
+        }
+
+        return [
+            'results'    => $table,
+            'travellers' => $travellers,
+        ];
+    }
+
+    private static function getTravellers($html): array
+    {
+        $tables = $html->find('table table tbody');
+
+        $travellers = [];
+
+        for ($j = 0; $j < count($tables); $j++) {
+            for ($i = 0; $i < count($tables[$j]->find('tr')); $i++) {
+                $travellers[$j][$i]['NS']       = $tables[$j]->find('tr', $i)->find('td', 0)->plaintext;
+                $travellers[$j][$i]['EW']       = $tables[$j]->find('tr', $i)->find('td', 1)->plaintext;
+                $travellers[$j][$i]['contract'] = $tables[$j]->find('tr', $i)->find('td', 2)->plaintext;
+                $travellers[$j][$i]['declarer'] = $tables[$j]->find('tr', $i)->find('td', 3)->plaintext;
+                $travellers[$j][$i]['lead']     = $tables[$j]->find('tr', $i)->find('td', 4)->plaintext;
+                $travellers[$j][$i]['resultNS'] = $tables[$j]->find('tr', $i)->find('td', 5)->plaintext;
+                $travellers[$j][$i]['resultEW'] = $tables[$j]->find('tr', $i)->find('td', 6)->plaintext;
+                $travellers[$j][$i]['pointsNS'] = $tables[$j]->find('tr', $i)->find('td', 7)->plaintext;
+                $travellers[$j][$i]['pointsEW'] = $tables[$j]->find('tr', $i)->find('td', 8)->plaintext;
+            }
+        }
+
+        return $travellers;
+    }
 }

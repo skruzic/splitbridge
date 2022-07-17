@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\ArticleResource\Pages;
 
 use App\Filament\Resources\ArticleResource;
-use Filament\Pages\Actions;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateArticle extends CreateRecord
@@ -13,6 +12,7 @@ class CreateArticle extends CreateRecord
     public function mutateFormDataBeforeCreate(array $data): array
     {
         $data['user_id'] = auth()->id();
+
         return $data;
     }
 }
