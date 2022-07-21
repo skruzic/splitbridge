@@ -15,9 +15,9 @@
             @foreach ($data['results'] as $row)
                 <tr>
                     <td>{{$row['rank']}}</td>
-                    <td></td>
-                    <td>{{ Arr::join($row['names'],' - ') }}</td>
-                    <td>{{ $row['result'] }}</td>
+                    <td>{{$row['pair']}}</td>
+                    <td>{{ Arr::join($row['players'],' - ') }}</td>
+                    <td>{{ $row['score'] }}</td>
                 </tr>
             @endforeach
         </tbody>
@@ -55,6 +55,40 @@
             </tbody>
         </table>
     @endfor
+
+    <h3>Travellers</h3>
+    @foreach($data['scorecards'] as $scorecard)
+        Par {{ $scorecard['pair'] }}: {{ Arr::join($scorecard['players'],' - ') }}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Bd.</th>
+                    <th>Manše</th>
+                    <th>Smjer</th>
+                    <th>Kontrakt</th>
+                    <th>Izv</th>
+                    <th>Ataka-</th>
+                    <th>Rezultat</th>
+                    <th>%</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($scorecard['boards'] as $row)
+                    <tr>
+                        <td>{{ $row['board'] }}</td>
+                        <td>{{ $row['vul'] }}</td>
+                        <td>{{ $row['dir'] }}</td>
+                        <td>{{ $row['contract'] }}</td>
+                        <td>{{ $row['declarer'] }}</td>
+                        <td>{{ $row['lead'] }}</td>
+                        <td>{{ $row['score'] }}</td>
+                        <td>{{ $row['percent'] }}</td>
+                        <td></td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    @endforeach
 @endsection
 
 @section('title')

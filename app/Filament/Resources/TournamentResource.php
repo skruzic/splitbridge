@@ -26,10 +26,10 @@ class TournamentResource extends Resource
                 FileUpload::make('results')->required()->disk('public')->directory('upload')->visibility('public'),
                 DatePicker::make('date')->required()->default(now()),
                 Select::make('type')->required()->options([
-                    'MP' => 'MP',
-                    'IMP' => 'IMP',
+                    'MP'   => 'MP',
+                    'IMP'  => 'IMP',
                     'XIMP' => 'Cross IMPs',
-                    'Tim' => 'Tim',
+                    'Tim'  => 'Tim',
                 ]),
             ])->columns(1);
     }
@@ -43,15 +43,14 @@ class TournamentResource extends Resource
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('type')->options([
-                    'MP' => 'MP',
-                    'IMP' => 'IMP',
+                    'MP'   => 'MP',
+                    'IMP'  => 'IMP',
                     'XIMP' => 'Cross IMPs',
-                    'Tim' => 'Tim',
                 ]),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make()
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
@@ -68,9 +67,9 @@ class TournamentResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListTournaments::route('/'),
+            'index'  => Pages\ListTournaments::route('/'),
             'create' => Pages\CreateTournament::route('/create'),
-            'edit' => Pages\EditTournament::route('/{record}/edit'),
+            'edit'   => Pages\EditTournament::route('/{record}/edit'),
         ];
     }
 }

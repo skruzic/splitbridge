@@ -53,11 +53,9 @@ class Tournament extends Model
                 $ranks   = self::computeRanks(self::getResults($tr));
             }
 
-            $travellers = self::getTravellers($html);
-
 
             // JSON
-            $model->data = self::resultsToJson($players, $ranks, $results, $travellers);
+            $model->data = self::resultsToJson($html, $model->type);
             $model->save();
 
             // Unos u rang listu
@@ -309,21 +307,15 @@ class Tournament extends Model
         return self::where('season_id', Season::getCurrent()->id)->orderBy('date', 'desc')->limit($limit);
     }
 
-    private static function resultsToJson($names, $ranks, $results, $travellers)
+    private static function resultsToJson($html, $type): array
     {
-        $table = [];
-
-        for ($i = 0; $i < min(count($names), count($results)); $i++) {
-            $table[$i] = [
-                'rank'   => $ranks[$i],
-                'names'  => $names[$i],
-                'result' => $results[$i],
-            ];
-        }
+        $results    = self::getRanks($html, $type);
+        $scorecards = self::getScorecards($html, $type, count($results));
 
         return [
-            'results'    => $table,
-            'travellers' => $travellers,
+            'results'    => $results,
+            'travellers' => self::getTravellers($html),
+            'scorecards' => $scorecards,
         ];
     }
 
@@ -348,5 +340,89 @@ class Tournament extends Model
         }
 
         return $travellers;
+    }
+
+    private static function getRanks($html, $type): array
+    {
+        $ranks = [];
+
+        $table = $html->find('table', 0)->find('tr');
+
+        for ($i = 1; $i < count($table); $i++) {
+            $ranks[$i]['rank']    = intval($table[$i]->find('td', 0)->plaintext);
+            $ranks[$i]['pair']    = intval($table[$i]->find('td', 1)->plaintext);
+            $ranks[$i]['players'] = preg_split('/(&amp;|&)/', $table[$i]->find('td', 2)->plaintext);
+            $ranks[$i]['boards']  = intval($table[$i]->find('td', 3)->plaintext);
+            if ($type == 'MP') {
+                $ranks[$i]['total'] = floatval($table[$i]->find('td', 4)->plaintext);
+                $ranks[$i]['max']   = intval($table[$i]->find('td', 5)->plaintext);
+                $ranks[$i]['score'] = floatval($table[$i]->find('td', 6)->plaintext);
+            } elseif ($type == 'XIMP') {
+                $ranks[$i]['score'] = floatval($table[$i]->find('td', 4)->plaintext);
+            } elseif ($type == 'IMP') {
+                $ranks[$i]['score'] = floatval($table[$i]->find('td', 5)->plaintext);
+            }
+        }
+
+        return $ranks;
+    }
+
+    private static function getScorecards($html, $type, $cnt): array
+    {
+        $scorecards = [];
+
+        $tables = array_slice($html->find('table'), -$cnt, $cnt);
+
+        for ($j = 0; $j < count($tables); $j++) {
+            $rows = $tables[$j]->find('tr');
+
+            $scorecards[$j]['pair']       = intval(explode(' ', trim(substr($rows[0]->plaintext, 0, 7)))[1]);
+            $scorecards[$j]['players']    = preg_split('/(&amp;|&)/', substr($rows[0]->plaintext, 6));
+            $scorecards[$j]['players'][0] = mb_convert_case($scorecards[$j]['players'][0], MB_CASE_TITLE);
+            $scorecards[$j]['players'][1] = mb_convert_case($scorecards[$j]['players'][1], MB_CASE_TITLE);
+
+            for ($i = 4; $i < count($rows); $i++) {
+                if ($type == 'MP') {
+                    $scorecards[$j]['boards'][] = [
+                        'board'    => $rows[$i]->find('td', 0)->plaintext,
+                        'vul'      => $rows[$i]->find('td', 1)->plaintext,
+                        'dir'      => $rows[$i]->find('td', 2)->plaintext,
+                        'contract' => $rows[$i]->find('td', 3)->plaintext,
+                        'declarer' => $rows[$i]->find('td', 4)->plaintext,
+                        'lead'     => $rows[$i]->find('td', 5)->plaintext,
+                        'score'    => $rows[$i]->find('td', 6)->plaintext,
+                        'percent'  => $rows[$i]->find('td', 7)->plaintext,
+                        'MP'       => $rows[$i]->find('td', 8)->plaintext,
+                    ];
+                } elseif ($type == 'IMP') {
+                    $scorecards[$j]['boards'][] = [
+                        'board'    => $rows[$i]->find('td', 0)->plaintext,
+                        'vul'      => $rows[$i]->find('td', 1)->plaintext,
+                        'dir'      => $rows[$i]->find('td', 2)->plaintext,
+                        'contract' => $rows[$i]->find('td', 3)->plaintext,
+                        'declarer' => $rows[$i]->find('td', 4)->plaintext,
+                        'lead'     => $rows[$i]->find('td', 5)->plaintext,
+                        'score'    => $rows[$i]->find('td', 6)->plaintext,
+                        'datum'    => $rows[$i]->find('td', 7)->plaintext,
+                        'IMP'      => $rows[$i]->find('td', 8)->plaintext,
+                    ];
+                } elseif ($type == 'XIMP') {
+                    $scorecards[$j]['boards'][] = [
+                        'board'    => $rows[$i]->find('td', 0)->plaintext,
+                        'vul'      => $rows[$i]->find('td', 1)->plaintext,
+                        'dir'      => $rows[$i]->find('td', 2)->plaintext,
+                        'contract' => $rows[$i]->find('td', 3)->plaintext,
+                        'declarer' => $rows[$i]->find('td', 4)->plaintext,
+                        'lead'     => $rows[$i]->find('td', 5)->plaintext,
+                        'score'    => $rows[$i]->find('td', 6)->plaintext,
+                        'IMP'      => $rows[$i]->find('td', 7)->plaintext,
+                    ];
+                }
+            }
+        }
+
+        ds($scorecards)->label('Scorecards');
+
+        return $scorecards;
     }
 }
