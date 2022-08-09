@@ -34,7 +34,7 @@ class Rank extends Model
     public function scopeMonth($query, $year, $month)
     {
         $start = Carbon::createFromFormat('Y-m-d', $year.'-'.$month.'-01')->startOfMonth();
-        $end   = $start->copy()->endOfMonth();
+        $end = $start->copy()->endOfMonth();
 
         $query->whereHas('tournament', function ($innerQuery) use ($start, $end) {
             $innerQuery->whereBetween('date', [$start, $end]);

@@ -1,29 +1,23 @@
-<div class="navbar-header">
-    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-    </button>
-    <a class="navbar-brand" href="{{ url('/') }}"><img src="{{ asset('img/logo.png') }}" alt="BK Split"
-                                                       width="35%"/></a>
-</div>
-<div class="collapse navbar-collapse">
-    <ul class="nav navbar-nav navbar-right">
-        @foreach ($menu as $item)
-            @if ($item->descendants->isEmpty())
-                <li class="{{ $item->isActive() ? 'active' : '' }}"><a
-                        href="{{ url($item->uri) }}">{{ $item->title }}</a></li>
+<div class="container mx-auto flex-wrap p-5 flex-col md:flex-row items-center">
+    <a class="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0" href="{{ url('/') }}">
+        <img src="{{ asset('img/logo.png') }}" alt="BK Split" width="35%"/>
+    </a>
+    <nav class="md:ml-auto flex flex-wrap items-center text-base justify-center">
+
+        @foreach($menu->items as $item)
+
+            @if($item['children'])
+                <a class="mr-5 hover:text-gray-900" href="#">MULTI</a>
             @else
-                <li class="dropdown {{ $item->isActive() ? 'active' : '' }}">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{ $item->title }} <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        @foreach ($item->descendants as $child)
-                            <li><a href="{{ url($child->uri) }}">{{ $child->title }}</a></li>
-                        @endforeach
-                    </ul>
-                </li>
+                <a class="mr-5 hover:text-gray-900" href="#">{{ $item['label'] }}</a>
             @endif
         @endforeach
-    </ul>
+        <button aria-label="Toggle Dark Mode" type="button"
+                class="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="">
+                <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <span class="sr-only">Dark Mode</span>
+        </button>
+    </nav>
 </div>

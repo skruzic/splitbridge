@@ -88,13 +88,13 @@ return [
     |
     */
     'level_log_colors_map' => [
-        'error'     => env('DS_LOG_COLOR_ERROR', 'bg-red-600'),
-        'critical'  => env('DS_LOG_COLOR_CRITICAL', 'bg-red-600'),
-        'alert'     => env('DS_LOG_COLOR_ALERT', 'bg-red-600'),
+        'error' => env('DS_LOG_COLOR_ERROR', 'bg-red-600'),
+        'critical' => env('DS_LOG_COLOR_CRITICAL', 'bg-red-600'),
+        'alert' => env('DS_LOG_COLOR_ALERT', 'bg-red-600'),
         'emergency' => env('DS_LOG_COLOR_EMERGENCY', 'bg-red-600'),
-        'warning'   => env('DS_LOG_COLOR_WARNING', 'bg-orange-300'),
-        'notice'    => env('DS_LOG_COLOR_NOTICE', 'bg-blue-300'),
-        'info'      => env('DS_LOG_COLOR_INFO', 'bg-gray-300'),
+        'warning' => env('DS_LOG_COLOR_WARNING', 'bg-orange-300'),
+        'notice' => env('DS_LOG_COLOR_NOTICE', 'bg-blue-300'),
+        'info' => env('DS_LOG_COLOR_INFO', 'bg-gray-300'),
     ],
 
     /*
@@ -132,7 +132,7 @@ return [
 
     'send_livewire_failed_validation' => [
         'enabled' => env('DS_SEND_LIVEWIRE_FAILED_VALIDATION', false),
-        'sleep'   => env('DS_SEND_LIVEWIRE_FAILED_VALIDATION_SLEEP', 400), // milliseconds
+        'sleep' => env('DS_SEND_LIVEWIRE_FAILED_VALIDATION_SLEEP', 400), // milliseconds
     ],
 
     /*
@@ -158,19 +158,19 @@ return [
 
     'ide_handlers' => [
         'atom' => [
-            'handler'        => 'atom://core/open/file?filename=',
+            'handler' => 'atom://core/open/file?filename=',
             'line_separator' => '&line=',
         ],
         'phpstorm' => [
-            'handler'        => 'phpstorm://open?url=file://',
+            'handler' => 'phpstorm://open?url=file://',
             'line_separator' => '&line=',
         ],
         'sublime' => [
-            'handler'        => 'subl://open?url=file://',
+            'handler' => 'subl://open?url=file://',
             'line_separator' => '&line=',
         ],
         'vscode' => [
-            'handler'        => 'vscode://file/',
+            'handler' => 'vscode://file/',
             'line_separator' => ':',
         ],
     ],
@@ -220,8 +220,7 @@ return [
     | Check if you forgot any ds() in your files,
     | run "php artisan ds:check" in your pipeline
     |
-    */
-
+     */
     'ci_check' => [
         'directories' => [
             base_path('app'),
@@ -251,6 +250,5 @@ return [
     | Set auto_clear_on_page_reload to true so LaraDumps will clear history automatically on page reload.
     |
      */
-
     'auto_clear_on_page_reload' => env('DS_AUTO_CLEAR_ON_PAGE_RELOAD', false),
 ];

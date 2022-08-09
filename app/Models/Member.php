@@ -27,7 +27,6 @@ class Member extends Model
      * Checks whether name is Member
      *
      * @param $str
-     *
      * @return bool
      */
     public static function isMember($str)

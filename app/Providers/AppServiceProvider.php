@@ -3,10 +3,13 @@
 namespace App\Providers;
 
 use App\Models\Menu;
+use App\Models\Page;
 use App\Models\Rank;
 use App\Models\Tournament;
+use Filament\Forms\Components\Select;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
+use RyanChandler\FilamentNavigation\Facades\FilamentNavigation;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -27,9 +30,17 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $menu = Menu::withDepth()->having('depth', '=', '1')->get();
+        FilamentNavigation::addItemType('Page', [
+            Select::make('page_id')->searchable()->options(function () {
+                return Page::pluck('title', 'slug');
+            }),
+        ]);
+
+        $menu = FilamentNavigation::get('menu');
+
+        //$menu = Menu::withDepth()->having('depth', '=', '1')->get();
         $recent_tournaments = Tournament::recent(3)->get();
-        $recent_ranks = Rank::top(3)->get();
+        $recent_ranks       = Rank::top(3)->get();
 
         View::share('menu', $menu);
         View::share('recent_tournaments', $recent_tournaments);

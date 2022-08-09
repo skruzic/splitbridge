@@ -23,36 +23,35 @@ class Tournament extends Model
         parent::booted();
 
         static::creating(function ($model) {
-            $model->user_id   = auth()->id();
+            $model->user_id = auth()->id();
             $model->season_id = Season::getCurrent()->id;
         });
 
         static::created(function ($model) {
             $html = HtmlDomParser::file_get_html(storage_path('app/public/'.$model->results));
-            $tr   = $html->find('table', 0)->find('tr');
+            $tr = $html->find('table', 0)->find('tr');
 
             if ($model->type == 'Tim') {
                 $players = self::getTeamNames($tr);
                 $results = self::getTeamResults($tr);
-                $ranks   = self::computeRanks(self::getTeamResults($tr));
-                $points  = self::computeTeamPoints($tr);
+                $ranks = self::computeRanks(self::getTeamResults($tr));
+                $points = self::computeTeamPoints($tr);
             } elseif ($model->type == 'IMP') {
                 $players = self::getNames($tr);
                 $results = self::getIMPResults($tr);
-                $points  = self::computePoints(self::getIMPResults($tr));
-                $ranks   = self::computeRanks(self::getIMPResults($tr));
+                $points = self::computePoints(self::getIMPResults($tr));
+                $ranks = self::computeRanks(self::getIMPResults($tr));
             } elseif ($model->type == 'XIMP') {
                 $players = self::getNames($tr);
                 $results = self::getXIMPResults($tr);
-                $points  = self::computePoints(self::getXIMPResults($tr));
-                $ranks   = self::computeRanks(self::getXIMPResults($tr));
+                $points = self::computePoints(self::getXIMPResults($tr));
+                $ranks = self::computeRanks(self::getXIMPResults($tr));
             } else {
                 $players = self::getNames($tr);
                 $results = self::getResults($tr);
-                $points  = self::computePoints(self::getResults($tr));
-                $ranks   = self::computeRanks(self::getResults($tr));
+                $points = self::computePoints(self::getResults($tr));
+                $ranks = self::computeRanks(self::getResults($tr));
             }
-
 
             // JSON
             $model->data = self::resultsToJson($html, $model->type);
@@ -62,16 +61,15 @@ class Tournament extends Model
             for ($i = 0; $i < count($players); $i++) {
                 foreach ($players[$i] as $player) {
                     if (Member::isMember($player)) {
-                        $rank                = new Rank;
-                        $rank->member_id     = Member::isMember($player);
+                        $rank = new Rank;
+                        $rank->member_id = Member::isMember($player);
                         $rank->tournament_id = $model->id;
-                        $rank->rank          = $ranks[$i];
-                        $rank->points        = $points[$i];
+                        $rank->rank = $ranks[$i];
+                        $rank->points = $points[$i];
                         $rank->save();
                     }
                 }
             }
-
         });
 
         static::deleting(function ($model) {
@@ -168,7 +166,7 @@ class Tournament extends Model
     {
         $ranks = [];
 
-        $occ     = array_count_values($results);
+        $occ = array_count_values($results);
         $results = array_unique($results);
 
         $i = 0;
@@ -185,12 +183,12 @@ class Tournament extends Model
 
     private static function computePoints(array $results): array
     {
-        $points       = []; // poeni prema pravilima
-        $score        = []; // konacni poeni koji se dobiju nakon sto se izracuna dioba mjesta
+        $points = []; // poeni prema pravilima
+        $score = []; // konacni poeni koji se dobiju nakon sto se izracuna dioba mjesta
         $resultPoints = []; // poeni koji se dobiju za svaki rezultat
 
         $groupedResults = [];
-        $count          = count($results);
+        $count = count($results);
 
         /**
          * Izracun prema pravilima:
@@ -212,7 +210,7 @@ class Tournament extends Model
         }
 
         foreach ($groupedResults as $key => $value) {
-            $i     = 0;
+            $i = 0;
             $total = 0;
             foreach ($value as $v) {
                 $total += $v;
@@ -235,7 +233,7 @@ class Tournament extends Model
     private static function computeTeamPoints($table): array
     {
         $points = [];
-        $par    = (count($table) - 2) / 2;
+        $par = (count($table) - 2) / 2;
 
         switch ($par) {
             case 2:
@@ -277,7 +275,6 @@ class Tournament extends Model
      * Rekurizvna implementacija proizvovljne funkcije koja funkcionira kao @param $callback
      *
      * @param $array
-     *
      * @return array
      *
      * @see array_map
@@ -299,7 +296,6 @@ class Tournament extends Model
      * Vraća zadnjih N turnira
      *
      * @param $limit broj zadnjih turnira koje vraća
-     *
      * @return mixed
      */
     public static function recent($limit)
@@ -309,11 +305,11 @@ class Tournament extends Model
 
     private static function resultsToJson($html, $type): array
     {
-        $results    = self::getRanks($html, $type);
+        $results = self::getRanks($html, $type);
         $scorecards = self::getScorecards($html, $type, count($results));
 
         return [
-            'results'    => $results,
+            'results' => $results,
             'travellers' => self::getTravellers($html),
             'scorecards' => $scorecards,
         ];
@@ -327,11 +323,11 @@ class Tournament extends Model
 
         for ($j = 0; $j < count($tables); $j++) {
             for ($i = 0; $i < count($tables[$j]->find('tr')); $i++) {
-                $travellers[$j][$i]['NS']       = $tables[$j]->find('tr', $i)->find('td', 0)->plaintext;
-                $travellers[$j][$i]['EW']       = $tables[$j]->find('tr', $i)->find('td', 1)->plaintext;
+                $travellers[$j][$i]['NS'] = $tables[$j]->find('tr', $i)->find('td', 0)->plaintext;
+                $travellers[$j][$i]['EW'] = $tables[$j]->find('tr', $i)->find('td', 1)->plaintext;
                 $travellers[$j][$i]['contract'] = $tables[$j]->find('tr', $i)->find('td', 2)->plaintext;
                 $travellers[$j][$i]['declarer'] = $tables[$j]->find('tr', $i)->find('td', 3)->plaintext;
-                $travellers[$j][$i]['lead']     = $tables[$j]->find('tr', $i)->find('td', 4)->plaintext;
+                $travellers[$j][$i]['lead'] = $tables[$j]->find('tr', $i)->find('td', 4)->plaintext;
                 $travellers[$j][$i]['resultNS'] = $tables[$j]->find('tr', $i)->find('td', 5)->plaintext;
                 $travellers[$j][$i]['resultEW'] = $tables[$j]->find('tr', $i)->find('td', 6)->plaintext;
                 $travellers[$j][$i]['pointsNS'] = $tables[$j]->find('tr', $i)->find('td', 7)->plaintext;
@@ -349,13 +345,13 @@ class Tournament extends Model
         $table = $html->find('table', 0)->find('tr');
 
         for ($i = 1; $i < count($table); $i++) {
-            $ranks[$i]['rank']    = intval($table[$i]->find('td', 0)->plaintext);
-            $ranks[$i]['pair']    = intval($table[$i]->find('td', 1)->plaintext);
+            $ranks[$i]['rank'] = intval($table[$i]->find('td', 0)->plaintext);
+            $ranks[$i]['pair'] = intval($table[$i]->find('td', 1)->plaintext);
             $ranks[$i]['players'] = preg_split('/(&amp;|&)/', $table[$i]->find('td', 2)->plaintext);
-            $ranks[$i]['boards']  = intval($table[$i]->find('td', 3)->plaintext);
+            $ranks[$i]['boards'] = intval($table[$i]->find('td', 3)->plaintext);
             if ($type == 'MP') {
                 $ranks[$i]['total'] = floatval($table[$i]->find('td', 4)->plaintext);
-                $ranks[$i]['max']   = intval($table[$i]->find('td', 5)->plaintext);
+                $ranks[$i]['max'] = intval($table[$i]->find('td', 5)->plaintext);
                 $ranks[$i]['score'] = floatval($table[$i]->find('td', 6)->plaintext);
             } elseif ($type == 'XIMP') {
                 $ranks[$i]['score'] = floatval($table[$i]->find('td', 4)->plaintext);
@@ -376,46 +372,46 @@ class Tournament extends Model
         for ($j = 0; $j < count($tables); $j++) {
             $rows = $tables[$j]->find('tr');
 
-            $scorecards[$j]['pair']       = intval(explode(' ', trim(substr($rows[0]->plaintext, 0, 7)))[1]);
-            $scorecards[$j]['players']    = preg_split('/(&amp;|&)/', substr($rows[0]->plaintext, 6));
+            $scorecards[$j]['pair'] = intval(explode(' ', trim(substr($rows[0]->plaintext, 0, 7)))[1]);
+            $scorecards[$j]['players'] = preg_split('/(&amp;|&)/', substr($rows[0]->plaintext, 6));
             $scorecards[$j]['players'][0] = mb_convert_case($scorecards[$j]['players'][0], MB_CASE_TITLE);
             $scorecards[$j]['players'][1] = mb_convert_case($scorecards[$j]['players'][1], MB_CASE_TITLE);
 
             for ($i = 4; $i < count($rows); $i++) {
                 if ($type == 'MP') {
                     $scorecards[$j]['boards'][] = [
-                        'board'    => $rows[$i]->find('td', 0)->plaintext,
-                        'vul'      => $rows[$i]->find('td', 1)->plaintext,
-                        'dir'      => $rows[$i]->find('td', 2)->plaintext,
+                        'board' => $rows[$i]->find('td', 0)->plaintext,
+                        'vul' => $rows[$i]->find('td', 1)->plaintext,
+                        'dir' => $rows[$i]->find('td', 2)->plaintext,
                         'contract' => $rows[$i]->find('td', 3)->plaintext,
                         'declarer' => $rows[$i]->find('td', 4)->plaintext,
-                        'lead'     => $rows[$i]->find('td', 5)->plaintext,
-                        'score'    => $rows[$i]->find('td', 6)->plaintext,
-                        'percent'  => $rows[$i]->find('td', 7)->plaintext,
-                        'MP'       => $rows[$i]->find('td', 8)->plaintext,
+                        'lead' => $rows[$i]->find('td', 5)->plaintext,
+                        'score' => $rows[$i]->find('td', 6)->plaintext,
+                        'percent' => $rows[$i]->find('td', 7)->plaintext,
+                        'MP' => $rows[$i]->find('td', 8)->plaintext,
                     ];
                 } elseif ($type == 'IMP') {
                     $scorecards[$j]['boards'][] = [
-                        'board'    => $rows[$i]->find('td', 0)->plaintext,
-                        'vul'      => $rows[$i]->find('td', 1)->plaintext,
-                        'dir'      => $rows[$i]->find('td', 2)->plaintext,
+                        'board' => $rows[$i]->find('td', 0)->plaintext,
+                        'vul' => $rows[$i]->find('td', 1)->plaintext,
+                        'dir' => $rows[$i]->find('td', 2)->plaintext,
                         'contract' => $rows[$i]->find('td', 3)->plaintext,
                         'declarer' => $rows[$i]->find('td', 4)->plaintext,
-                        'lead'     => $rows[$i]->find('td', 5)->plaintext,
-                        'score'    => $rows[$i]->find('td', 6)->plaintext,
-                        'datum'    => $rows[$i]->find('td', 7)->plaintext,
-                        'IMP'      => $rows[$i]->find('td', 8)->plaintext,
+                        'lead' => $rows[$i]->find('td', 5)->plaintext,
+                        'score' => $rows[$i]->find('td', 6)->plaintext,
+                        'datum' => $rows[$i]->find('td', 7)->plaintext,
+                        'IMP' => $rows[$i]->find('td', 8)->plaintext,
                     ];
                 } elseif ($type == 'XIMP') {
                     $scorecards[$j]['boards'][] = [
-                        'board'    => $rows[$i]->find('td', 0)->plaintext,
-                        'vul'      => $rows[$i]->find('td', 1)->plaintext,
-                        'dir'      => $rows[$i]->find('td', 2)->plaintext,
+                        'board' => $rows[$i]->find('td', 0)->plaintext,
+                        'vul' => $rows[$i]->find('td', 1)->plaintext,
+                        'dir' => $rows[$i]->find('td', 2)->plaintext,
                         'contract' => $rows[$i]->find('td', 3)->plaintext,
                         'declarer' => $rows[$i]->find('td', 4)->plaintext,
-                        'lead'     => $rows[$i]->find('td', 5)->plaintext,
-                        'score'    => $rows[$i]->find('td', 6)->plaintext,
-                        'IMP'      => $rows[$i]->find('td', 7)->plaintext,
+                        'lead' => $rows[$i]->find('td', 5)->plaintext,
+                        'score' => $rows[$i]->find('td', 6)->plaintext,
+                        'IMP' => $rows[$i]->find('td', 7)->plaintext,
                     ];
                 }
             }
