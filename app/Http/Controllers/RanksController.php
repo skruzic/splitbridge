@@ -70,7 +70,7 @@ class RanksController extends Controller
         $ranks = DB::table('ranks')
                    ->join('members', 'members.id', '=', 'ranks.member_id')
                    ->join('tournaments', 'tournaments.id', '=', 'ranks.tournament_id')
-                   ->select('members.id', 'members.first_name', 'members.last_name',
+                   ->select('members.id', 'members.name', 'members.surname',
                        DB::raw('SUM(points) AS point_count'))
                    ->where('tournaments.season_id', $id)
                    ->groupBy('member_id')

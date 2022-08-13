@@ -1,23 +1,35 @@
-<div class="container mx-auto flex-wrap p-5 flex-col md:flex-row items-center">
-    <a class="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0" href="{{ url('/') }}">
-        <img src="{{ asset('img/logo.png') }}" alt="BK Split" width="35%"/>
-    </a>
-    <nav class="md:ml-auto flex flex-wrap items-center text-base justify-center">
+<div class="container d-flex align-items-center justify-content-between">
+    <div class="logo">
+        <a href="{{ url('/') }}">
+            <img src="{{ asset('img/logo.png') }}" alt="">
+        </a>
+    </div>
+    <nav id="navbar" class="navbar">
+        <ul>
+            @foreach ($menu->items as $item)
+                @if (!$item['children'])
 
-        @foreach($menu->items as $item)
+                    @if($item['type']=='page')
+                        <li><a class="nav-link {{ request()->segment(1)==$item['data']['page_id']?'active':'' }}"
+                               href="{{ url($item['data']['page_id']) }}">{{ $item['label'] }}</a></li>
+                    @else
+                        <li><a class="nav-link {{ request()->segment(1)==$item['data']['url']?'active':'' }}"
+                               href="{{ url($item['data']['url']) }}">{{ $item['label'] }}</a></li>
+                    @endif
+                @else
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{ $item['label'] }} <b
+                                class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            @foreach ($item['children'] as $child)
 
-            @if($item['children'])
-                <a class="mr-5 hover:text-gray-900" href="#">MULTI</a>
-            @else
-                <a class="mr-5 hover:text-gray-900" href="#">{{ $item['label'] }}</a>
-            @endif
-        @endforeach
-        <button aria-label="Toggle Dark Mode" type="button"
-                class="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="">
-                <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
-            </svg>
-            <span class="sr-only">Dark Mode</span>
-        </button>
+                                <li><a href="{{ url($child['data']['url']) }}">{{ $child['label'] }}</a></li>
+                            @endforeach
+                        </ul>
+                    </li>
+                @endif
+            @endforeach
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
     </nav>
 </div>

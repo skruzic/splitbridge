@@ -16,6 +16,7 @@ class Tournament extends Model
 
     protected $casts = [
         'data' => 'array',
+        'date' => 'datetime'
     ];
 
     protected static function booted()

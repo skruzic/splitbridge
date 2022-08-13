@@ -9,13 +9,14 @@
         @yield('title') BK Split
     </title>
     <meta name="description" content="Bridge klub Split - bridge turniri, tečajevi, natjecanja">
-    <!--<link href="{{ asset('//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css') }}" rel="stylesheet">-->
-    <link href="{{ asset('//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('//fonts.googleapis.com/css?family=Open+Sans&subset=latin,latin-ext') }}" refl="stylesheet">
-    <!--<link href="{{ asset('css/main.css') }}" rel="stylesheet">-->
-    @vite('resources/css/app.css')
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,600,600i,700,700i"
+        rel="stylesheet">
+
+
+    @vite('resources/scss/styles.scss')
 </head>
-<body class="bg-white text-black antialiased dark:bg-gray-900 dark:text-white">
+<body>
     <!-- Google Tag Manager -->
     <noscript>
         <iframe src="//www.googletagmanager.com/ns.html?id=GTM-TKHF7X"
@@ -46,41 +47,47 @@
             fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'facebook-jssdk'));
     </script>
-    <header class="text-gray-600 body-font">@include('menus.main')</header>
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 xl:max-w-5xl xl:px-0">
-        <div class="flex h-screen flex-col justify-between">
-
-
-            <main class="mb-auto grid grid-cols-3 gap-4">
-                <div class="col-span-2">
-                    @yield('content')
-                </div>
-                <div>
-                    <div class="widget">
-                        <h3 class="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">Turniri</h3>
-                        <ul>
-                            @foreach ($recent_tournaments as $t)
-                                <li><a href="{{ url($t->results) }}"
-                                       target="_blank">{{ date('d.m.Y.', strtotime($t->date)) . ' - ' . $t->type }}</a>
-                                </li>
-                            @endforeach
-                        </ul>
+    <header id="header" class="fixed-top d-flex align-items-center">@include('menus.main')</header>
+    <main id="main">
+        <section>
+            <div class="container">
+                <div class="row justify-content-between">
+                    <div class="col-lg-8 pt-5 pt-lg-0">
+                        @yield('content')
                     </div>
-                    <div class="widget">
-                        <h3>Rang lista za {{ \Carbon\Carbon::now()->isoFormat('M.')}} mjesec</h3>
-                        @if (count($recent_ranks))
-                            <ol>
-                                @foreach ($recent_ranks as $r)
-                                    <li>{{ $r->surname }} {{ $r->name }} {{ $r->point_count }}</li>
+                    <div class="col-lg-4 pt-5 pt-lg-0">
+                        <div class="widget">
+                            <h3 class="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">Turniri</h3>
+                            <ul>
+                                @foreach ($recent_tournaments as $t)
+                                    <li><a href="{{ url($t->results) }}"
+                                           target="_blank">{{ $t->date->format('d.m.Y.') . ' - ' . $t->type }}</a>
+                                    </li>
                                 @endforeach
-                            </ol>
-                        @else
-                            <p>Nema turnira u tekućem mjesecu.</p>
-                        @endif
+                            </ul>
+                        </div>
+                        <div class="widget pt-5">
+                            <h3>Rang lista za {{ now()->monthName }}</h3>
+                            @if (count($recent_ranks))
+                                <ol>
+                                    @foreach ($recent_ranks as $r)
+                                        <li>{{ $r->surname }} {{ $r->name }} {{ $r->point_count }}</li>
+                                    @endforeach
+                                </ol>
+                            @else
+                                <p>Nema turnira u tekućem mjesecu.</p>
+                            @endif
+                        </div>
                     </div>
                 </div>
-            </main>
-            <footer>
+
+            </div>
+        </section>
+    </main>
+
+    <footer id="footer">
+        <div class="footer-top">
+            <div class="container">
                 <div class="row">
                     <div class="col-md-4 footer-widget">
                         <h3><i class="fa fa-envelope"></i> Kontakt</h3>
@@ -108,14 +115,14 @@
                              data-action="like" data-show-faces="true" data-share="true"></div>
                     </div>
                 </div>
-                <div class="copyright">
-                    <div class="container">
-                        <p class="text-muted">Copyright &copy; BK Split 2014.</p>
-                    </div>
-                </div>
-            </footer>
+            </div>
         </div>
-    </div>
+        <div class="container py-4">
+            <div class="copyright">
+                <p class="text-muted">Copyright &copy; <strong>BK Split</strong> {{ now()->year }}.</p>
+            </div>
+        </div>
+    </footer>
 
     <script type="text/javascript"
             src="{{ asset('https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js') }}"></script>

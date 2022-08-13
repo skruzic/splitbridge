@@ -14,10 +14,10 @@
         <tbody>
             @foreach ($tournaments as $t)
                 <tr>
-                    <td>{{ date('d.m.Y.', strtotime($t->date)) }}</td>
-                    <td>{{ mb_strtolower(strftime('%A', strtotime($t->date))) }}</td>
+                    <td>{{ $t->date->format('d.m.Y.') }}</td>
+                    <td>{{ $t->date->dayName }}</td>
                     <td>{{ $t->type }}</td>
-                    <td><a href="{{ url('tournaments/' . $t->id) }}" class="btn btn-default btn-xs"
+                    <td><a href="{{ url('tournaments/' . $t->id) }}" class="btn btn-outline-primary btn-xs"
                            target="_blank">Rezultati</a></td>
                 </tr>
             @endforeach
