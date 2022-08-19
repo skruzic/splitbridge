@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('content')
-    <h3>Rezultati turnira od {{ $tournament->date }}</h3>
+    <h3>Rezultati {{ $tournament->type }} turnira od {{ $tournament->date->format('d.m.Y.') }}</h3>
     <table class="table table-striped">
         <thead>
             <tr>

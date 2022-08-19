@@ -2,13 +2,13 @@
 
 @section('content')
     <h1>Klupski turniri</h1>
-    <table class="table table-striped">
+    <table class="table table-responsive table-hover align-middle">
         <thead>
             <tr>
-                <th>Datum</th>
-                <th>Dan</th>
-                <th>Vrsta</th>
-                <th><span class="fa fa-cog"></span></th>
+                <th scope="col">Datum</th>
+                <th scope="col">Dan</th>
+                <th scope="col">Obračun</th>
+                <th scope="col"><i class="bi-eye"/></th>
             </tr>
         </thead>
         <tbody>
@@ -17,7 +17,7 @@
                     <td>{{ $t->date->format('d.m.Y.') }}</td>
                     <td>{{ $t->date->dayName }}</td>
                     <td>{{ $t->type }}</td>
-                    <td><a href="{{ url('tournaments/' . $t->id) }}" class="btn btn-outline-primary btn-xs"
+                    <td><a href="{{ url('tournaments/' . $t->id) }}" class="btn btn-outline-primary btn-sm"
                            target="_blank">Rezultati</a></td>
                 </tr>
             @endforeach

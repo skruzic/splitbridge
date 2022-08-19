@@ -5,7 +5,7 @@
         <header>
             <h1>{{ $page->title }}</h1>
         </header>
-        <div class="content">
+        <div class="py-5">
             {!! $page->body !!}
         </div>
     </article>

@@ -29,6 +29,7 @@ class ContactMail extends Mailable
      */
     public function build()
     {
-        return $this->subject('Bridge klub Split - kontakt forma')->view('contact.mail');
+        return $this->subject('Bridge klub Split - kontakt forma')->view('contact.mail')->replyTo($this->contact['email'],
+            $this->contact['name']);
     }
 }

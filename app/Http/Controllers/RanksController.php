@@ -60,7 +60,7 @@ class RanksController extends Controller
 
     public function archive()
     {
-        $seasons = Season::where('current', '=', false)->get();
+        $seasons = Season::where('current', '=', false)->orderBy('title', 'desc')->get();
 
         return view('ranks.archive', ['seasons' => $seasons]);
     }

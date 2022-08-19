@@ -14,7 +14,7 @@
         rel="stylesheet">
 
 
-    @vite('resources/scss/styles.scss')
+    @vite('resources/js/app.js')
 </head>
 <body>
     <!-- Google Tag Manager -->

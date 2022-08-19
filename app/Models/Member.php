@@ -20,13 +20,14 @@ class Member extends Model
 
     public function ranks(): HasMany
     {
-        return $this->hasMany(Rank::class);
+        return $this->hasMany(Rank::class)->orderBy('created_at', 'desc');
     }
 
     /**
      * Checks whether name is Member
      *
      * @param $str
+     *
      * @return bool
      */
     public static function isMember($str)

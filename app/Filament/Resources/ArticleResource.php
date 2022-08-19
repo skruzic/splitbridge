@@ -43,6 +43,7 @@ class ArticleResource extends Resource
             ->columns([
                 TextColumn::make('title'),
                 TextColumn::make('user.name'),
+                TextColumn::make('published_date')->dateTime('d.m.Y. H:i')->sortable(),
             ])
             ->filters([
                 //
@@ -52,7 +53,7 @@ class ArticleResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
-            ]);
+            ])->defaultSort('published_date', 'desc');
     }
 
     public static function getRelations(): array

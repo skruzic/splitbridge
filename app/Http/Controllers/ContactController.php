@@ -16,5 +16,7 @@ class ContactController extends Controller
     public function send(ContactRequest $request)
     {
         Mail::to('klub@splitbridge.hr')->send(new ContactMail($request->toArray()));
+
+        return redirect('/');
     }
 }

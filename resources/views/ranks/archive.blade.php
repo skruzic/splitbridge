@@ -2,11 +2,11 @@
 
 @section('content')
     <h1>Sezone</h1>
-    <ul>
+    <div class="list-group">
         @foreach ($seasons as $season)
-            <li><a href="{{ route('ranks.season', ['id' => $season->id]) }}">{{ $season->title }}</a></li>
+            <a class="list-group-item list-group-item-action" href="{{ route('ranks.season', ['id' => $season->id]) }}">{{ $season->title }}</a>
         @endforeach
-    </ul>
+    </div>
 @stop
 
 @section('title')

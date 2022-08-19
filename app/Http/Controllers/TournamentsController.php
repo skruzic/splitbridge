@@ -8,7 +8,7 @@ class TournamentsController extends Controller
 {
     public function index()
     {
-        $tournaments = Tournament::orderBy('date', 'desc')->simplePaginate(20);
+        $tournaments = Tournament::orderBy('date', 'desc')->simplePaginate(15);
 
         return view('tournaments.index', ['tournaments' => $tournaments]);
     }
