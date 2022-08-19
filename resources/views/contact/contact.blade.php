@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.master_sidebar')
 
 @section('content')
     @if (Session::has('success'))

@@ -52,8 +52,32 @@
         <section>
             <div class="container">
                 <div class="row justify-content-between">
-                    <div class="col-lg-12 pt-5 pt-lg-0">
+                    <div class="col-lg-8 pt-5 pt-lg-0">
                         @yield('content')
+                    </div>
+                    <div class="col-lg-4 pt-5 pt-lg-0">
+                        <div class="widget">
+                            <h3 class="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">Turniri</h3>
+                            <ul>
+                                @foreach ($recent_tournaments as $t)
+                                    <li><a href="{{ url($t->results) }}"
+                                           target="_blank">{{ $t->date->format('d.m.Y.') . ' - ' . $t->type }}</a>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        <div class="widget pt-5">
+                            <h3>Rang lista za {{ now()->monthName }}</h3>
+                            @if (count($recent_ranks))
+                                <ol>
+                                    @foreach ($recent_ranks as $r)
+                                        <li>{{ $r->surname }} {{ $r->name }} {{ $r->point_count }}</li>
+                                    @endforeach
+                                </ol>
+                            @else
+                                <p>Nema turnira u tekućem mjesecu.</p>
+                            @endif
+                        </div>
                     </div>
                 </div>
 

@@ -24,37 +24,41 @@
     </table>
 
     <h3>Travellers</h3>
-    @for ($i=0; $i < count($data['travellers']); $i++)
-        <h4>Board {{ $i+1 }}</h4>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>NS</th>
-                    <th>EW</th>
-                    <th>Kontrakt</th>
-                    <th>At.</th>
-                    <th>NS+</th>
-                    <th>NS-</th>
-                    <th>NS %</th>
-                    <th>EW %</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($data['travellers'][$i] as $row)
-                    <tr>
-                        <td>{{ $row['NS'] }}</td>
-                        <td>{{ $row['EW'] }}</td>
-                        <td>{{ $row['contract'] }}</td>
-                        <td>{{ $row['lead'] }}</td>
-                        <td>{{ $row['resultNS'] }}</td>
-                        <td>{{ $row['resultEW'] }}</td>
-                        <td>{{ $row['pointsNS'] }}</td>
-                        <td>{{ $row['pointsEW'] }}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    @endfor
+    <div class="row">
+        @for ($i=0; $i < count($data['travellers']); $i++)
+            <div class="col-md-4">
+                <h4>Board {{ $i+1 }}</h4>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>NS</th>
+                            <th>EW</th>
+                            <th>Kontr.</th>
+                            <th>At.</th>
+                            <th>NS+</th>
+                            <th>NS-</th>
+                            <th>NS %</th>
+                            <th>EW %</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($data['travellers'][$i] as $row)
+                            <tr>
+                                <td>{{ $row['NS'] }}</td>
+                                <td>{{ $row['EW'] }}</td>
+                                <td>{{ $row['contract'] }}</td>
+                                <td>{{ $row['lead'] }}</td>
+                                <td>{{ $row['resultNS'] }}</td>
+                                <td>{{ $row['resultEW'] }}</td>
+                                <td>{{ $row['pointsNS'] }}</td>
+                                <td>{{ $row['pointsEW'] }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        @endfor
+    </div>
 
     <h3>Travellers</h3>
     @foreach($data['scorecards'] as $scorecard)

@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.master_sidebar')
 
 @section('content')
     <h1>Rang lista za sezonu {{ $season->title }}</h1>
