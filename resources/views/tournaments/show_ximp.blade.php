@@ -38,7 +38,7 @@
                     <th>Izv</th>
                     <th>Ataka</th>
                     <th>Rezultat</th>
-                    <th>%</th>
+                    <th>IMP</th>
                 </tr>
             </thead>
             <tbody class="table-group-divider">
@@ -51,7 +51,7 @@
                         <td>{{ $row['declarer'] }}</td>
                         <td>{{ $row['lead'] }}</td>
                         <td>{{ $row['score'] }}</td>
-                        <td>{{ $row['percent'] }}</td>
+                        <td>{{ $row['IMP'] }}</td>
                         <td></td>
                     </tr>
                 @endforeach

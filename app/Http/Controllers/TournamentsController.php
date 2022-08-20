@@ -16,7 +16,15 @@ class TournamentsController extends Controller
     public function show(Tournament $tournament)
     {
         if ($tournament->data) {
-            return view('tournaments.show', ['tournament' => $tournament, 'data' => $tournament->data]);
+            if ($tournament->type=='MP')
+                return view('tournaments.show', ['tournament' => $tournament, 'data' => $tournament->data]);
+            elseif ($tournament->type=='IMP')
+                return view('tournaments.show_imp', ['tournament' => $tournament, 'data' => $tournament->data]);
+            elseif ($tournament->type=='XIMP')
+                return view('tournaments.show_ximp', ['tournament' => $tournament, 'data' => $tournament->data]);
+            else
+                return view('tournaments.show', ['tournament' => $tournament, 'data' => $tournament->data]);
+
         } else {
             return redirect(asset('storage/'.$tournament->results));
         }
