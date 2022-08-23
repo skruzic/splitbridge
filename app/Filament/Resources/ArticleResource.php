@@ -18,6 +18,8 @@ use Filament\Tables\Columns\TextColumn;
 class ArticleResource extends Resource
 {
     protected static ?string $model = Article::class;
+    protected static ?string $modelLabel = 'vijest';
+    protected static ?string $pluralModelLabel = 'vijesti';
 
     protected static ?string $navigationIcon = 'heroicon-o-newspaper';
 
@@ -25,15 +27,15 @@ class ArticleResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('title')->required(),
-                MarkdownEditor::make('summary'),
-                MarkdownEditor::make('body')->required(),
-                Toggle::make('sticky'),
+                TextInput::make('title')->label('Naslov')->required(),
+                MarkdownEditor::make('summary')->label('Sažetak'),
+                MarkdownEditor::make('body')->label('Sadržaj')->required(),
+                Toggle::make('sticky')->helperText('Zadržava vijest na vrhu početne stranice'),
                 Select::make('status')->options([
                     'DRAFT' => 'Draft',
                     'PUBLISHED' => 'Published',
                 ])->required(),
-                DateTimePicker::make('published_date')->withoutSeconds()->default(now())->required(),
+                DateTimePicker::make('published_date')->label('Vrijeme objave')->withoutSeconds()->default(now())->required(),
             ])->columns(1);
     }
 

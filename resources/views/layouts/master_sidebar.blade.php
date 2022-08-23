@@ -60,8 +60,8 @@
                             <h3 class="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">Turniri</h3>
                             <ul>
                                 @foreach ($recent_tournaments as $t)
-                                    <li><a href="{{ url($t->results) }}"
-                                           target="_blank">{{ $t->date->format('d.m.Y.') . ' - ' . $t->type }}</a>
+                                    <li>
+                                        <a href="{{ route('tournaments.show', $t->id) }}">{{ $t->date->format('d.m.Y.') . ' - ' . $t->type }}</a>
                                     </li>
                                 @endforeach
                             </ul>

@@ -14,6 +14,9 @@ use Filament\Tables\Columns\TextColumn;
 class MemberResource extends Resource
 {
     protected static ?string $model = Member::class;
+    protected static ?string $modelLabel = 'član';
+    protected static ?string $pluralModelLabel = 'članovi';
+
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
@@ -21,10 +24,10 @@ class MemberResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('name')->required(),
-                TextInput::make('surname')->required(),
-                TextInput::make('email')->email(),
-                TextInput::make('crobridge')->prefix('CRO')->length(5),
+                TextInput::make('name')->label('Ime')->required(),
+                TextInput::make('surname')->label('Prezime')->required(),
+                TextInput::make('email')->label('E-mail')->email(),
+                TextInput::make('crobridge')->label('HBS broj')->prefix('CRO')->length(5),
             ]);
     }
 
@@ -32,9 +35,9 @@ class MemberResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('surname'),
-                TextColumn::make('name'),
-                TextColumn::make('crobridge'),
+                TextColumn::make('surname')->label('Prezime')->sortable(),
+                TextColumn::make('name')->label('Ime'),
+                TextColumn::make('crobridge')->label('HBS broj')->prefix('CRO'),
             ])
             ->filters([
                 //
@@ -45,7 +48,8 @@ class MemberResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
-            ]);
+            ])
+            ->defaultSort('surname');
     }
 
     public static function getPages(): array
