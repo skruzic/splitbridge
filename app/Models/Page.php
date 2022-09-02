@@ -17,8 +17,8 @@ class Page extends Model
     {
         parent::booted();
 
-        static::creating(function () {
-            $this->user_id = auth()->id();
+        static::creating(function ($model) {
+            $model->user_id = auth()->id();
         });
     }
 

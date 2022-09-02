@@ -4,7 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PageResource\Pages;
 use App\Models\Page;
-use Filament\Forms\Components\MarkdownEditor;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
@@ -25,7 +25,7 @@ class PageResource extends Resource
             ->schema([
                 TextInput::make('title')->required(),
                 TextInput::make('slug'),
-                MarkdownEditor::make('body'),
+                RichEditor::make('body'),
                 Select::make('status')->options([
                     'DRAFT' => 'Draft',
                     'PUBLISHED' => 'Published',
