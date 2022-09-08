@@ -9,6 +9,8 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
+        "ext-libxml": "*",
+        "ext-simplexml": "*",
         "cviebrock/eloquent-sluggable": "^9.0",
         "filament/filament": "^2.13",
         "guzzlehttp/guzzle": "^7.2",

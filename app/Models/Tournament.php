@@ -29,6 +29,22 @@ class Tournament extends Model
         });
 
         static::created(function ($model) {
+            $xml   = simplexml_load_file(storage_path('app/public/'.$model->results), "SimpleXMLElement",
+                LIBXML_NOCDATA);
+            $json  = json_encode($xml);
+            $array = json_decode($json, true);
+
+            $players = $array['EVENT']['SESSION']['SECTION']['PARTICIPANTS']['PAIR'];
+            usort($players, fn($a, $b) => intval($a['PLACE']) <=> intval($b['PLACE']));
+            ds($players);
+
+
+            // JSON
+            $model->data = $json;
+            $model->save();
+        });
+
+        /*static::created(function ($model) {
             $html = HtmlDomParser::file_get_html(storage_path('app/public/'.$model->results));
             $tr   = $html->find('table', 0)->find('tr');
 
@@ -71,7 +87,7 @@ class Tournament extends Model
                     }
                 }
             }
-        });
+        });*/
 
         static::deleting(function ($model) {
             $model->ranks()->delete();
@@ -330,9 +346,12 @@ class Tournament extends Model
                 $travellers[$j][$i]['EW']       = $tables[$j]->find('tr', $i)->find('td', 1)->plaintext;
                 $travellers[$j][$i]['contract'] = $tables[$j]->find('tr', $i)->find('td', 2)->plaintext;
                 $travellers[$j][$i]['declarer'] = $tables[$j]->find('tr', $i)->find('td', 3)->plaintext;
-                $travellers[$j][$i]['lead']     = str_replace("&nbsp;", "", $tables[$j]->find('tr', $i)->find('td', 4)->plaintext);
-                $travellers[$j][$i]['resultNS'] = str_replace("&nbsp;", "", $tables[$j]->find('tr', $i)->find('td', 5)->plaintext);
-                $travellers[$j][$i]['resultEW'] = str_replace("&nbsp;", "", $tables[$j]->find('tr', $i)->find('td', 6)->plaintext);
+                $travellers[$j][$i]['lead']     = str_replace("&nbsp;", "",
+                    $tables[$j]->find('tr', $i)->find('td', 4)->plaintext);
+                $travellers[$j][$i]['resultNS'] = str_replace("&nbsp;", "",
+                    $tables[$j]->find('tr', $i)->find('td', 5)->plaintext);
+                $travellers[$j][$i]['resultEW'] = str_replace("&nbsp;", "",
+                    $tables[$j]->find('tr', $i)->find('td', 6)->plaintext);
                 $travellers[$j][$i]['pointsNS'] = $tables[$j]->find('tr', $i)->find('td', 7)->plaintext;
                 $travellers[$j][$i]['pointsEW'] = $tables[$j]->find('tr', $i)->find('td', 8)->plaintext;
             }
