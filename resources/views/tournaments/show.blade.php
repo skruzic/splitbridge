@@ -12,12 +12,12 @@
             </tr>
         </thead>
         <tbody class="table-group-divider">
-            @foreach ($data['results'] as $row)
+            @foreach ($pairs as $row)
                 <tr>
-                    <td>{{$row['rank']}}</td>
-                    <td>{{$row['pair']}}</td>
-                    <td>{{ Arr::join($row['players'],' - ') }}</td>
-                    <td>{{ $row['score'] }}</td>
+                    <td>{{$row['PLACE']}}</td>
+                    <td>{{$row['PAIR_NUMBER']}}</td>
+                    <td>{{Arr::join(Arr::pluck($row['PLAYER'], 'PLAYER_NAME'),' - ') }}</td>
+                    <td>{{ number_format($row['PERCENTAGE'], 2) }}</td>
                 </tr>
             @endforeach
         </tbody>
@@ -25,7 +25,7 @@
 
     @include('tournaments.travellers')
 
-    <h3>Scorecards</h3>
+    {{--<h3>Scorecards</h3>
     @foreach($data['scorecards'] as $scorecard)
         <table class="table table-hover table-sm caption-top">
             <caption>Par {{ $scorecard['pair'] }}: {{ Arr::join($scorecard['players'],' - ') }}</caption>
@@ -57,7 +57,7 @@
                 @endforeach
             </tbody>
         </table>
-    @endforeach
+    @endforeach--}}
 @endsection
 
 @section('title')

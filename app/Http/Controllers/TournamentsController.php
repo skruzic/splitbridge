@@ -15,15 +15,38 @@ class TournamentsController extends Controller
 
     public function show(Tournament $tournament)
     {
-        if ($tournament->data) {
-            if ($tournament->type=='MP')
-                return view('tournaments.show', ['tournament' => $tournament, 'data' => $tournament->data]);
-            elseif ($tournament->type=='IMP')
-                return view('tournaments.show_imp', ['tournament' => $tournament, 'data' => $tournament->data]);
-            elseif ($tournament->type=='XIMP')
-                return view('tournaments.show_ximp', ['tournament' => $tournament, 'data' => $tournament->data]);
-            else
-                return view('tournaments.show', ['tournament' => $tournament, 'data' => $tournament->data]);
+        $data  = $tournament->data;
+        $pairs = $data['EVENT']['SESSION']['SECTION']['PARTICIPANTS']['PAIR'];
+        usort($pairs, fn($a, $b) => intval($a['PLACE']) <=> intval($b['PLACE']));
+
+        $boards = $data['EVENT']['SESSION']['SECTION']['BOARD'];
+
+        // TODO: Scorecards
+
+        if ($data) {
+            if ($tournament->type == 'MP') {
+                return view('tournaments.show', [
+                    'tournament' => $tournament,
+                    'data'       => $data,
+                    'pairs'      => $pairs,
+                    'boards'     => $boards,
+                ]);
+            } elseif ($tournament->type == 'IMP') {
+                return view('tournaments.show_imp', [
+                    'tournament' => $tournament,
+                    'data'       => $tournament->data,
+                ]);
+            } elseif ($tournament->type == 'XIMP') {
+                return view('tournaments.show_ximp', [
+                    'tournament' => $tournament,
+                    'data'       => $tournament->data,
+                ]);
+            } else {
+                return view('tournaments.show', [
+                    'tournament' => $tournament,
+                    'data'       => $tournament->data,
+                ]);
+            }
 
         } else {
             return redirect(asset('storage/'.$tournament->results));

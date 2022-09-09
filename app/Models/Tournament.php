@@ -50,7 +50,7 @@ class Tournament extends Model
             $points  = self::computePoints($results);
 
             // JSON
-            $model->data = $json;
+            $model->data = $array;
             $model->save();
 
             // Unos u rang listu
