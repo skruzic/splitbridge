@@ -12,7 +12,11 @@ class Tournament extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['date', 'type', 'results'];
+    protected $fillable = [
+        'date',
+        'type',
+        'results',
+    ];
 
     protected $casts = [
         'data' => 'array',
@@ -29,8 +33,12 @@ class Tournament extends Model
         });
 
         static::created(function ($model) {
-            $xml   = simplexml_load_file(storage_path('app/public/'.$model->results), "SimpleXMLElement",
-                LIBXML_NOCDATA);
+            $western_xml = file_get_contents(storage_path('app/public/'.$model->results));
+            $unicode_xml = iconv("windows-1250", "UTF-8", $western_xml);
+            $unicode_xml = str_replace('encoding="iso-8859-1"', 'encoding="UTF-8"', $unicode_xml);
+
+            $xml = new \SimpleXMLElement($unicode_xml, LIBXML_NOCDATA);
+
             $json  = json_encode($xml);
             $array = json_decode($json, true);
 

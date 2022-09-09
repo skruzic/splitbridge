@@ -8,7 +8,7 @@
             <tr>
                 <th scope="col">Prezime</th>
                 <th scope="col">Ime</th>
-                <th scope="col">HBS</th>
+                <th scope="col">HBS #</th>
                 <th scope="col"><i class="bi-eye"/></th>
             </tr>
         </thead>
