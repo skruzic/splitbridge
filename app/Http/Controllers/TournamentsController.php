@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tournament;
+use Illuminate\Support\Arr;
 
 class TournamentsController extends Controller
 {
@@ -23,6 +24,28 @@ class TournamentsController extends Controller
 
         // TODO: Scorecards
 
+
+        foreach ($pairs as $pair) {
+            $pair_num  = intval($pair['PAIR_NUMBER']);
+            $scorecard = [];
+            foreach ($boards as $board) {
+                foreach ($board['TRAVELLER_LINE'] as $row) {
+                    if (intval($row['NS_PAIR_NUMBER']) == $pair_num || intval($row['EW_PAIR_NUMBER']) == $pair_num) {
+                        //ds($board['BOARD_NUMBER'], $row);
+                        $scorecard[] = $row;
+                    }
+                }
+            }
+            $grouped = collect($scorecard)->groupBy(function ($item, $key) use ($pair_num) {
+                return intval($item['NS_PAIR_NUMBER']) == $pair_num ? 'EW_PAIR_NUMBER' : 'NS_PAIR_NUMBER';
+            });
+
+            ds($grouped->slice(0, 1)->concat($grouped->slice(1, 1)));
+            //ds($grouped['NS_PAIR_NUMBER']->concat($grouped['EW_PAIR_NUMBER']));
+        }
+
+
+        // Renderiram odgovarajući view
         if ($data) {
             if ($tournament->type == 'MP') {
                 return view('tournaments.show', [
