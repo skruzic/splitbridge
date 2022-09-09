@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
+        "ext-iconv": "*",
         "ext-libxml": "*",
         "ext-simplexml": "*",
         "cviebrock/eloquent-sluggable": "^9.0",
