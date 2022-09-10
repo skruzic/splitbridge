@@ -13,8 +13,8 @@
                         <th>At.</th>
                         <th>Št.</th>
                         <th>Rez.</th>
-                        <th>NS</th>
-                        <th>EW</th>
+                        <th>MP</th>
+                        <th>MP</th>
                     </tr>
                 </thead>
                 <tbody class="table-group-divider">
