@@ -47,7 +47,9 @@
             fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'facebook-jssdk'));
     </script>
-    <header id="header" class="fixed-top d-flex align-items-center">@include('menus.main')</header>
+    <header id="header" class="fixed-top d-flex align-items-center">
+        <x-menu />
+    </header>
     <main id="main">
         <section>
             <div class="container">
@@ -56,28 +58,8 @@
                         @yield('content')
                     </div>
                     <div class="col-lg-4 pt-5 pt-lg-0">
-                        <div class="widget">
-                            <h3 class="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">Turniri</h3>
-                            <ul>
-                                @foreach ($recent_tournaments as $t)
-                                    <li>
-                                        <a href="{{ route('tournaments.show', $t->id) }}">{{ $t->date->format('d.m.Y.') . ' - ' . $t->type }}</a>
-                                    </li>
-                                @endforeach
-                            </ul>
-                        </div>
-                        <div class="widget pt-5">
-                            <h3>Rang lista za {{ now()->monthName }}</h3>
-                            @if (count($recent_ranks))
-                                <ol>
-                                    @foreach ($recent_ranks as $r)
-                                        <li>{{ $r->surname }} {{ $r->name }} {{ $r->point_count }}</li>
-                                    @endforeach
-                                </ol>
-                            @else
-                                <p>Nema turnira u tekućem mjesecu.</p>
-                            @endif
-                        </div>
+                        <x-recent-tournaments />
+                        <x-recent-ranks />
                     </div>
                 </div>
 

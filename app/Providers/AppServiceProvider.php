@@ -44,15 +44,5 @@ class AppServiceProvider extends ServiceProvider
                 return Page::pluck('title', 'slug');
             }),
         ]);
-
-        $menu = FilamentNavigation::get('menu');
-
-        //$menu = Menu::withDepth()->having('depth', '=', '1')->get();
-        $recent_tournaments = Tournament::recent(3)->get();
-        $recent_ranks       = Rank::top(3)->get();
-
-        View::share('menu', $menu);
-        View::share('recent_tournaments', $recent_tournaments);
-        View::share('recent_ranks', $recent_ranks);
     }
 }
