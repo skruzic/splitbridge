@@ -2,11 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Models\Member;
+use App\Models\Rank;
+use App\Models\Tournament;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class MembersTableSeeder extends Seeder
+class TournamentsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,6 +16,6 @@ class MembersTableSeeder extends Seeder
      */
     public function run()
     {
-        Member::factory()->count(50)->create();
+        Tournament::factory()->count(50)->has(Rank::factory()->count(10))->create();
     }
 }

@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('type');
             $table->foreignId('season_id');
             $table->string('results');
-            $table->foreignId('user_id');
             $table->timestamps();
         });
     }

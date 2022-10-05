@@ -28,41 +28,42 @@ class Tournament extends Model
         parent::booted();
 
         static::creating(function ($model) {
-            $model->user_id   = auth()->id();
             $model->season_id = Season::getCurrent()->id;
         });
 
         static::created(function ($model) {
-            $western_xml = file_get_contents(storage_path('app/public/'.$model->results));
-            $unicode_xml = iconv("windows-1250", "UTF-8", $western_xml);
-            $unicode_xml = str_replace('encoding="iso-8859-1"', 'encoding="UTF-8"', $unicode_xml);
+            if ($model->results) {
+                $western_xml = file_get_contents(storage_path('app/public/'.$model->results));
+                $unicode_xml = iconv("windows-1250", "UTF-8", $western_xml);
+                $unicode_xml = str_replace('encoding="iso-8859-1"', 'encoding="UTF-8"', $unicode_xml);
 
-            $xml = new \SimpleXMLElement($unicode_xml, LIBXML_NOCDATA);
+                $xml = new \SimpleXMLElement($unicode_xml, LIBXML_NOCDATA);
 
-            $json  = json_encode($xml);
-            $array = json_decode($json, true);
+                $json  = json_encode($xml);
+                $array = json_decode($json, true);
 
-            $pairs = $array['EVENT']['SESSION']['SECTION']['PARTICIPANTS']['PAIR'];
-            usort($pairs, fn($a, $b) => intval($a['PLACE']) <=> intval($b['PLACE']));
+                $pairs = $array['EVENT']['SESSION']['SECTION']['PARTICIPANTS']['PAIR'];
+                usort($pairs, fn($a, $b) => intval($a['PLACE']) <=> intval($b['PLACE']));
 
-            // TODO: ODABRATI PRAVU KOLONU I ZA OSTALE OBRAČUNE
-            $results = array_column($pairs, 'PERCENTAGE');
-            $points  = self::computePoints($results);
+                // TODO: ODABRATI PRAVU KOLONU I ZA OSTALE OBRAČUNE
+                $results = array_column($pairs, 'PERCENTAGE');
+                $points  = self::computePoints($results);
 
-            // JSON
-            $model->data = $array;
-            $model->save();
+                // JSON
+                $model->data = $array;
+                $model->save();
 
-            // Unos u rang listu
-            for ($i = 0; $i < count($pairs); $i++) {
-                foreach ($pairs[$i]['PLAYER'] as $player) {
-                    if (Member::isMember($player['PLAYER_NAME'])) {
-                        $rank                = new Rank;
-                        $rank->member_id     = Member::isMember($player['PLAYER_NAME']);
-                        $rank->tournament_id = $model->id;
-                        $rank->rank          = intval($pairs[$i]['PLACE']);
-                        $rank->points        = $points[$i];
-                        $rank->save();
+                // Unos u rang listu
+                for ($i = 0; $i < count($pairs); $i++) {
+                    foreach ($pairs[$i]['PLAYER'] as $player) {
+                        if (Member::isMember($player['PLAYER_NAME'])) {
+                            $rank                = new Rank;
+                            $rank->member_id     = Member::isMember($player['PLAYER_NAME']);
+                            $rank->tournament_id = $model->id;
+                            $rank->rank          = intval($pairs[$i]['PLACE']);
+                            $rank->points        = $points[$i];
+                            $rank->save();
+                        }
                     }
                 }
             }
@@ -71,11 +72,6 @@ class Tournament extends Model
         static::deleting(function ($model) {
             $model->ranks()->delete();
         });
-    }
-
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
     }
 
     public function season(): BelongsTo
