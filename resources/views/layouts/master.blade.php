@@ -47,7 +47,9 @@
             fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'facebook-jssdk'));
     </script>
-    <header id="header" class="fixed-top d-flex align-items-center">@include('menus.main')</header>
+    <header id="header" class="fixed-top d-flex align-items-center">
+        <x-menu />
+    </header>
     <main id="main">
         <section>
             <div class="container">

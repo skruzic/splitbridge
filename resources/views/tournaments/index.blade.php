@@ -1,4 +1,4 @@
-@extends('layouts.master_sidebar')
+@extends('layouts.master')
 
 @section('content')
     <h1>Klupski turniri</h1>
