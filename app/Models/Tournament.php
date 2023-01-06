@@ -33,34 +33,23 @@ class Tournament extends Model
 
         static::created(function ($model) {
             if ($model->results) {
-                $western_xml = file_get_contents(storage_path('app/public/'.$model->results));
-                $unicode_xml = iconv("windows-1250", "UTF-8", $western_xml);
-                $unicode_xml = str_replace('encoding="iso-8859-1"', 'encoding="UTF-8"', $unicode_xml);
+                $html = HtmlDomParser::file_get_html(storage_path('app/public/'.$model->results));
+                $tr   = $html->find('table', 0)->find('tr');
 
-                $xml = new \SimpleXMLElement($unicode_xml, LIBXML_NOCDATA);
 
-                $json  = json_encode($xml);
-                $array = json_decode($json, true);
-
-                $pairs = $array['EVENT']['SESSION']['SECTION']['PARTICIPANTS']['PAIR'];
-                usort($pairs, fn($a, $b) => intval($a['PLACE']) <=> intval($b['PLACE']));
-
-                // TODO: ODABRATI PRAVU KOLONU I ZA OSTALE OBRAČUNE
-                $results = array_column($pairs, 'PERCENTAGE');
+                $players = self::getNames($tr, $model->type);
+                $results = self::getResults($tr);
+                $ranks   = compute_ranks($results);
                 $points  = compute_points($results);
 
-                // JSON
-                $model->data = $array;
-                $model->save();
-
                 // Unos u rang listu
-                for ($i = 0; $i < count($pairs); $i++) {
-                    foreach ($pairs[$i]['PLAYER'] as $player) {
-                        if (Member::isMember($player['PLAYER_NAME'])) {
+                for ($i = 0; $i < count($players); $i++) {
+                    foreach ($players[$i] as $player) {
+                        if (Member::isMember($player)) {
                             $rank                = new Rank;
-                            $rank->member_id     = Member::isMember($player['PLAYER_NAME']);
+                            $rank->member_id     = Member::isMember($player);
                             $rank->tournament_id = $model->id;
-                            $rank->rank          = intval($pairs[$i]['PLACE']);
+                            $rank->rank          = $ranks[$i];
                             $rank->points        = $points[$i];
                             $rank->save();
                         }
@@ -82,6 +71,49 @@ class Tournament extends Model
     public function ranks(): HasMany
     {
         return $this->hasMany(Rank::class, 'tournament_id');
+    }
+
+    private static function getNames(array $table, string $type = 'MP'): array
+    {
+        $players = [];
+
+        if ($type == 'Tim') {
+            for ($i = 2, $j = 0; $i < count($table); $i += 2, $j++) {
+                $players[$j] = preg_split('/(&|&amp;)/', $table[$i]->find('td', 2)->plaintext);
+                $players[$j] = array_merge($players[$j],
+                    preg_split('/(&|&amp;)/', $table[$i + 1]->find('td', 0)->plaintext));
+            }
+        } else {
+            for ($i = 0; $i < count($table) - 1; $i++) {
+                $players[] = preg_split('/(&amp;|&)/', $table[$i + 1]->find('td', 2)->plaintext);
+            }
+        }
+
+        return array_map_recursive('trim', $players);
+    }
+
+    private static function getResults(array $table, string $type = 'MP'): array
+    {
+        $results = [];
+
+        $column = [
+            'Tim'  => 3,
+            'MP'   => 6,
+            'IMP'  => 5,
+            'XIMP' => 4,
+        ];
+
+        if ($type == 'Tim') {
+            for ($i = 2; $i < count($table) - 1; $i += 2) {
+                $results[] = trim($table[$i]->find('td', $column[$type])->plaintext);
+            }
+        } else {
+            for ($i = 0; $i < count($table) - 1; $i++) {
+                $results[] = trim($table[$i + 1]->find('td', $column[$type])->plaintext);
+            }
+        }
+
+        return $results;
     }
 
     /* Helper methods */

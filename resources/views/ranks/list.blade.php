@@ -15,7 +15,7 @@
                 <tr>
                     <td>{{ $count++ }}.</td>
                     <td><a href="{{ route('members.show', $rank->id) }}">{{ $rank->surname}} {{$rank->name }}</a></td>
-                    <td>{{ $rank->point_count }}</td>
+                    <td>{{ number_format($rank->point_count, 2, ',') }}</td>
                 </tr>
             @endforeach
         </tbody>

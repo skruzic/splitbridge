@@ -23,6 +23,34 @@ if ( ! function_exists('array_map_recursive')) {
     }
 }
 
+if ( ! function_exists('compute_ranks')) {
+    /**
+     * Iz niza rezultata izračunava rangove
+     *
+     * @param  array  $results
+     *
+     * @return array
+     */
+    function compute_ranks(array $results): array
+    {
+        $ranks = [];
+
+        $occ     = array_count_values($results);
+        $results = array_unique($results);
+
+        $i = 0;
+
+        foreach ($results as $r) {
+            for ($j = 0; $j < $occ[$r]; $j++) {
+                $ranks[] = $i + 1;
+            }
+            $i += $occ[$r];
+        }
+
+        return $ranks;
+    }
+}
+
 if ( ! function_exists('compute_points')) {
     function compute_points(array $results, int $unit_points = 5, string $type = 'pair')
     {

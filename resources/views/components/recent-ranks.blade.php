@@ -3,7 +3,7 @@
     @if (count($ranks))
         <ol>
             @foreach ($ranks as $r)
-                <li>{{ $r->surname }} {{ $r->name }} {{ $r->point_count }}</li>
+                <li>{{ $r->surname }} {{ $r->name }} {{ number_format($r->point_count, 2, ',') }}</li>
             @endforeach
         </ol>
     @else
