@@ -47,7 +47,7 @@ class Tournament extends Model
 
                 // TODO: ODABRATI PRAVU KOLONU I ZA OSTALE OBRAČUNE
                 $results = array_column($pairs, 'PERCENTAGE');
-                $points  = self::computePoints($results);
+                $points  = compute_points($results);
 
                 // JSON
                 $model->data = $array;
@@ -174,28 +174,6 @@ class Tournament extends Model
         }
 
         return $points;
-    }
-
-    /**
-     * Rekurizvna implementacija proizvovljne funkcije koja funkcionira kao @param $callback
-     *
-     * @param $array
-     *
-     * @return array
-     *
-     * @see array_map
-     */
-    private static function array_map_recursive($callback, $array): array
-    {
-        foreach ($array as $key => $value) {
-            if (is_array($value)) {
-                $array[$key] = self::array_map_recursive($callback, $value);
-            } else {
-                $array[$key] = call_user_func($callback, $value);
-            }
-        }
-
-        return $array;
     }
 
     /**
