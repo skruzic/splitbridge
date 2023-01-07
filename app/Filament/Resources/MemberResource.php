@@ -27,7 +27,7 @@ class MemberResource extends Resource
                 TextInput::make('name')->label('Ime')->required(),
                 TextInput::make('surname')->label('Prezime')->required(),
                 TextInput::make('email')->label('E-mail')->email(),
-                TextInput::make('crobridge')->label('HBS broj')->prefix('CRO')->length(5),
+                TextInput::make('crobridge')->label('HBS broj')->length(5),
             ]);
     }
 
@@ -37,7 +37,7 @@ class MemberResource extends Resource
             ->columns([
                 TextColumn::make('surname')->label('Prezime')->sortable(),
                 TextColumn::make('name')->label('Ime'),
-                TextColumn::make('crobridge')->label('HBS broj')->prefix('CRO'),
+                TextColumn::make('crobridge')->label('HBS broj'),
             ])
             ->filters([
                 //
