@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('tournaments', function (Blueprint $table) {
-            $table->json('data')->nullable()->after('results');
+            $table->integer('remote_id')->after('results');
         });
     }
 
@@ -26,7 +26,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('tournaments', function (Blueprint $table) {
-            $table->removeColumn('data');
+            $table->drop('remote_id');
         });
     }
 };

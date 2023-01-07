@@ -16,6 +16,7 @@ class Tournament extends Model
         'date',
         'type',
         'results',
+        'remote_id',
     ];
 
     protected $casts = [
@@ -33,7 +34,7 @@ class Tournament extends Model
 
         static::created(function ($model) {
             if ($model->results) {
-                $html = HtmlDomParser::file_get_html(storage_path('app/public/'.$model->results));
+                $html = HtmlDomParser::file_get_html(public_path('upload/'.$model->results));
                 $tr   = $html->find('table', 0)->find('tr');
 
 
@@ -60,6 +61,7 @@ class Tournament extends Model
 
         static::deleting(function ($model) {
             $model->ranks()->delete();
+            unlink(public_path('upload/'.$model->results));
         });
     }
 

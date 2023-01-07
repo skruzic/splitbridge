@@ -17,8 +17,13 @@
                     <td>{{ $t->date->format('d.m.Y.') }}</td>
                     <td>{{ $t->date->dayName }}</td>
                     <td>{{ $t->type }}</td>
-                    <td><a href="{{ url('tournaments/' . $t->id) }}" class="btn btn-outline-primary btn-sm"
-                           target="_blank">Rezultati</a></td>
+                    @if($t->remote_id > 0)
+                        <td><a href="{{ url('https://bridge.hr/tournaments/pairs/'.$t->remote_id) }}" class="btn btn-outline-primary btn-sm"
+                               target="_blank">Rezultati</a></td>
+                    @else
+                        <td><a href="{{ asset('upload/'.$t->results) }}" class="btn btn-outline-primary btn-sm"
+                               target="_blank">Rezultati</a></td>
+                    @endif
                 </tr>
             @endforeach
         </tbody>

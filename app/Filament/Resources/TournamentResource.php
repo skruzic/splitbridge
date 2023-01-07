@@ -7,6 +7,7 @@ use App\Models\Tournament;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
@@ -23,7 +24,7 @@ class TournamentResource extends Resource
     {
         return $form
             ->schema([
-                FileUpload::make('results')->required()->disk('public')->directory('upload')->visibility('public'),
+                FileUpload::make('results')->required()->disk('uploads')->directory('/')->visibility('public'),
                 DatePicker::make('date')->required()->default(now())->displayFormat('d.m.Y'),
                 Select::make('type')->required()->options([
                     'MP' => 'MP',
@@ -31,6 +32,7 @@ class TournamentResource extends Resource
                     'XIMP' => 'Cross IMPs',
                     'Tim' => 'Tim',
                 ]),
+                TextInput::make('remote_id')->label('HBS šifra turnira')
             ])->columns(1);
     }
 

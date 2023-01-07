@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [ArticlesController::class, 'index']);
 Route::resource('articles', ArticlesController::class)->only(['index', 'show']);
 Route::resource('members', MembersController::class)->only(['index', 'show']);
-Route::resource('tournaments', TournamentsController::class)->only(['index', 'show']);
+Route::resource('tournaments', TournamentsController::class)->only(['index']);
 Route::get('ranks/list', [RanksController::class, 'list']);
 Route::get('ranks/month/{year?}/{month?}', [RanksController::class, 'month'])->name('ranks.month');
 Route::get('ranks/archive', [RanksController::class, 'archive']);
