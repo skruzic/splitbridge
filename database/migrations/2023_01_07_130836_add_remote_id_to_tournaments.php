@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('tournaments', function (Blueprint $table) {
-            $table->integer('remote_id')->after('results');
+            $table->integer('remote_id')->after('results')->nullable();
         });
     }
 
