@@ -9,6 +9,7 @@ use App\Models\Tournament;
 use Filament\Forms\Components\Select;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use RyanChandler\FilamentNavigation\Facades\FilamentNavigation;
@@ -32,6 +33,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        // Kompatibilnost sa starim MySQL serverima
+        Schema::defaultStringLength(191);
+
         // Jezik za datume
         Carbon::setLocale('hr');
 
