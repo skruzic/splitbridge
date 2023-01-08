@@ -34,7 +34,7 @@ class Tournament extends Model
 
         static::created(function ($model) {
             if ($model->results) {
-                $html = HtmlDomParser::file_get_html(public_path('upload/'.$model->results));
+                $html = HtmlDomParser::file_get_html(public_path($model->results));
                 $tr   = $html->find('table', 0)->find('tr');
 
 

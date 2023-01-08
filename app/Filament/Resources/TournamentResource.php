@@ -24,7 +24,7 @@ class TournamentResource extends Resource
     {
         return $form
             ->schema([
-                FileUpload::make('results')->required()->disk('uploads')->directory('/')->visibility('public'),
+                FileUpload::make('results')->required()->disk('uploads')->directory('/upload')->visibility('public'),
                 DatePicker::make('date')->required()->default(now())->displayFormat('d.m.Y'),
                 Select::make('type')->required()->options([
                     'MP' => 'MP',
