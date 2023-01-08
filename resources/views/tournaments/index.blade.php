@@ -21,7 +21,7 @@
                         <td><a href="{{ url('https://bridge.hr/tournaments/pairs/'.$t->remote_id) }}" class="btn btn-outline-primary btn-sm"
                                target="_blank">Rezultati</a></td>
                     @else
-                        <td><a href="{{ asset($t->results) }}" class="btn btn-outline-primary btn-sm"
+                        <td><a href="{{ asset('upload/'.$t->results) }}" class="btn btn-outline-primary btn-sm"
                                target="_blank">Rezultati</a></td>
                     @endif
                 </tr>
