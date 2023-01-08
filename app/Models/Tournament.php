@@ -61,7 +61,7 @@ class Tournament extends Model
 
         static::deleting(function ($model) {
             $model->ranks()->delete();
-            unlink(public_path('upload/'.$model->results));
+            unlink(public_path($model->results));
         });
     }
 
