@@ -21,9 +21,22 @@ import '../scss/styles.scss';
         }
     };
 
+    /**
+     * Klik na mobilni nav
+     */
     on('click', '.mobile-nav-toggle', function(e) {
-        select('#navbar').classList.toggle('navbar-mobile')
-        this.classList.toggle('bi-list')
-        this.classList.toggle('bi-x')
+        select('#navbar').classList.toggle('navbar-mobile');
+        this.classList.toggle('bi-list');
+        this.classList.toggle('bi-x');
     });
+
+    /**
+     * Klik na stavku u meniju za prikaz podmenija
+     */
+    on('click', '.navbar .dropdown > a', function(e) {
+        if (select('#navbar').classList.contains('navbar-mobile')) {
+            e.preventDefault()
+            this.nextElementSibling.classList.toggle('dropdown-active')
+        }
+    }, true);
 })();
