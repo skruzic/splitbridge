@@ -53,5 +53,5 @@
 @stop
 
 @section('title')
-    Rang lista za {{ lcfirst(strftime('%B %Y.', strtotime($date))) }} ::
+    Rang lista - {{ \Carbon\Carbon::parse($date)->isoFormat('MMMM YYYY.') }} ::
 @stop
