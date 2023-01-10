@@ -9,12 +9,14 @@ use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
-use Filament\Tables\Columns\BooleanColumn;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 
 class SeasonResource extends Resource
 {
     protected static ?string $model = Season::class;
+    protected static ?string $modelLabel = 'sezona';
+    protected static ?string $pluralModelLabel = 'sezone';
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 
@@ -22,7 +24,7 @@ class SeasonResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('title')->required(),
+                TextInput::make('title')->required()->label('Naslov'),
             ]);
     }
 
@@ -30,14 +32,14 @@ class SeasonResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('title'),
-                BooleanColumn::make('current'),
+                TextColumn::make('title')->label('Naslov'),
+                IconColumn::make('current')->boolean()->label('Tekuća'),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\Action::make('CUSTOM')->icon('heroicon-o-check')->label('Set as current')->color('success')->requiresConfirmation()->tooltip('Set this season as current')->action(function (
+                Tables\Actions\Action::make('CUSTOM')->icon('heroicon-o-check')->label('Postavi za tekuću')->color('success')->requiresConfirmation()->tooltip('Set this season as current')->action(function (
                     Season $record
                 ) {
                     $record->current = true;
@@ -48,7 +50,7 @@ class SeasonResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
-            ]);
+            ])->defaultSort('title', 'desc');
     }
 
     public static function getPages(): array

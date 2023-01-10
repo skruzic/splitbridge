@@ -39,7 +39,7 @@ class Tournament extends Model
 
 
                 $players = self::getNames($tr, $model->type);
-                $results = self::getResults($tr);
+                $results = self::getResults($tr, $model->type);
                 $ranks   = compute_ranks($results);
                 $points  = compute_points($results);
 

@@ -17,6 +17,8 @@ use Filament\Tables\Columns\TextColumn;
 class TournamentResource extends Resource
 {
     protected static ?string $model = Tournament::class;
+    protected static ?string $modelLabel = 'turnir';
+    protected static ?string $pluralModelLabel = 'turniri';
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
@@ -24,14 +26,14 @@ class TournamentResource extends Resource
     {
         return $form
             ->schema([
-                FileUpload::make('results')->required()->disk('uploads')->directory('/upload')->visibility('public'),
-                DatePicker::make('date')->required()->default(now())->displayFormat('d.m.Y'),
+                FileUpload::make('results')->required()->label('Datoteka s rezultatima')->disk('uploads')->directory('/upload')->visibility('public'),
+                DatePicker::make('date')->required()->default(now())->displayFormat('d.m.Y')->label('Datum'),
                 Select::make('type')->required()->options([
                     'MP' => 'MP',
                     'IMP' => 'IMP',
                     'XIMP' => 'Cross IMPs',
                     'Tim' => 'Tim',
-                ]),
+                ])->label('Tip turnira'),
                 TextInput::make('remote_id')->label('HBS šifra turnira')
             ])->columns(1);
     }
@@ -40,8 +42,8 @@ class TournamentResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('date')->date('d.m.Y.')->sortable(),
-                TextColumn::make('type'),
+                TextColumn::make('date')->date('d.m.Y.')->sortable()->label('Datum'),
+                TextColumn::make('type')->label('Tip turnira'),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('type')->options([

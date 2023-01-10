@@ -43,9 +43,9 @@ class ArticleResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('title'),
-                TextColumn::make('user.name'),
-                TextColumn::make('published_date')->dateTime('d.m.Y. H:i')->sortable(),
+                TextColumn::make('title')->label('Naslov'),
+                TextColumn::make('user.name')->label('Autor'),
+                TextColumn::make('published_date')->dateTime('d.m.Y. H:i')->sortable()->label('Vrijeme objave'),
             ])
             ->filters([
                 //

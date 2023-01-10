@@ -16,6 +16,8 @@ use Filament\Tables\Columns\TextColumn;
 class PageResource extends Resource
 {
     protected static ?string $model = Page::class;
+    protected static ?string $modelLabel = 'stranica';
+    protected static ?string $pluralModelLabel = 'stranice';
 
     protected static ?string $navigationIcon = 'heroicon-o-book-open';
 
@@ -23,9 +25,9 @@ class PageResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('title')->required(),
+                TextInput::make('title')->required()->label('Naslov'),
                 TextInput::make('slug'),
-                RichEditor::make('body'),
+                RichEditor::make('body')->label('Sadržaj'),
                 Select::make('status')->options([
                     'DRAFT' => 'Draft',
                     'PUBLISHED' => 'Published',
@@ -37,8 +39,8 @@ class PageResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('title'),
-                TextColumn::make('user.name')->label('Author'),
+                TextColumn::make('title')->label('Naslov'),
+                TextColumn::make('user.name')->label('Autor'),
             ])
             ->filters([
                 //
