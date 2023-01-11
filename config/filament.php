@@ -12,7 +12,6 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-use RyanChandler\FilamentProfile\Pages\Profile;
 
 return [
 
@@ -88,7 +87,8 @@ return [
     'auth' => [
         'guard' => env('FILAMENT_AUTH_GUARD', 'web'),
         'pages' => [
-            'login' => \Filament\Http\Livewire\Auth\Login::class,
+            //'login' => \Filament\Http\Livewire\Auth\Login::class,
+            'login' => \JeffGreco13\FilamentBreezy\Http\Livewire\Auth\Login::class
         ],
     ],
 
@@ -107,7 +107,6 @@ return [
         'path' => app_path('Filament/Pages'),
         'register' => [
             Pages\Dashboard::class,
-            Profile::class
         ],
     ],
 

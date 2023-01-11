@@ -15,12 +15,12 @@
         "cviebrock/eloquent-sluggable": "^9.0",
         "filament/filament": "^2.13",
         "guzzlehttp/guzzle": "^7.2",
+        "jeffgreco13/filament-breezy": "v1.4.10.1",
         "kub-at/php-simple-html-dom-parser": "^1.9",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^2.14.1",
         "laravel/tinker": "^2.7",
-        "ryangjchandler/filament-navigation": "^0.3.0",
-        "ryangjchandler/filament-profile": "^0.2.2"
+        "ryangjchandler/filament-navigation": "^0.3.0"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.12",
