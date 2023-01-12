@@ -17,6 +17,6 @@ class ContactController extends Controller
     {
         Mail::to('klub@splitbridge.hr')->send(new ContactMail($request->toArray()));
 
-        return redirect('/');
+        return redirect()->back()->with('message', 'Hvala na Vašoj poruci. Kontaktirat ćemo vas uskoro!');
     }
 }

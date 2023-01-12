@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\GoogleRecaptcha;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ContactRequest extends FormRequest
@@ -24,9 +25,10 @@ class ContactRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string',
-            'email' => 'required|email',
-            'content' => 'required',
+            'name'                 => 'required|string',
+            'email'                => 'required|email',
+            'content'              => 'required',
+            'g-recaptcha-response' => ['required', new GoogleRecaptcha],
         ];
     }
 }
