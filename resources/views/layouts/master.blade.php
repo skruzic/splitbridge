@@ -6,9 +6,25 @@
     <link rel="shortcut icon" href="{{ asset('img/favicon.ico') }}">
 
     <title>
-        @yield('title') BK Split
+        @yield('title') Bridge klub Split
     </title>
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="Bridge klub Split">
     <meta name="description" content="Bridge klub Split - bridge turniri, tečajevi, natjecanja">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="http://splitbridge.hr/">
+    <meta property="og:title" content="Bridge klub Split">
+    <meta property="og:description" content="Bridge klub Split - bridge turniri, tečajevi, natjecanja">
+    <meta property="og:image" content="">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="http://splitbridge.hr/">
+    <meta property="twitter:title" content="Bridge klub Split">
+    <meta property="twitter:description" content="Bridge klub Split - bridge turniri, tečajevi, natjecanja">
+    <meta property="twitter:image" content="">
     <link
         href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,600,600i,700,700i"
         rel="stylesheet">
