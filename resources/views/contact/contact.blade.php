@@ -20,10 +20,13 @@
         </div>
         <div class="mb-3">
             <label for="content" class="form-label">Poruka</label>
-            <textarea type="text" class="form-control" name="content" id="content" placeholder="Poruka" rows="3" required></textarea>
+            <textarea type="text" class="form-control" name="content" id="content" placeholder="Poruka" rows="3"
+                      required></textarea>
         </div>
         @if (config('services.recaptcha.key'))
-            <div class="g-recaptcha" data-sitekey="{{ config('services.recaptcha.key') }}" />
+            <div class="mb-3">
+                <div class="g-recaptcha" data-sitekey="{{ config('services.recaptcha.key') }}"></div>
+            </div>
         @endif
 
         <input type="submit" name="send" value="Pošalji" class="btn btn-outline-primary"/>
