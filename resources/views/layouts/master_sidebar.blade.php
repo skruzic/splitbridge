@@ -13,14 +13,14 @@
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="http://splitbridge.hr/">
+    <meta property="og:url" content="https://splitbridge.hr/">
     <meta property="og:title" content="Bridge klub Split">
     <meta property="og:description" content="Bridge klub Split - bridge turniri, tečajevi, natjecanja">
     <meta property="og:image" content="">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="http://splitbridge.hr/">
+    <meta property="twitter:url" content="https://splitbridge.hr/">
     <meta property="twitter:title" content="Bridge klub Split">
     <meta property="twitter:description" content="Bridge klub Split - bridge turniri, tečajevi, natjecanja">
     <meta property="twitter:image" content="">
