@@ -23,11 +23,6 @@
             <textarea type="text" class="form-control" name="content" id="content" placeholder="Poruka" rows="3"
                       required></textarea>
         </div>
-        @if (config('services.recaptcha.key'))
-            <div class="mb-3">
-                <div class="g-recaptcha" data-sitekey="{{ config('services.recaptcha.key') }}"></div>
-            </div>
-        @endif
 
         <input type="submit" name="send" value="Pošalji" class="btn btn-outline-primary"/>
     </form>
