@@ -23,9 +23,9 @@
                     </div>
 
                     <div class="phone">
-                        <i class="bi bi-phone"></i>
-                        <h4>Call:</h4>
-                        <p>+1 5589 55488 55s</p>
+                        <i class="bi bi-clock"></i>
+                        <h4>Turniri:</h4>
+                        <p>Ponedjeljkom i četvrtkom od 19:00 sati</p>
                     </div>
 
                     <iframe
