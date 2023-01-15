@@ -53,21 +53,21 @@
         })(window, document, 'script', 'dataLayer', 'GTM-TKHF7X');</script>
     <!-- End Google Tag Manager -->
     <div id="fb-root"></div>
-    <<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v15.0" nonce="Id2w4Cd1"></script>
+    <
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v15.0"
+            nonce="Id2w4Cd1"></script>
     <header id="header" class="fixed-top d-flex align-items-center">
-        <x-menu />
+        <x-menu/>
     </header>
     <main id="main">
-        <section>
-            <div class="container">
-                <div class="row justify-content-between">
-                    <div class="col-lg-12 pt-5 pt-lg-0">
-                        @yield('content')
-                    </div>
+        <div class="container">
+            <div class="row justify-content-between">
+                <div class="col-lg-12 pt-5 pt-lg-0">
+                    @yield('content')
                 </div>
-
             </div>
-        </section>
+
+        </div>
     </main>
 
     <footer id="footer">
