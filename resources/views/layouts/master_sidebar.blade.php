@@ -27,6 +27,7 @@
     <link
         href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,600,600i,700,700i"
         rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
 
     @vite('resources/js/app.js')
@@ -73,44 +74,7 @@
         </section>
     </main>
 
-    <footer id="footer">
-        <div class="footer-top">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-4 footer-widget">
-                        <h3><i class="fa fa-envelope"></i> Kontakt</h3>
-                        <address>
-                            <p><strong>Bridge klub Split</strong></p>
-                            <p>Osječka 24a</p>
-                            <p>21000 Split</p>
-                            <p>Hrvatska</p>
-                            <p><a href="{{ url('https://goo.gl/maps/o74ay') }}" target="_blank">Vidi na
-                                    karti</a></p>
-                        </address>
-                        <br/>
-                        <p>OIB: 79971932692</p>
-                    </div>
-                    <div class="col-md-4 footer-widget">
-                        <h3><i class="fa fa-group"></i> Turniri</h3>
-                        <p>Ponedjeljkom: par</p>
-                        <p>Četvrtkom: butler</p>
-                        <p>Početak turnira: 19:00</p>
-                    </div>
-                    <div class="col-md-4 footer-widget">
-                        <h3><i class="fa fa-facebook"></i> Facebook</h3>
-                        <div class="fb-like" data-href="https://www.facebook.com/bksplit"
-                             data-layout="box_count"
-                             data-action="like" data-show-faces="true" data-share="true"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container py-4">
-            <div class="copyright">
-                <p class="text-muted">Copyright &copy; <strong>BK Split</strong> {{ now()->year }}.</p>
-            </div>
-        </div>
-    </footer>
+    <x-footer/>
 
     <script type="text/javascript"
             src="{{ asset('https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js') }}"></script>
