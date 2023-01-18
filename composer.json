@@ -12,6 +12,7 @@
         "ext-iconv": "*",
         "ext-libxml": "*",
         "ext-simplexml": "*",
+        "alperenersoy/filament-export": "^0.2.5",
         "cviebrock/eloquent-sluggable": "^9.0",
         "filament/filament": "^2.13",
         "guzzlehttp/guzzle": "^7.2",
