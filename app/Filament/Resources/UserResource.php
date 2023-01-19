@@ -33,6 +33,7 @@ class UserResource extends Resource
                 TextInput::make('password')
                          ->required(fn(string $context): bool => $context === 'create')
                          ->password()
+                         ->disableAutocomplete()
                          ->label('Šifra')
                          ->dehydrateStateUsing(fn($state) => Hash::make($state))
                          ->dehydrated(fn($state) => filled($state)),
