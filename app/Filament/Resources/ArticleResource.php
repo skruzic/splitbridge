@@ -6,6 +6,7 @@ use App\Filament\Resources\ArticleResource\Pages;
 use App\Models\Article;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\MarkdownEditor;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -28,8 +29,8 @@ class ArticleResource extends Resource
         return $form
             ->schema([
                 TextInput::make('title')->label('Naslov')->required(),
-                MarkdownEditor::make('summary')->label('Sažetak'),
-                MarkdownEditor::make('body')->label('Sadržaj')->required(),
+                RichEditor::make('summary')->label('Sažetak'),
+                RichEditor::make('body')->label('Sadržaj')->required(),
                 Toggle::make('sticky')->helperText('Zadržava vijest na vrhu početne stranice'),
                 Select::make('status')->options([
                     'DRAFT' => 'Draft',
