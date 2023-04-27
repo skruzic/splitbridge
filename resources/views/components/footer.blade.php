@@ -14,8 +14,8 @@
                 </div>
                 <div class="col-lg-3 col-md-6 footer-links">
                     <h4>Turniri</h4>
-                    <p>Ponedjeljkom u 19:00 sati</p>
-                    <p>Četvrtkom u 19:00 sati</p>
+                    <p>Ponedjeljkom u 18:30 sati</p>
+                    <p>Četvrtkom u 18:30 sati</p>
                 </div>
                 <div class="col-lg-3 col-md-6 footer-links">
                     <h4>Korisni linkovi</h4>
