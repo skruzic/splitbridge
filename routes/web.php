@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ArticlesController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\DocumentsController;
 use App\Http\Controllers\MembersController;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\RanksController;
@@ -29,5 +30,6 @@ Route::get('ranks/archive', [RanksController::class, 'archive']);
 Route::get('ranks/season/{id}', [RanksController::class, 'season'])->name('ranks.season');
 Route::get('contact', [ContactController::class, 'index']);
 Route::post('contact', [ContactController::class, 'send'])->name('contact.send');
+Route::get('downloads', DocumentsController::class);
 
 Route::get('{slug}', PagesController::class);
