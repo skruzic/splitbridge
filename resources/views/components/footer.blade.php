@@ -5,17 +5,12 @@
                 <div class="col-lg-3 col-md-6 footer-contact">
                     <h3><i class="fa fa-envelope"></i> Bridge klub Split</h3>
                     <address>
-                        <p>Osječka 24a</p>
-                        <p>21000 Split</p>
-                        <p>Hrvatska</p>
-                        <p><a href="{{ url('https://goo.gl/maps/o74ay') }}" target="_blank">Vidi na
-                                karti</a></p>
+                        {!! $settings->general_info !!}
                     </address>
                 </div>
                 <div class="col-lg-3 col-md-6 footer-links">
                     <h4>Turniri</h4>
-                    <p>Ponedjeljkom u 18:30 sati</p>
-                    <p>Četvrtkom u 18:30 sati</p>
+                    {!! $settings->working_hours !!}
                 </div>
                 <div class="col-lg-3 col-md-6 footer-links">
                     <h4>Korisni linkovi</h4>
