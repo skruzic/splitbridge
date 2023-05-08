@@ -42,4 +42,8 @@ class Member extends Model
 
         return false;
     }
+
+    public static function findByMemberID(int $crobridge) {
+        return Member::where('crobridge', $crobridge)->firstOrFail();
+    }
 }

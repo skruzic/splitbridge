@@ -34,26 +34,36 @@ class Tournament extends Model
 
         static::created(function ($model) {
             if ($model->results) {
-                $html = HtmlDomParser::file_get_html(public_path($model->results));
-                $tr   = $html->find('table', 0)->find('tr');
-
-
-                $players = self::getNames($tr, $model->type);
-                $results = self::getResults($tr, $model->type);
-                $ranks   = compute_ranks($results);
-                $points  = compute_points($results);
+                $json = json_decode($model->results, true);
+                $ranks = array_map(function($item) {
+                    return $item['rank'];
+                }, $json);
+                $points = compute_points($ranks);
 
                 // Unos u rang listu
-                for ($i = 0; $i < count($players); $i++) {
-                    foreach ($players[$i] as $player) {
-                        if (Member::isMember($player)) {
-                            $rank                = new Rank;
-                            $rank->member_id     = Member::isMember($player);
-                            $rank->tournament_id = $model->id;
-                            $rank->rank          = $ranks[$i];
-                            $rank->points        = $points[$i];
-                            $rank->save();
-                        }
+                for ($i = 0;$i<count($json);$i++) {
+                    $position = $json[$i]['rank'];
+                    $p1 = $json[$i]['p1'];
+                    $p2 = $json[$i]['p2'];
+
+                    // Provjera prvog igraca i unos ranga
+                    if (is_numeric($p1) && Member::findByMemberID($p1)) {
+                        $rank                = new Rank;
+                        $rank->member_id     = Member::findByMemberID($p1)->id;
+                        $rank->tournament_id = $model->id;
+                        $rank->rank          = $position;
+                        $rank->points        = $points[$i];
+                        $rank->save();
+                    }
+
+                    // Provjera drugog igraca i unos ranga
+                    if (is_numeric($p2) && Member::findByMemberID($p2)) {
+                        $rank                = new Rank;
+                        $rank->member_id     = Member::findByMemberID($p2)->id;
+                        $rank->tournament_id = $model->id;
+                        $rank->rank          = $position;
+                        $rank->points        = $points[$i];
+                        $rank->save();
                     }
                 }
             }
@@ -61,7 +71,7 @@ class Tournament extends Model
 
         static::deleting(function ($model) {
             $model->ranks()->delete();
-            unlink(public_path($model->results));
+            //unlink(public_path($model->results));
         });
     }
 

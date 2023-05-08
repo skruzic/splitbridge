@@ -7,6 +7,7 @@ use App\Models\Tournament;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
@@ -26,7 +27,8 @@ class TournamentResource extends Resource
     {
         return $form
             ->schema([
-                FileUpload::make('results')->required()->label('Datoteka s rezultatima')->disk('uploads')->directory('/upload')->visibility('public'),
+                //FileUpload::make('results')->required()->label('Datoteka s rezultatima')->disk('uploads')->directory('/upload')->visibility('public'),
+                Textarea::make('results')->required()->label('Rezultati turnira u JSON formatu'),
                 DatePicker::make('date')->required()->default(now())->displayFormat('d.m.Y')->label('Datum'),
                 Select::make('type')->required()->options([
                     'MP' => 'MP',
