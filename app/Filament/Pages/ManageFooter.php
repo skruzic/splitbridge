@@ -10,6 +10,10 @@ class ManageFooter extends SettingsPage
 {
     protected static ?string $navigationIcon = 'heroicon-o-cog';
 
+    protected static ?string $navigationGroup = 'Postavke';
+
+    protected static ?string $navigationLabel = 'Uređivanje postavki';
+
     protected static string $settings = FooterSettings::class;
 
     protected function getFormSchema(): array
