@@ -10,7 +10,6 @@ use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
-use AlperenErsoy\FilamentExport\Actions\FilamentExportHeaderAction;
 
 class MemberResource extends Resource
 {
@@ -49,9 +48,6 @@ class MemberResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
-            ])
-            ->headerActions([
-                FilamentExportHeaderAction::make('export')
             ])
             ->defaultSort('surname');
     }
