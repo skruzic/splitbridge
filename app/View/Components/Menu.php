@@ -3,7 +3,6 @@
 namespace App\View\Components;
 
 use Illuminate\View\Component;
-use RyanChandler\FilamentNavigation\Facades\FilamentNavigation;
 use RyanChandler\FilamentNavigation\Models\Navigation;
 
 class Menu extends Component
@@ -17,7 +16,7 @@ class Menu extends Component
      */
     public function __construct()
     {
-        $this->menu = FilamentNavigation::get('menu');
+        $this->menu = Navigation::fromHandle('menu');
     }
 
     /**

@@ -10,7 +10,7 @@ class ManageMembers extends ManageRecords
 {
     protected static string $resource = MemberResource::class;
 
-    protected function getActions(): array
+    protected function getHeaderActions(): array
     {
         return [
             Actions\CreateAction::make(),

@@ -4,7 +4,6 @@ namespace App\View\Components;
 
 use App\Settings\FooterSettings;
 use Illuminate\View\Component;
-use RyanChandler\FilamentNavigation\Facades\FilamentNavigation;
 use RyanChandler\FilamentNavigation\Models\Navigation;
 
 class Footer extends Component
@@ -19,7 +18,7 @@ class Footer extends Component
      */
     public function __construct(FooterSettings $settings)
     {
-        $this->menu = FilamentNavigation::get('menu');
+        $this->menu = Navigation::fromHandle('menu');
         $this->settings = $settings;
     }
 

@@ -12,7 +12,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
-use RyanChandler\FilamentNavigation\Facades\FilamentNavigation;
+use RyanChandler\FilamentNavigation\FilamentNavigation;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -42,11 +42,5 @@ class AppServiceProvider extends ServiceProvider
         // Paginacija
         Paginator::defaultView('vendor.pagination.bootstrap-5');
         Paginator::defaultSimpleView('vendor.pagination.simple-bootstrap-5');
-
-        FilamentNavigation::addItemType('Page', [
-            Select::make('page_id')->searchable()->options(function () {
-                return Page::pluck('title', 'slug');
-            }),
-        ]);
     }
 }
