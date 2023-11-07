@@ -21,8 +21,7 @@
                         <td><a href="{{ url('https://bridge.hr/tournaments/pairs/'.$t->remote_id) }}" class="btn btn-outline-primary btn-sm"
                                target="_blank">Rezultati</a></td>
                     @else
-                        <td><a href="{{ asset($t->results) }}" class="btn btn-outline-primary btn-sm"
-                               target="_blank">Rezultati</a></td>
+                        <td><button disabled class="btn btn-outline btn-sm" target="_blank">Rezultati</button></td>
                     @endif
                 </tr>
             @endforeach

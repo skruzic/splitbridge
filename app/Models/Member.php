@@ -44,6 +44,6 @@ class Member extends Model
     }
 
     public static function findByMemberID(int $crobridge) {
-        return Member::where('crobridge', $crobridge)->firstOrFail();
+        return Member::where('crobridge', $crobridge)->first();
     }
 }

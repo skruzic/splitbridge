@@ -28,7 +28,7 @@ class TournamentResource extends Resource
         return $form
             ->schema([
                 //FileUpload::make('results')->required()->label('Datoteka s rezultatima')->disk('uploads')->directory('/upload')->visibility('public'),
-                Textarea::make('results')->required()->label('Rezultati turnira u JSON formatu'),
+                Textarea::make('results')->required()->rows(4)->label('Rezultati turnira u JSON formatu'),
                 DatePicker::make('date')->required()->default(now())->displayFormat('d.m.Y')->label('Datum'),
                 Select::make('type')->required()->options([
                     'MP' => 'MP',
