@@ -30,7 +30,7 @@ class TournamentResource extends Resource
         return $form
             ->schema([
                 Textarea::make('results')->required()->rows(4)->label('Rezultati turnira u JSON formatu')->columnSpanFull(),
-                DatePicker::make('date')->required()->default(now())->displayFormat('d.m.Y')->label('Datum'),
+                DatePicker::make('date')->required()->default(now())->native(false)->displayFormat('d.m.Y.')->label('Datum'),
                 Select::make('type')->required()->options([
                     'MP' => 'MP',
                     'IMP' => 'IMP',
