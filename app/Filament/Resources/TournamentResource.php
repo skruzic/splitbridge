@@ -3,17 +3,19 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\TournamentResource\Pages;
+use App\Filament\Resources\TournamentResource\RelationManagers;
 use App\Models\Tournament;
+use Filament\Actions\DeleteAction;
 use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables\Table;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
+use Filament\Actions;
 
 class TournamentResource extends Resource
 {
@@ -27,8 +29,7 @@ class TournamentResource extends Resource
     {
         return $form
             ->schema([
-                //FileUpload::make('results')->required()->label('Datoteka s rezultatima')->disk('uploads')->directory('/upload')->visibility('public'),
-                Textarea::make('results')->required()->rows(4)->label('Rezultati turnira u JSON formatu'),
+                Textarea::make('results')->required()->rows(4)->label('Rezultati turnira u JSON formatu')->columnSpanFull(),
                 DatePicker::make('date')->required()->default(now())->displayFormat('d.m.Y')->label('Datum'),
                 Select::make('type')->required()->options([
                     'MP' => 'MP',
@@ -37,7 +38,7 @@ class TournamentResource extends Resource
                     'Tim' => 'Tim',
                 ])->label('Tip turnira'),
                 TextInput::make('remote_id')->label('HBS šifra turnira')
-            ])->columns(1);
+            ]);
     }
 
     public static function table(Table $table): Table
@@ -55,18 +56,22 @@ class TournamentResource extends Resource
                 ]),
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
-            ])->defaultSort('date', 'desc');
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
+            ])
+            ->defaultSort('date', 'desc');
     }
 
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\RanksRelationManager::class
         ];
     }
 
@@ -76,6 +81,7 @@ class TournamentResource extends Resource
             'index' => Pages\ListTournaments::route('/'),
             'create' => Pages\CreateTournament::route('/create'),
             'edit' => Pages\EditTournament::route('/{record}/edit'),
+            'view' => Pages\ViewTournament::route('/{record}')
         ];
     }
 }

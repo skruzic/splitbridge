@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -18,6 +19,13 @@ class Member extends Model
         'crobridge',
     ];
 
+    protected function fullName(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->name . ' ' . $this->surname
+        );
+    }
+
     public function ranks(): HasMany
     {
         return $this->hasMany(Rank::class)->orderBy('created_at', 'desc');
@@ -33,7 +41,7 @@ class Member extends Model
     public static function isMember($str)
     {
         foreach (Member::all() as $member) {
-            $tmp = $member->name.' '.$member->surname;
+            $tmp = $member->name . ' ' . $member->surname;
 
             if ($tmp == trim($str)) {
                 return $member->id;
@@ -43,7 +51,8 @@ class Member extends Model
         return false;
     }
 
-    public static function findByMemberID(int $crobridge) {
+    public static function findByMemberID(int $crobridge)
+    {
         return Member::where('crobridge', $crobridge)->first();
     }
 }

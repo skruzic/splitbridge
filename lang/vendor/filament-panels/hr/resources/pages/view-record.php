@@ -2,9 +2,9 @@
 
 return [
 
-    'title' => 'View :label',
+    'title' => ':label - Pregled',
 
-    'breadcrumb' => 'View',
+    'breadcrumb' => 'Pregled',
 
     'content' => [
 
