@@ -10,7 +10,7 @@
         "ext-libxml": "*",
         "ext-simplexml": "*",
         "filament/filament": "^3.0-stable",
-        "filament/spatie-laravel-settings-plugin": "^3.0-stable",
+        "filament/spatie-laravel-settings-plugin": "^3.0",
         "guzzlehttp/guzzle": "^7.2",
         "kub-at/php-simple-html-dom-parser": "^1.9",
         "laravel/framework": "^10.0",

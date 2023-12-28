@@ -29,7 +29,7 @@ class ArticleResource extends Resource
         return $form
             ->schema([
                 TextInput::make('title')->label('Naslov')->required(),
-                RichEditor::make('summary')->label('Sažetak'),
+                RichEditor::make('summary')->label('Sažetak')->nullable(),
                 RichEditor::make('body')->label('Sadržaj')->required(),
                 Toggle::make('sticky')->helperText('Zadržava vijest na vrhu početne stranice'),
                 Select::make('status')->options([
@@ -45,7 +45,6 @@ class ArticleResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('title')->label('Naslov'),
-                TextColumn::make('user.name')->label('Autor'),
                 TextColumn::make('published_date')->dateTime('d.m.Y. H:i')->sortable()->label('Vrijeme objave'),
             ])
             ->filters([
@@ -53,6 +52,7 @@ class ArticleResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

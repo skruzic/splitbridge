@@ -21,7 +21,6 @@ return new class extends Migration
             $table->boolean('sticky');
             $table->enum('status', ['DRAFT', 'PUBLISHED'])->default('DRAFT');
             $table->dateTime('published_date')->nullable();
-            $table->foreignId('user_id');
             $table->timestamps();
         });
     }
