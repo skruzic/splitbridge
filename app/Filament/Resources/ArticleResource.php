@@ -5,13 +5,13 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ArticleResource\Pages;
 use App\Models\Article;
 use Filament\Forms\Components\DateTimePicker;
-use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Table;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
@@ -45,6 +45,14 @@ class ArticleResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('title')->label('Naslov'),
+                IconColumn::make('sticky')->boolean(),
+                IconColumn::make('status')->icon(fn(string $state): string => match ($state) {
+                    'DRAFT' => 'heroicon-o-pencil',
+                    'PUBLISHED' => 'heroicon-o-check-circle'
+                })->color(fn(string $state): string => match ($state) {
+                    'DRAFT' => 'warning',
+                    'PUBLISHED' => 'success'
+                }),
                 TextColumn::make('published_date')->dateTime('d.m.Y. H:i')->sortable()->label('Vrijeme objave'),
             ])
             ->filters([
