@@ -42,6 +42,7 @@ class MemberResource extends Resource
             ->columns([
                 TextColumn::make('surname')->label('Prezime')->sortable(),
                 TextColumn::make('name')->label('Ime'),
+                TextColumn::make('email')->label('E-mail'),
                 TextColumn::make('crobridge')->label('HBS broj'),
             ])
             ->filters([
