@@ -10,6 +10,7 @@ use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -39,7 +40,7 @@ class PaymentResource extends Resource
                 TextInput::make('amount')->numeric()->step(0.01)->prefixIcon('bx-euro')->required()->label('Iznos')->columnSpanFull(),
                 Select::make('member_id')->relationship(name: 'member', modifyQueryUsing: fn(Builder $query) => $query->orderBy('surname')->orderBy('name'))->getOptionLabelFromRecordUsing(fn(Member $record) => "{$record->surname} {$record->name}")->searchable(['name', 'surname'])->preload()->requiredWithout('payer_name')->label('Član'),
                 TextInput::make('payer_name')->requiredWithout('member_id')->label('Platitelj'),
-                Forms\Components\Textarea::make('description')->columnSpanFull()->required()->label('Opis plaćanja')
+                Textarea::make('description')->columnSpanFull()->required()->label('Opis plaćanja')
             ]);
     }
 
@@ -59,7 +60,6 @@ class PaymentResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -68,10 +68,19 @@ class PaymentResource extends Resource
             ]);
     }
 
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
+    }
+
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManagePayments::route('/'),
+            'index' => Pages\ListPayments::route('/'),
+            'create' => Pages\CreatePayment::route('/create'),
+            'edit' => Pages\EditPayment::route('/{record}/edit'),
         ];
     }
 }
