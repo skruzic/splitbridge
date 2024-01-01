@@ -21,10 +21,8 @@ namespace App\Models{
  * @property int $sticky
  * @property string $status
  * @property string|null $published_date
- * @property int $user_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder|Article newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Article newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Article query()
@@ -37,7 +35,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Article whereSummary($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Article whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Article whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Article whereUserId($value)
  */
 	class Article extends \Eloquent {}
 }
@@ -124,6 +121,38 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Page whereUserId($value)
  */
 	class Page extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\Payment
+ *
+ * @property int $id
+ * @property int $seq
+ * @property mixed|null $amount
+ * @property string $payment_date
+ * @property string $type
+ * @property int|null $member_id
+ * @property string|null $payer_name
+ * @property string $description
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Member|null $member
+ * @method static \Illuminate\Database\Eloquent\Builder|Payment newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Payment newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Payment query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Payment whereAmount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Payment whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Payment whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Payment whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Payment whereMemberId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Payment wherePayerName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Payment wherePaymentDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Payment whereSeq($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Payment whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Payment whereUpdatedAt($value)
+ */
+	class Payment extends \Eloquent {}
 }
 
 namespace App\Models{

@@ -12,6 +12,7 @@ class Payment extends Model
     use HasFactory;
 
     protected $fillable = [
+        'seq',
         'amount',
         'payment_date',
         'type',
@@ -21,11 +22,27 @@ class Payment extends Model
     ];
 
     protected $casts = [
-        'amount' => MoneyCast::class
+        'amount' => MoneyCast::class,
+        'payment_date' => 'datetime',
     ];
+
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::creating(fn(Payment $payment) => $payment->seq = static::generateSequentialNumber($payment->payment_date->year, $payment->type));
+    }
 
     public function member(): BelongsTo
     {
         return $this->belongsTo(Member::class);
+    }
+
+    /* Helper */
+    private static function generateSequentialNumber(int $year, string $type)
+    {
+        $lastPayment = static::whereYear('payment_date', $year)->where('type', '=', $type)->latest('seq')->first();
+
+        return $lastPayment ? $lastPayment->seq + 1 : 1;
     }
 }

@@ -12,6 +12,7 @@ return new class extends Migration {
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('seq');
             $table->bigInteger('amount');
             $table->date('payment_date');
             $table->enum('type', ['income', 'expense']);

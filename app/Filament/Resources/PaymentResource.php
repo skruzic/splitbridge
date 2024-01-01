@@ -32,6 +32,7 @@ class PaymentResource extends Resource
     {
         return $form
             ->schema([
+                TextInput::make('seq')->label('Broj računa')->helperText('Ovo polje se popunjava automatski')->disabled(),
                 DatePicker::make('payment_date')->required()->default(now())->native(false)->displayFormat('d.m.Y.')->label('Datum'),
                 Radio::make('type')->options([
                     'income' => 'Uplata',
@@ -48,12 +49,16 @@ class PaymentResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('member.fullName')->label('Platitelj'),
-                TextColumn::make('amount')->money('EUR')->label('Iznos')->color(function($state){
-                    if ($state>=0) return 'success';
-                    else return 'danger';
+                TextColumn::make('seq')->label('Broj računa')->prefix(function (Payment $payment) {
+                    return "{$payment->payment_date->year}-";
                 }),
-                TextColumn::make('description')->words(10)
+                TextColumn::make('member_id')->label('Platitelj')->state(fn(Payment $record) => $record->member_id ? $record->member->fullName : $record->payer_name),
+                TextColumn::make('description')->words(10),
+                TextColumn::make('amount')->money('EUR')->label('Iznos')->state(fn(Payment $record) => $record->type == 'income' ? $record->amount : -$record->amount)->color(function ($state) {
+                    if ($state >= 0) return 'success';
+                    else return 'danger';
+                })->alignRight(),
+
             ])
             ->filters([
                 //
