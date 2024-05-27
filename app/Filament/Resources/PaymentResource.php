@@ -63,8 +63,7 @@ class PaymentResource extends Resource
                 ): string => $record->description),
                 //TextColumn::make('description')->words(10),
                 TextColumn::make('payment_date')->date(),
-                TextColumn::make('amount')->money('EUR')->label('Iznos')->state(fn(Payment $record
-                ) => $record->type == 'income' ? $record->amount : -$record->amount)->color(function ($state) {
+                TextColumn::make('amount')->money('EUR')->label('Iznos')->color(function ($state) {
                     if ($state >= 0) {
                         return 'success';
                     } else {
