@@ -33,10 +33,10 @@ class ArticleResource extends Resource
                 RichEditor::make('body')->label('Sadržaj')->required(),
                 Toggle::make('sticky')->helperText('Zadržava vijest na vrhu početne stranice'),
                 Select::make('status')->options([
-                    'DRAFT' => 'Draft',
+                    'DRAFT'     => 'Draft',
                     'PUBLISHED' => 'Published',
                 ])->required(),
-                DateTimePicker::make('published_date')->label('Vrijeme objave')->withoutSeconds()->default(now())->required(),
+                DateTimePicker::make('published_date')->native(false)->format('d.M.y.')->label('Vrijeme objave')->seconds(false)->default(now())->required(),
             ])->columns(1);
     }
 
@@ -53,14 +53,14 @@ class ArticleResource extends Resource
                     'DRAFT' => 'warning',
                     'PUBLISHED' => 'success'
                 }),
-                TextColumn::make('published_date')->dateTime('d.m.Y. H:i')->sortable()->label('Vrijeme objave'),
+                TextColumn::make('published_date')->dateTime()->sortable()->label('Vrijeme objave'),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make()
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
@@ -77,9 +77,9 @@ class ArticleResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListArticles::route('/'),
+            'index'  => Pages\ListArticles::route('/'),
             'create' => Pages\CreateArticle::route('/create'),
-            'edit' => Pages\EditArticle::route('/{record}/edit'),
+            'edit'   => Pages\EditArticle::route('/{record}/edit'),
         ];
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 // @formatter:off
+// phpcs:ignoreFile
 /**
  * A helper file for your Eloquent Models
  * Copy the phpDocs from this file to the correct Model,
@@ -74,6 +75,7 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read mixed $full_name
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Rank> $ranks
  * @property-read int|null $ranks_count
  * @method static \Database\Factories\MemberFactory factory($count = null, $state = [])
@@ -129,8 +131,8 @@ namespace App\Models{
  *
  * @property int $id
  * @property int $seq
- * @property mixed|null $amount
- * @property string $payment_date
+ * @property mixed $amount
+ * @property \Illuminate\Support\Carbon $payment_date
  * @property string $type
  * @property int|null $member_id
  * @property string|null $payer_name

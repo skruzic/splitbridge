@@ -35,13 +35,18 @@ class PaymentResource extends Resource
                 TextInput::make('seq')->label('Broj računa')->helperText('Ovo polje se popunjava automatski')->disabled(),
                 DatePicker::make('payment_date')->required()->default(now())->native(false)->displayFormat('d.m.Y.')->label('Datum'),
                 Radio::make('type')->options([
-                    'income' => 'Uplata',
-                    'expense' => 'Isplata'
+                    'income'  => 'Uplata',
+                    'expense' => 'Isplata',
                 ])->required()->label('Tip'),
                 TextInput::make('amount')->numeric()->step(0.01)->prefixIcon('bx-euro')->required()->label('Iznos')->columnSpanFull(),
-                Select::make('member_id')->relationship(name: 'member', modifyQueryUsing: fn(Builder $query) => $query->orderBy('surname')->orderBy('name'))->getOptionLabelFromRecordUsing(fn(Member $record) => "{$record->surname} {$record->name}")->searchable(['name', 'surname'])->preload()->requiredWithout('payer_name')->label('Član'),
+                Select::make('member_id')->relationship(name: 'member', modifyQueryUsing: fn(Builder $query
+                ) => $query->orderBy('surname')->orderBy('name'))->getOptionLabelFromRecordUsing(fn(Member $record
+                ) => "{$record->surname} {$record->name}")->searchable([
+                    'name',
+                    'surname',
+                ])->preload()->requiredWithout('payer_name')->label('Član'),
                 TextInput::make('payer_name')->requiredWithout('member_id')->label('Platitelj'),
-                Textarea::make('description')->columnSpanFull()->required()->label('Opis plaćanja')
+                Textarea::make('description')->columnSpanFull()->required()->label('Opis plaćanja'),
             ]);
     }
 
@@ -52,11 +57,19 @@ class PaymentResource extends Resource
                 TextColumn::make('seq')->label('Broj računa')->prefix(function (Payment $payment) {
                     return "{$payment->payment_date->year}-";
                 }),
-                TextColumn::make('member_id')->label('Platitelj')->state(fn(Payment $record) => $record->member_id ? $record->member->fullName : $record->payer_name),
-                TextColumn::make('description')->words(10),
-                TextColumn::make('amount')->money('EUR')->label('Iznos')->state(fn(Payment $record) => $record->type == 'income' ? $record->amount : -$record->amount)->color(function ($state) {
-                    if ($state >= 0) return 'success';
-                    else return 'danger';
+                TextColumn::make('member_id')->label('Opis')->state(fn(Payment $record
+                ) => $record->member_id ? $record->member->fullName : $record->payer_name)->description(fn(
+                    Payment $record
+                ): string => $record->description),
+                //TextColumn::make('description')->words(10),
+                TextColumn::make('payment_date')->date(),
+                TextColumn::make('amount')->money('EUR')->label('Iznos')->state(fn(Payment $record
+                ) => $record->type == 'income' ? $record->amount : -$record->amount)->color(function ($state) {
+                    if ($state >= 0) {
+                        return 'success';
+                    } else {
+                        return 'danger';
+                    }
                 })->alignRight(),
 
             ])
@@ -83,9 +96,9 @@ class PaymentResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListPayments::route('/'),
+            'index'  => Pages\ListPayments::route('/'),
             'create' => Pages\CreatePayment::route('/create'),
-            'edit' => Pages\EditPayment::route('/{record}/edit'),
+            'edit'   => Pages\EditPayment::route('/{record}/edit'),
         ];
     }
 }
