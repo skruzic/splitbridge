@@ -285,6 +285,8 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Board> $boards
  * @property-read int|null $boards_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Traveller> $travellers
+ * @property-read int|null $travellers_count
  * @method static \Illuminate\Database\Eloquent\Builder|Session newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Session newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Session query()
@@ -314,6 +316,8 @@ namespace App\Models{
  * @property-read \App\Models\Season|null $season
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Session> $sessions
  * @property-read int|null $sessions_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Unit> $units
+ * @property-read int|null $units_count
  * @method static \Database\Factories\TournamentFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Tournament newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Tournament newQuery()
@@ -338,6 +342,7 @@ namespace App\Models{
  * @property int $board_id
  * @property int $pairNS
  * @property int $pairEW
+ * @property int $round
  * @property string $contract
  * @property string $declarer
  * @property string $lead
@@ -360,6 +365,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Traveller wherePairNS($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Traveller wherePointsEW($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Traveller wherePointsNS($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Traveller whereRound($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Traveller whereRuling($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Traveller whereScore($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Traveller whereUpdatedAt($value)

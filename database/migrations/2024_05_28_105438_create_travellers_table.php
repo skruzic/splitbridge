@@ -17,14 +17,15 @@ return new class extends Migration {
             $table->foreignIdFor(Board::class);
             $table->foreignIdFor(Unit::class, 'pairNS');
             $table->foreignIdFor(Unit::class, 'pairEW');
-            $table->string('contract', 5);
+            $table->integer('round')->unsigned();
+            $table->string('contract', 7);
             $table->enum('declarer', [
                 'N',
                 'S',
                 'E',
                 'W',
-            ]);
-            $table->string('lead',2);
+            ])->nullable();
+            $table->string('lead',2)->nullable();
             $table->integer('score');
             $table->boolean('ruling');
             $table->integer('pointsNS');

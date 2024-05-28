@@ -35,8 +35,8 @@ class Tournament extends Model
 
         static::created(function (Tournament $model) {
             if ($model->results) {
-                $json   = json_decode($model->results, true);
-                $ranks  = array_map(function ($item) {
+                $json = json_decode($model->results, true);
+                $ranks = array_map(function ($item) {
                     return $item['rank'];
                 }, $json);
                 $points = compute_points($ranks);
@@ -44,26 +44,26 @@ class Tournament extends Model
                 // Unos u rang listu
                 for ($i = 0; $i < count($json); $i++) {
                     $position = $json[$i]['rank'];
-                    $p1       = $json[$i]['p1'];
-                    $p2       = $json[$i]['p2'];
+                    $p1 = $json[$i]['p1'];
+                    $p2 = $json[$i]['p2'];
 
                     // Provjera prvog igraca i unos ranga
                     if (is_numeric($p1) && Member::findByMemberID($p1)) {
-                        $rank                = new Rank;
-                        $rank->member_id     = Member::findByMemberID($p1)->id;
+                        $rank = new Rank;
+                        $rank->member_id = Member::findByMemberID($p1)->id;
                         $rank->tournament_id = $model->id;
-                        $rank->rank          = $position;
-                        $rank->points        = $points[$i];
+                        $rank->rank = $position;
+                        $rank->points = $points[$i];
                         $rank->save();
                     }
 
                     // Provjera drugog igraca i unos ranga
                     if (is_numeric($p2) && Member::findByMemberID($p2)) {
-                        $rank                = new Rank;
-                        $rank->member_id     = Member::findByMemberID($p2)->id;
+                        $rank = new Rank;
+                        $rank->member_id = Member::findByMemberID($p2)->id;
                         $rank->tournament_id = $model->id;
-                        $rank->rank          = $position;
-                        $rank->points        = $points[$i];
+                        $rank->rank = $position;
+                        $rank->points = $points[$i];
                         $rank->save();
                     }
                 }
@@ -72,14 +72,12 @@ class Tournament extends Model
             if ($model->remote_id) {
                 $response = Http::get("https://bridge.hr/api/pair/$model->remote_id");
 
-                $units        = $response->json('data.units');
-                $sessions     = $response->json('data.sessions');
-                $roundData    = $response->json('data.rounddata');
+                $units = $response->json('data.units');
+                $sessions = $response->json('data.sessions');
+                $roundData = $response->json('data.rounddata');
                 $receivedData = $response->json('data.receiveddata');
-                $allPlayers   = $response->json('data.players');
-                $boards       = $response->json('data.handRecords');
-
-                ds($sessions, $boards);
+                $allPlayers = $response->json('data.players');
+                $boards = $response->json('data.handRecords');
 
                 // Sesije
                 $sessionModels = array_map(function ($item) {
@@ -89,8 +87,8 @@ class Tournament extends Model
                 $model->sessions()->saveMany($sessionModels);
                 $model->refresh();
 
+                // Bordovi
                 foreach ($boards as $board) {
-                    ds($board);
                     $currentSessionNumber = array_values(array_filter($sessions,
                         fn($session) => $session['id'] === $board['session_id']))[0]['number'];
 
@@ -99,35 +97,77 @@ class Tournament extends Model
                     $currentSession->boards()->save(new Board([
                         'number' => $board['board'],
                         'dealer' => $board['dealer'],
-                        'vul'    => $board['vul'],
-                        'ns'     => $board['ns'],
-                        'nh'     => $board['nh'],
-                        'nd'     => $board['nd'],
-                        'nc'     => $board['nc'],
-                        'ss'     => $board['ss'],
-                        'sh'     => $board['sh'],
-                        'sd'     => $board['sd'],
-                        'sc'     => $board['sc'],
-                        'es'     => $board['es'],
-                        'eh'     => $board['eh'],
-                        'ed'     => $board['ed'],
-                        'ec'     => $board['ec'],
-                        'ws'     => $board['ws'],
-                        'wh'     => $board['wh'],
-                        'wd'     => $board['wd'],
-                        'wc'     => $board['wc'],
-                        'ddn'    => $board['dfn'],
-                        'dds'    => $board['dfs'],
-                        'dde'    => $board['dfe'],
-                        'ddw'    => $board['dfw'],
+                        'vul' => $board['vul'],
+                        'ns' => $board['ns'],
+                        'nh' => $board['nh'],
+                        'nd' => $board['nd'],
+                        'nc' => $board['nc'],
+                        'ss' => $board['ss'],
+                        'sh' => $board['sh'],
+                        'sd' => $board['sd'],
+                        'sc' => $board['sc'],
+                        'es' => $board['es'],
+                        'eh' => $board['eh'],
+                        'ed' => $board['ed'],
+                        'ec' => $board['ec'],
+                        'ws' => $board['ws'],
+                        'wh' => $board['wh'],
+                        'wd' => $board['wd'],
+                        'wc' => $board['wc'],
+                        'ddn' => $board['dfn'],
+                        'dds' => $board['dfs'],
+                        'dde' => $board['dfe'],
+                        'ddw' => $board['dfw'],
                     ]));
                 }
+
+                // Parovi
+                $model->units()->createMany(array_map(function ($item) {
+                    return [
+                        'pairNumber' => $item['number'],
+                        'player1' => $item['p1'],
+                        'player2' => $item['p2'],
+                    ];
+                }, $units));
+
+                $travellers = create_travellers($roundData, $receivedData);
+
+
+                $travellers = collect($travellers);
+
+                $travellersBySessionByBoard = $travellers->groupBy(['session_id', 'board']);
+
+                $travellersBySessionByBoard->each(function ($itemsByBoard, $key) use ($sessions, $model) {
+                    $currentSessionNumber = array_values(array_filter($sessions,
+                        fn($session) => $session['id'] === $key))[0]['number'];
+
+                    $currentSession = $model->sessions()->where('number', $currentSessionNumber)->first();
+
+                    collect($itemsByBoard)->each(function ($item, $boardKey) use ($currentSession, $model) {
+                        if ($model->type == 'MP') {
+                            calculate_matchpoints($item);
+                        } elseif ($model->type == 'IMP') {
+                            calculate_butler($item);
+                        } elseif ($model->type == 'XIMP') {
+                            calculate_crossimps($item);
+                        } else {
+                            // TODO: Team
+                        }
+                        $board = $currentSession->boards()->where('number', $boardKey)->first();
+                        $board->travellers()->createMany($item);
+                    });
+
+
+                });
+
+
             }
 
         });
 
         static::deleting(function (Tournament $model) {
             $model->ranks()->delete();
+            $model->sessions()->each(fn(Session $s) => $s->boards()->each(fn(Board $b) => $b->travellers()->delete()));
             $model->sessions()->each(fn(Session $s) => $s->boards()->delete());
             $model->sessions()->delete();
             //unlink(public_path($model->results));
@@ -147,6 +187,11 @@ class Tournament extends Model
     public function sessions(): HasMany
     {
         return $this->hasMany(Session::class);
+    }
+
+    public function units(): HasMany
+    {
+        return $this->hasMany(Unit::class);
     }
 
     private static function getNames(array $table, string $type = 'MP'): array
@@ -173,9 +218,9 @@ class Tournament extends Model
         $results = [];
 
         $column = [
-            'Tim'  => 3,
-            'MP'   => 6,
-            'IMP'  => 5,
+            'Tim' => 3,
+            'MP' => 6,
+            'IMP' => 5,
             'XIMP' => 4,
         ];
 
@@ -196,12 +241,12 @@ class Tournament extends Model
 
     private static function computePoints(array $results): array
     {
-        $points       = []; // poeni prema pravilima
-        $score        = []; // konacni poeni koji se dobiju nakon sto se izracuna dioba mjesta
+        $points = []; // poeni prema pravilima
+        $score = []; // konacni poeni koji se dobiju nakon sto se izracuna dioba mjesta
         $resultPoints = []; // poeni koji se dobiju za svaki rezultat
 
         $groupedResults = [];
-        $count          = count($results);
+        $count = count($results);
 
         /**
          * Izracun prema pravilima:
@@ -223,7 +268,7 @@ class Tournament extends Model
         }
 
         foreach ($groupedResults as $key => $value) {
-            $i     = 0;
+            $i = 0;
             $total = 0;
             foreach ($value as $v) {
                 $total += $v;
@@ -246,7 +291,7 @@ class Tournament extends Model
     private static function computeTeamPoints($table): array
     {
         $points = [];
-        $par    = (count($table) - 2) / 2;
+        $par = (count($table) - 2) / 2;
 
         switch ($par) {
             case 2:
