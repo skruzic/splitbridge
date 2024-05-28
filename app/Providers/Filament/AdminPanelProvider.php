@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -29,6 +30,7 @@ class AdminPanelProvider extends PanelProvider
         Table::$defaultDateDisplayFormat              = 'd.m.Y.';
         Table::$defaultDateTimeDisplayFormat          = 'd.m.Y. H:i';
         DateTimePicker::$defaultDateTimeDisplayFormat = 'd.m.Y. H:i';
+        DatePicker::$defaultDateDisplayFormat         = 'd.m.Y.';
 
         return $panel
             ->default()

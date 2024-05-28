@@ -3,7 +3,7 @@ app:
     secondary_host: host.docker.internal
     port: 9191
     workdir: /var/www/html/
-    project_path: /home/stanko/web/splitbridge/
+    project_path: /home/skruzic/web/splitbridge/
     wsl_config: wsl+Ubuntu/
 config:
     sleep: 0

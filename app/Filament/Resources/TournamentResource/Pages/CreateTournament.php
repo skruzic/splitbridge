@@ -9,4 +9,9 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateTournament extends CreateRecord
 {
     protected static string $resource = TournamentResource::class;
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }

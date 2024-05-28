@@ -45,6 +45,71 @@ namespace App\Models{
  * 
  *
  * @property int $id
+ * @property int $session_id
+ * @property int $number
+ * @property string $dealer
+ * @property string $vul
+ * @property string $ns
+ * @property string $nh
+ * @property string $nd
+ * @property string $nc
+ * @property string $ss
+ * @property string $sh
+ * @property string $sd
+ * @property string $sc
+ * @property string $es
+ * @property string $eh
+ * @property string $ed
+ * @property string $ec
+ * @property string $ws
+ * @property string $wh
+ * @property string $wd
+ * @property string $wc
+ * @property string $ddn
+ * @property string $dds
+ * @property string $dde
+ * @property string $ddw
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|Board newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Board newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Board query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Board whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Board whereDde($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Board whereDdn($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Board whereDds($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Board whereDdw($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Board whereDealer($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Board whereEc($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Board whereEd($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Board whereEh($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Board whereEs($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Board whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Board whereNc($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Board whereNd($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Board whereNh($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Board whereNs($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Board whereNumber($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Board whereSc($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Board whereSd($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Board whereSessionId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Board whereSh($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Board whereSs($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Board whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Board whereVul($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Board whereWc($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Board whereWd($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Board whereWh($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Board whereWs($value)
+ */
+	class Board extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
  * @property string $title
  * @property string|null $description
  * @property string $path
@@ -214,6 +279,29 @@ namespace App\Models{
  * 
  *
  * @property int $id
+ * @property int $tournament_id
+ * @property int $number
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Board> $boards
+ * @property-read int|null $boards_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Session newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Session newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Session query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Session whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Session whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Session whereNumber($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Session whereTournamentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Session whereUpdatedAt($value)
+ */
+	class Session extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
  * @property \Illuminate\Support\Carbon $date
  * @property string $type
  * @property int $season_id
@@ -224,6 +312,8 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Rank> $ranks
  * @property-read int|null $ranks_count
  * @property-read \App\Models\Season|null $season
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Session> $sessions
+ * @property-read int|null $sessions_count
  * @method static \Database\Factories\TournamentFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Tournament newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Tournament newQuery()
@@ -238,6 +328,68 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Tournament whereUpdatedAt($value)
  */
 	class Tournament extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
+ * @property int $board_id
+ * @property int $pairNS
+ * @property int $pairEW
+ * @property string $contract
+ * @property string $declarer
+ * @property string $lead
+ * @property int $score
+ * @property int $ruling
+ * @property int $pointsNS
+ * @property int $pointsEW
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|Traveller newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Traveller newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Traveller query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Traveller whereBoardId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Traveller whereContract($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Traveller whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Traveller whereDeclarer($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Traveller whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Traveller whereLead($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Traveller wherePairEW($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Traveller wherePairNS($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Traveller wherePointsEW($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Traveller wherePointsNS($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Traveller whereRuling($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Traveller whereScore($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Traveller whereUpdatedAt($value)
+ */
+	class Traveller extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
+ * @property int $tournament_id
+ * @property int $pairNumber
+ * @property string $player1
+ * @property string $player2
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|Unit newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Unit newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Unit query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Unit whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Unit whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Unit wherePairNumber($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Unit wherePlayer1($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Unit wherePlayer2($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Unit whereTournamentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Unit whereUpdatedAt($value)
+ */
+	class Unit extends \Eloquent {}
 }
 
 namespace App\Models{

@@ -98,3 +98,12 @@ if ( ! function_exists('compute_points')) {
         }
     }
 }
+
+if ( ! function_exists('parse_bridge')) {
+    function parseBridge(
+        array $roundData,
+        array $receivedData,
+    ) {
+
+    }
+}

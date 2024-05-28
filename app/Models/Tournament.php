@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Http;
 use KubAT\PhpSimple\HtmlDomParser;
 
 class Tournament extends Model
@@ -32,19 +33,19 @@ class Tournament extends Model
             $model->season_id = Season::getCurrent()->id;
         });
 
-        static::created(function ($model) {
+        static::created(function (Tournament $model) {
             if ($model->results) {
-                $json = json_decode($model->results, true);
-                $ranks = array_map(function($item) {
+                $json   = json_decode($model->results, true);
+                $ranks  = array_map(function ($item) {
                     return $item['rank'];
                 }, $json);
                 $points = compute_points($ranks);
 
                 // Unos u rang listu
-                for ($i = 0;$i<count($json);$i++) {
+                for ($i = 0; $i < count($json); $i++) {
                     $position = $json[$i]['rank'];
-                    $p1 = $json[$i]['p1'];
-                    $p2 = $json[$i]['p2'];
+                    $p1       = $json[$i]['p1'];
+                    $p2       = $json[$i]['p2'];
 
                     // Provjera prvog igraca i unos ranga
                     if (is_numeric($p1) && Member::findByMemberID($p1)) {
@@ -67,10 +68,68 @@ class Tournament extends Model
                     }
                 }
             }
+
+            if ($model->remote_id) {
+                $response = Http::get("https://bridge.hr/api/pair/$model->remote_id");
+
+                $units        = $response->json('data.units');
+                $sessions     = $response->json('data.sessions');
+                $roundData    = $response->json('data.rounddata');
+                $receivedData = $response->json('data.receiveddata');
+                $allPlayers   = $response->json('data.players');
+                $boards       = $response->json('data.handRecords');
+
+                ds($sessions, $boards);
+
+                // Sesije
+                $sessionModels = array_map(function ($item) {
+                    return new Session(['number' => $item['number']]);
+                }, $sessions);
+
+                $model->sessions()->saveMany($sessionModels);
+                $model->refresh();
+
+                foreach ($boards as $board) {
+                    ds($board);
+                    $currentSessionNumber = array_values(array_filter($sessions,
+                        fn($session) => $session['id'] === $board['session_id']))[0]['number'];
+
+                    $currentSession = $model->sessions()->where('number', $currentSessionNumber)->first();
+
+                    $currentSession->boards()->save(new Board([
+                        'number' => $board['board'],
+                        'dealer' => $board['dealer'],
+                        'vul'    => $board['vul'],
+                        'ns'     => $board['ns'],
+                        'nh'     => $board['nh'],
+                        'nd'     => $board['nd'],
+                        'nc'     => $board['nc'],
+                        'ss'     => $board['ss'],
+                        'sh'     => $board['sh'],
+                        'sd'     => $board['sd'],
+                        'sc'     => $board['sc'],
+                        'es'     => $board['es'],
+                        'eh'     => $board['eh'],
+                        'ed'     => $board['ed'],
+                        'ec'     => $board['ec'],
+                        'ws'     => $board['ws'],
+                        'wh'     => $board['wh'],
+                        'wd'     => $board['wd'],
+                        'wc'     => $board['wc'],
+                        'ddn'    => $board['dfn'],
+                        'dds'    => $board['dfs'],
+                        'dde'    => $board['dfe'],
+                        'ddw'    => $board['dfw'],
+                    ]));
+                }
+            }
+
         });
 
-        static::deleting(function ($model) {
+        static::deleting(function (Tournament $model) {
             $model->ranks()->delete();
+            $model->sessions()->each(fn(Session $s) => $s->boards()->delete());
+            $model->sessions()->delete();
             //unlink(public_path($model->results));
         });
     }
@@ -83,6 +142,11 @@ class Tournament extends Model
     public function ranks(): HasMany
     {
         return $this->hasMany(Rank::class, 'tournament_id');
+    }
+
+    public function sessions(): HasMany
+    {
+        return $this->hasMany(Session::class);
     }
 
     private static function getNames(array $table, string $type = 'MP'): array
