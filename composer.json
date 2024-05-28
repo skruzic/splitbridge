@@ -22,7 +22,7 @@
         "spatie/laravel-sluggable": "^3.5"
     },
     "require-dev": {
-        "barryvdh/laravel-ide-helper": "^2.12",
+        "barryvdh/laravel-ide-helper": "^3.0",
         "fakerphp/faker": "^1.9.1",
         "filament/upgrade": "^3.0-stable",
         "laradumps/laradumps": "^3.0",

@@ -13,7 +13,7 @@
 
 namespace App\Models{
 /**
- * App\Models\Article
+ * 
  *
  * @property int $id
  * @property string $title
@@ -42,7 +42,7 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * App\Models\Document
+ * 
  *
  * @property int $id
  * @property string $title
@@ -65,7 +65,7 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * App\Models\Member
+ * 
  *
  * @property int $id
  * @property string $surname
@@ -99,7 +99,7 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * App\Models\Page
+ * 
  *
  * @property int $id
  * @property string $title
@@ -127,7 +127,7 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * App\Models\Payment
+ * 
  *
  * @property int $id
  * @property int $seq
@@ -159,7 +159,7 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * App\Models\Rank
+ * 
  *
  * @property int $id
  * @property int $tournament_id
@@ -190,7 +190,7 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * App\Models\Season
+ * 
  *
  * @property int $id
  * @property string $title
@@ -211,7 +211,7 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * App\Models\Tournament
+ * 
  *
  * @property int $id
  * @property \Illuminate\Support\Carbon $date
@@ -242,7 +242,7 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * App\Models\User
+ * 
  *
  * @property int $id
  * @property string $name
