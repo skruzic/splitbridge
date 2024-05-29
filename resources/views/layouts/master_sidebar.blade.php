@@ -70,8 +70,12 @@
             <div class="grid grid-cols-3 gap-4">
                 <div class="col-span-2">@yield('content')</div>
                 <aside class="space-y-4">
-                    <x-recent-tournaments/>
-                    <x-recent-ranks/>
+                    <x-sidebar-widget title="Turniri" description="Rezultati posljednjih turnira">
+                        <x-recent-tournaments/>
+                    </x-sidebar-widget>
+                    <x-sidebar-widget title="Rang lista" :description="now()->translatedFormat('F Y.')">
+                        <x-recent-ranks/>
+                    </x-sidebar-widget>
                 </aside>
             </div>
         </section>

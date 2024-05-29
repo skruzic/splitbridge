@@ -23,7 +23,7 @@
                                target="_blank">Rezultati</x-button>
                         </x-table.cell>
                     @else
-                        <x-table.cell><button disabled class="btn btn-outline btn-sm" target="_blank">Rezultati</button></x-table.cell>
+                        <x-table.cell><x-button disabled variant="outline" size="sm" target="_blank">Rezultati</x-button></x-table.cell>
                     @endif
                 </x-table.row>
             @endforeach

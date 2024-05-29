@@ -68,7 +68,7 @@
                 </div>
 
                 <div class="text-center">
-                    <x-button href="#" type="submit" name="send">Pošalji</x-button>
+                    <x-button name="send">Pošalji</x-button>
                 </div>
             </form>
         </div>

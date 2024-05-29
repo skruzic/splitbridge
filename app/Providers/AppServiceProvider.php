@@ -37,7 +37,7 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
 
         // Jezik za datume
-        Carbon::setLocale('hr');
+        Carbon::setLocale(config('app.locale'));
 
         // Paginacija
         Paginator::defaultView('vendor.pagination.bootstrap-5');
