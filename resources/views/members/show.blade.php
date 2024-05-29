@@ -1,32 +1,36 @@
 @extends('layouts.master_sidebar')
 
 @section('content')
-    <h1>{{ $member->name }} {{ $member->surname }}</h1>
+    <h1 class="text-4xl mb-4">{{ $member->name }} {{ $member->surname }}</h1>
 
-    <hr>
+    <x-separator/>
     @if (count($ranks) < 1)
         <p>Nema podataka o turnirima.</p>
     @else
-        <table class="table table-hover" id="member">
-            <thead>
-                <th>Turnir</th>
-                <th>Mjesto</th>
-                <th>Poeni</th>
-            </thead>
-            <tbody>
+        <x-table.table>
+            <x-table.header>
+                <x-table.row>
+                    <x-table.head>Turnir</x-table.head>
+                    <x-table.head>Mjesto</x-table.head>
+                    <x-table.head>Poeni</x-table.head>
+                </x-table.row>
+            </x-table.header>
+            <x-table.body>
                 @foreach ($ranks as $rank)
-                    <tr>
-                        <td><a href="{{ url($rank->tournament->results) }}">{{ $rank->tournament->date->format('d.m.Y.') }} - {{ $rank->tournament->type }}<a/></td>
-                        <td>{{ $rank->rank }}.</td>
-                        <td>{{ $rank->points }}</td>
-                    </tr>
+                    <x-table.row>
+                        <x-table.cell>
+                            <a href="{{ url($rank->tournament->results) }}">{{ $rank->tournament->date->format('d.m.Y.') }}
+                                - {{ $rank->tournament->type }}</a></x-table.cell>
+                        <x-table.cell>{{ $rank->rank }}.</x-table.cell>
+                        <x-table.cell>{{ $rank->points }}</x-table.cell>
+                    </x-table.row>
                 @endforeach
-                <tr>
+                <x.table.row>
                     <th colspan="2">UKUPNO</th>
                     <th>{{ $member->ranks()->sum('points') }}</th>
-                </tr>
-            </tbody>
-        </table>
+                </x.table.row>
+            </x-table.body>
+        </x-table.table>
     @endif
 @stop
 

@@ -27,12 +27,10 @@
     <link
         href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,600,600i,700,700i"
         rel="stylesheet">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
-
-    @vite('resources/js/app.js')
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body>
+<body class="min-h-screen bg-background font-sans antialiased">
     <!-- Google Tag Manager -->
     <noscript>
         <iframe src="//www.googletagmanager.com/ns.html?id=GTM-TKHF7X"
@@ -53,23 +51,28 @@
         })(window, document, 'script', 'dataLayer', 'GTM-TKHF7X');</script>
     <!-- End Google Tag Manager -->
     <div id="fb-root"></div>
-    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v15.0" nonce="Id2w4Cd1"></script>
-    <header id="header" class="fixed-top d-flex align-items-center">
-        <x-menu />
-    </header>
-    <main id="main">
-        <section>
-            <div class="container">
-                <div class="row justify-content-between">
-                    <div class="col-lg-8 pt-5 pt-lg-0">
-                        @yield('content')
-                    </div>
-                    <div class="col-lg-4 pt-5 pt-lg-0">
-                        <x-recent-tournaments />
-                        <x-recent-ranks />
-                    </div>
-                </div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v15.0"
+            nonce="Id2w4Cd1"></script>
+    <header
+        class="fixed z-10 top-0 left-0 right-0 flex items-center h-[72px] bg-white transition-all shadow-md">
+        <div class="max-w-6xl mx-auto w-full flex items-center justify-between">
+            <div>
+                <img src="{{ asset('img/logo.png') }}" alt="" width="82px" height="40px">
+            </div>
 
+            <div class="flex items-center space-x-4">
+                <x-menu/>
+            </div>
+        </div>
+    </header>
+    <main id="main" class="mt-[72px] mx-auto max-w-6xl">
+        <section class="py-16">
+            <div class="grid grid-cols-3 gap-4">
+                <div class="col-span-2">@yield('content')</div>
+                <aside class="space-y-4">
+                    <x-recent-tournaments/>
+                    <x-recent-ranks/>
+                </aside>
             </div>
         </section>
     </main>

@@ -35,8 +35,8 @@ class ArticleResource extends Resource
                 Select::make('status')->options([
                     'DRAFT'     => 'Draft',
                     'PUBLISHED' => 'Published',
-                ])->required(),
-                DateTimePicker::make('published_date')->native(false)->format('d.M.y.')->label('Vrijeme objave')->seconds(false)->default(now())->required(),
+                ])->required()->default('PUBLISHED'),
+                //DateTimePicker::make('published_date')->native(false)->format('d.M.y.')->label('Vrijeme objave')->seconds(false)->default(now())->required(),
             ])->columns(1);
     }
 
@@ -53,7 +53,7 @@ class ArticleResource extends Resource
                     'DRAFT' => 'warning',
                     'PUBLISHED' => 'success'
                 }),
-                TextColumn::make('published_date')->dateTime()->sortable()->label('Vrijeme objave'),
+                //TextColumn::make('published_date')->dateTime()->sortable()->label('Vrijeme objave'),
             ])
             ->filters([
                 //
@@ -64,7 +64,7 @@ class ArticleResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
-            ])->defaultSort('published_date', 'desc');
+            ])->defaultSort('created_at', 'desc');
     }
 
     public static function getRelations(): array

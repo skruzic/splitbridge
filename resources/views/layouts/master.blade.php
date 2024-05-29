@@ -28,9 +28,8 @@
     <link
         href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,600,600i,700,700i"
         rel="stylesheet">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
-    @vite('resources/js/app.js')
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
     <!-- Google Tag Manager -->
@@ -56,18 +55,22 @@
     <
     <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v15.0"
             nonce="Id2w4Cd1"></script>
-    <header id="header" class="fixed-top d-flex align-items-center">
-        <x-menu/>
-    </header>
-    <main id="main">
-        <div class="container">
-            <div class="row justify-content-between">
-                <div class="col-lg-12 pt-5 pt-lg-0">
-                    @yield('content')
-                </div>
+    <header
+        class="fixed z-10 top-0 left-0 right-0 flex items-center h-[72px] bg-white transition-all shadow-md">
+        <div class="max-w-6xl mx-auto w-full flex items-center justify-between">
+            <div>
+                <img src="{{ asset('img/logo.png') }}" alt="" width="82px" height="40px">
             </div>
 
+            <div class="flex items-center space-x-4">
+                <x-menu />
+            </div>
         </div>
+    </header>
+    <main id="main" class="mt-[72px] mx-auto max-w-6xl">
+        <section class="py-16">
+            @yield('content')
+        </section>
     </main>
 
     <x-footer />

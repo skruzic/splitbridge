@@ -8,7 +8,7 @@ class ArticlesController extends Controller
 {
     public function index()
     {
-        $articles = Article::orderBy('published_date', 'desc')->simplePaginate(3);
+        $articles = Article::orderBy('created_at', 'desc')->simplePaginate(3);
 
         return view('articles.index', ['articles' => $articles]);
     }
