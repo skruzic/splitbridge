@@ -40,7 +40,7 @@ class AppServiceProvider extends ServiceProvider
         Carbon::setLocale(config('app.locale'));
 
         // Paginacija
-        Paginator::defaultView('vendor.pagination.bootstrap-5');
-        Paginator::defaultSimpleView('vendor.pagination.simple-bootstrap-5');
+        //Paginator::defaultView('vendor.pagination.bootstrap-5');
+        //Paginator::defaultSimpleView('vendor.pagination.simple-bootstrap-5');
     }
 }

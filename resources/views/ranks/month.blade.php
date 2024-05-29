@@ -26,11 +26,11 @@
         <ul class="flex justify-center gap-4">
             {{-- Previous Page Link --}}
             @if ($prev->lt(\Illuminate\Support\Carbon::create(2014, 9, 30)))
-                <li class="page-item disabled" aria-disabled="true">
-                    <span class="page-link">{!! __('pagination.previous') !!}</span>
+                <li>
+                    <span class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-default leading-5 rounded-md">{!! __('pagination.previous') !!}</span>
                 </li>
             @else
-                <li class="page-item">
+                <li>
                     <x-button variant="primaryOutline" href="{{ route('ranks.month', [$prev->year, $prev->month]) }}" rel="prev">
                         {!! __('pagination.previous') !!}
                     </x-button>
@@ -39,13 +39,13 @@
 
             {{-- Next Page Link --}}
             @if ($next->lt(now()))
-                <li class="page-item">
+                <li>
                     <x-button variant="primaryOutline" href="{{ route('ranks.month', [$next->year, $next->month]) }}"
                        rel="next">{!! __('pagination.next') !!}</x-button>
                 </li>
             @else
-                <li class="page-item disabled" aria-disabled="true">
-                    <span class="page-link">{!! __('pagination.next') !!}</span>
+                <li>
+                    <span class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-default leading-5 rounded-md">{!! __('pagination.next') !!}</span>
                 </li>
             @endif
         </ul>
