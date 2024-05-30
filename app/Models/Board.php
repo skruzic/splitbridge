@@ -37,6 +37,8 @@ class Board extends Model
         'ddw',
     ];
 
+    protected $with = ['travellers'];
+
     public function session(): BelongsTo
     {
         return $this->belongsTo(Session::class);

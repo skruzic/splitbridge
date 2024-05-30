@@ -13,6 +13,8 @@ class Session extends Model
 
     protected $fillable = ['number'];
 
+    protected $with = ['boards'];
+
     public function boards(): HasMany
     {
         return $this->hasMany(Board::class);
