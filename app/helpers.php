@@ -174,7 +174,7 @@ if (!function_exists('calculate_butler')) {
     {
         $numResults = $travellers->count();
         $totalScore = $travellers->sum('score');
-        $averageScore = ceil($totalScore / $numResults / 10) * 10;
+        $averageScore = round($totalScore / $numResults / 10) * 10;
 
         // Calculate Butler IMPs based on comparisons to the average score
         $travellers->transform(function ($item) use ($averageScore) {
