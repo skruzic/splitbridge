@@ -5,7 +5,7 @@
 
 /**
  * A helper file for Laravel, to provide autocomplete information to your IDE
- * Generated for Laravel 10.48.11.
+ * Generated for Laravel 10.48.12.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -24748,6 +24748,11 @@ namespace  {
     }
 
 
+namespace Facades\Livewire {
+    /**
+     * @mixin \Livewire\GenerateSignedUploadUrl     */
+    class GenerateSignedUploadUrl extends \Livewire\GenerateSignedUploadUrl {}
+}
 
 
 

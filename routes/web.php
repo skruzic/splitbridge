@@ -7,6 +7,7 @@ use App\Http\Controllers\MembersController;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\RanksController;
 use App\Http\Controllers\TournamentsController;
+use App\Http\Controllers\UnitsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,6 +25,7 @@ Route::get('/', [ArticlesController::class, 'index']);
 Route::resource('articles', ArticlesController::class)->only(['index', 'show']);
 Route::resource('members', MembersController::class)->only(['index', 'show']);
 Route::resource('tournaments', TournamentsController::class)->only(['index', 'show']);
+Route::resource('tournaments.units', UnitsController::class);
 Route::get('ranks/list', [RanksController::class, 'list']);
 Route::get('ranks/month/{year?}/{month?}', [RanksController::class, 'month'])->name('ranks.month');
 Route::get('ranks/archive', [RanksController::class, 'archive']);

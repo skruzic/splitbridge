@@ -21,7 +21,6 @@ namespace App\Models{
  * @property string $body
  * @property int $sticky
  * @property string $status
- * @property string|null $published_date
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder|Article newModelQuery()
@@ -30,7 +29,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Article whereBody($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Article whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Article whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Article wherePublishedDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Article whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Article whereSticky($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Article whereSummary($value)
@@ -71,6 +69,9 @@ namespace App\Models{
  * @property string $ddw
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Session|null $session
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Traveller> $travellers
+ * @property-read int|null $travellers_count
  * @method static \Illuminate\Database\Eloquent\Builder|Board newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Board newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Board query()
@@ -285,8 +286,6 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Board> $boards
  * @property-read int|null $boards_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Traveller> $travellers
- * @property-read int|null $travellers_count
  * @method static \Illuminate\Database\Eloquent\Builder|Session newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Session newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Session query()
@@ -311,6 +310,8 @@ namespace App\Models{
  * @property int|null $remote_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Board> $boards
+ * @property-read int|null $boards_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Rank> $ranks
  * @property-read int|null $ranks_count
  * @property-read \App\Models\Season|null $season
@@ -344,14 +345,15 @@ namespace App\Models{
  * @property int $pairEW
  * @property int $round
  * @property string $contract
- * @property string $declarer
- * @property string $lead
+ * @property string|null $declarer
+ * @property string|null $lead
  * @property int $score
- * @property int $ruling
+ * @property bool $ruling
  * @property int $pointsNS
  * @property int $pointsEW
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|Traveller byUnit()
  * @method static \Illuminate\Database\Eloquent\Builder|Traveller newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Traveller newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Traveller query()

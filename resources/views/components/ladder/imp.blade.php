@@ -1,14 +1,22 @@
 @props([
-    'ranks'
+    'ranks',
+    'tournament_id',
 ])
+
+@php
+    ds($ranks[0]['unit'], $tournament_id);
+@endphp
 
 <x-table.table>
     <x-table.body>
         @for ($i = 0; $i < count($ranks); $i++)
             <x-table.row>
                 <x-table.cell>{{ $i+1 }}.</x-table.cell>
-                <x-table.cell>{{ $ranks[$i]['unit']['player1'] }}
-                    - {{ $ranks[$i]['unit']['player2'] }}</x-table.cell>
+                <x-table.cell>
+                    <a href="{{ route('tournaments.units.show',[$tournament_id,$ranks[$i]['unit']['id']]) }}">
+                    {{ $ranks[$i]['unit']['player1'] }} - {{ $ranks[$i]['unit']['player2'] }}
+                    </a>
+                </x-table.cell>
                 <x-table.cell>{{ count($ranks[$i]['boards']) }}</x-table.cell>
                 <x-table.cell class="font-bold text-right">{{ $ranks[$i]['total'] }}</x-table.cell>
             </x-table.row>

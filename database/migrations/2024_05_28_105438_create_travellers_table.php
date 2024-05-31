@@ -25,7 +25,8 @@ return new class extends Migration {
                 'E',
                 'W',
             ])->nullable();
-            $table->string('lead',2)->nullable();
+            $table->string('lead', 2)->nullable();
+            $table->string('tricks', 3)->nullable();
             $table->integer('score');
             $table->boolean('ruling');
             $table->integer('pointsNS');
