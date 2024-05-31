@@ -89,7 +89,7 @@ class Tournament extends Model
                 $sessions     = $response->json('data.sessions');
                 $roundData    = $response->json('data.rounddata');
                 $receivedData = $response->json('data.receiveddata');
-                $allPlayers   = $response->json('data.players');
+                $allPlayers   = collect($response->json('data.players'));
                 $boards       = $response->json('data.handRecords');
 
                 // Sesije
@@ -135,11 +135,14 @@ class Tournament extends Model
                 }
 
                 // Parovi
-                $model->units()->createMany(array_map(function ($item) {
+                $model->units()->createMany(array_map(function ($item) use ($allPlayers) {
+                    $p1 = $allPlayers->firstWhere('hbs_id', $item['p1']);
+                    $p2 = $allPlayers->firstWhere('hbs_id', $item['p2']);
+
                     return [
                         'pairNumber' => $item['number'],
-                        'player1'    => $item['p1'],
-                        'player2'    => $item['p2'],
+                        'player1'    => is_array($p1) ? "{$p1['ime']} {$p1['prezime']}" : $item['p1'],
+                        'player2'    => is_array($p2) ? "{$p2['ime']} {$p2['prezime']}" : $item['p1'],
                     ];
                 }, $units));
 
@@ -183,6 +186,7 @@ class Tournament extends Model
 
         static::deleting(function (Tournament $model) {
             $model->ranks()->delete();
+            $model->units()->delete();
             $model->sessions()->each(fn(Session $s) => $s->boards()->each(fn(Board $b) => $b->travellers()->delete()));
             $model->sessions()->each(fn(Session $s) => $s->boards()->delete());
             $model->sessions()->delete();

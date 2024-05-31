@@ -1,0 +1,3 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" {{ $attributes }}>
+    <rect x="10" y="10" width="40" height="40" transform="rotate(45,30,30)" />
+</svg>

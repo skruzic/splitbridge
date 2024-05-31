@@ -21,12 +21,7 @@
         @if (count($t->sessions) == 1)
             @foreach($t->sessions[0]->boards as $board)
                 <div>
-                    <x-diagram
-                        :ns="$board['ns']" :nh="$board['nh']" :nd="$board['nd']" :nc="$board['nc']"
-                        :ss="$board['ss']" :sh="$board['sh']" :sd="$board['sd']" :sc="$board['sc']"
-                        :es="$board['es']" :eh="$board['eh']" :ed="$board['ed']" :ec="$board['ec']"
-                        :ws="$board['ws']" :wh="$board['wh']" :wd="$board['wd']" :wc="$board['wc']"
-                    />
+                    <x-diagram :board="$board" />
                     <x-diagram.travellers :travellers="$board->travellers" :type="$t->type"/>
                 </div>
             @endforeach
