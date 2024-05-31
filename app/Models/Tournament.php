@@ -172,7 +172,7 @@ class Tournament extends Model
                         } else {
                             // TODO: Team
                         }
-                        ds($item);
+
                         $board = $currentSession->boards()->where('number', $boardKey)->first();
                         $board->travellers()->createMany($item);
                     });

@@ -3,10 +3,6 @@
     'tournament_id',
 ])
 
-@php
-    ds($ranks[0]['unit'], $tournament_id);
-@endphp
-
 <x-table.table>
     <x-table.body>
         @for ($i = 0; $i < count($ranks); $i++)
