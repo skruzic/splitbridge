@@ -21,12 +21,14 @@ class Traveller extends Model
         'tricks',
         'score',
         'ruling',
+        'bye',
         'pointsNS',
         'pointsEW',
     ];
 
     protected $casts = [
         'ruling' => 'boolean',
+        'bye'    => 'boolean',
     ];
 
     public function board(): BelongsTo

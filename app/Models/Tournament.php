@@ -87,8 +87,8 @@ class Tournament extends Model
 
                 $units        = $response->json('data.units');
                 $sessions     = $response->json('data.sessions');
-                $roundData    = $response->json('data.rounddata');
-                $receivedData = $response->json('data.receiveddata');
+                $roundData    = $response->collect('data.rounddata');
+                $receivedData = $response->collect('data.receiveddata');
                 $allPlayers   = collect($response->json('data.players'));
                 $boards       = $response->json('data.handRecords');
 
@@ -148,9 +148,7 @@ class Tournament extends Model
 
                 $travellers = create_travellers($roundData, $receivedData);
 
-
-                $travellers = collect($travellers);
-
+                // Grupiranje po sjednici i bordu (isti bordovi se mogu igrati u više sjednica)
                 $travellersBySessionByBoard = $travellers->groupBy([
                     'session_id',
                     'board',
@@ -179,8 +177,6 @@ class Tournament extends Model
 
 
                 });
-
-
             }
 
         });

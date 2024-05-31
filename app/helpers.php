@@ -103,11 +103,11 @@ if ( ! function_exists('compute_points')) {
 
 if ( ! function_exists('create_travellers')) {
     function create_travellers(
-        array $roundData,
-        array $receivedData,
-    ): array {
-        $travellers = [];
-        foreach ($roundData as $r) {
+        Collection $roundData,
+        Collection $receivedData,
+    ): Collection {
+        //$travellers = collect([]);
+        /*foreach ($roundData as $r) {
             $boards = array_values(array_filter($receivedData, function ($item) use ($r) {
                 return $item['session_id'] == $r['session_id'] && $item['table'] == $r['table'] && $item['round'] == $r['round'] && $r['low_board'] <= $item['board'] && $item['board'] <= $r['high_board'];
             }));
@@ -128,9 +128,45 @@ if ( ! function_exists('create_travellers')) {
                     'ruling'     => $board['ruling'],
                 ];
             }
-        }
+        }*/
+        $travellers = $roundData->map(function ($round, $roundKey) use ($receivedData) {
+            $boards = $receivedData->filter(fn($receivedItem
+            ) => $receivedItem['session_id'] == $round['session_id'] && $receivedItem['table'] == $round['table'] && $receivedItem['round'] == $round['round'] && $round['low_board'] <= $receivedItem['board'] && $receivedItem['board'] <= $round['high_board']);
 
-        return $travellers;
+            if ($boards->count() > 0) {
+                return $boards->map(fn($board) => [
+                    'session_id' => $round['session_id'],
+                    'pairNS'     => $round['nspair'],
+                    'pairEW'     => $round['ewpair'],
+                    'table'      => $round['table'],
+                    'round'      => $round['round'],
+                    'board'      => $board['board'],
+                    'contract'   => $board['contract'],
+                    'lead'       => $board['lead'],
+                    'declarer'   => $board['declarer'],
+                    'tricks'     => $board['tricks'],
+                    'score'      => $board['score'],
+                    'ruling'     => $board['ruling'],
+                    'bye'        => false,
+                ]);
+            } else {
+                for ($i = $round['low_board']; $i <= $round['high_board']; $i++) {
+                    $boards->push([
+                        'session_id' => $round['session_id'],
+                        'pairNS'     => $round['nspair'],
+                        'pairEW'     => $round['ewpair'],
+                        'table'      => $round['table'],
+                        'round'      => $round['round'],
+                        'board'      => $i,
+                        'bye'        => true,
+                    ]);
+                }
+
+                return $boards;
+            }
+        });
+        ds($travellers->flatten(1));
+        return $travellers->flatten(1);
     }
 }
 
@@ -174,16 +210,21 @@ if ( ! function_exists('calculate_matchpoints')) {
 if ( ! function_exists('calculate_butler')) {
     function calculate_butler(Collection &$travellers): void
     {
-        $numResults   = $travellers->count();
-        $totalScore   = $travellers->sum('score');
+        $numResults   = $travellers->count() - $travellers->filter(fn($t) => $t['bye'])->count();
+        $totalScore   = $travellers->sum(fn($t) => $t['bye'] ? 0 : $t['score']);
         $averageScore = round($totalScore / $numResults / 10) * 10;
 
         // Calculate Butler IMPs based on comparisons to the average score
         $travellers->transform(function ($item) use ($averageScore) {
-            $difference       = $item['score'] - $averageScore;
-            $imps             = convert_to_imps($difference);
-            $item['pointsNS'] = $imps;
-            $item['pointsEW'] = -$imps;
+            if ($item['bye']) {
+
+            } else {
+                $difference       = $item['score'] - $averageScore;
+                $imps             = convert_to_imps($difference);
+                $item['pointsNS'] = $imps;
+                $item['pointsEW'] = -$imps;
+            }
+
 
             return $item;
         });

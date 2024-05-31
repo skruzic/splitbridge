@@ -39,17 +39,29 @@ class UnitsController extends Controller
      */
     public function show(Tournament $tournament, Unit $unit): View
     {
-        $boards = $tournament->boards()->get()->map(fn(Board $b
-        ) => $b->travellers()->byUnit($unit['pairNumber'])->first());
+        /*$boards = $tournament->boards()->get()->map(fn(Board $b
+        ) => $b->travellers()->byUnit($unit['pairNumber'])->first());*/
 
-        $boards = $tournament->boards()->get()->transform(function(Board $b) use($unit, $tournament) {
+        $boards = $tournament->boards()->get()->transform(function (Board $b) use ($unit, $tournament) {
             $traveller = $b->travellers()->byUnit($unit['pairNumber'])->first();
 
             // Kod za pronalaženje imena protivnika
             $oppNumber = $traveller['pairNS'] == $unit['pairNumber'] ? $traveller['pairEW'] : $traveller['pairNS'];
 
             $oppUnit = $tournament->units()->where('pairNumber', $oppNumber)->first();
-            $traveller['opp'] = $oppUnit['names'];
+
+            if ($traveller['bye']) {
+                $traveller['opp'] = 'Bye';
+                if ($oppNumber == $b['pairNS']) {
+                    $traveller['pointsEW'] = 3;
+                } else {
+                    $traveller['pointsNS'] = 3;
+                }
+            } else {
+                $traveller['opp'] = $oppUnit['names'];
+            }
+
+
             return $traveller;
         });
 

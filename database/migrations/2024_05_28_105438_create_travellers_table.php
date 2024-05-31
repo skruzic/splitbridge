@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->foreignIdFor(Unit::class, 'pairNS');
             $table->foreignIdFor(Unit::class, 'pairEW');
             $table->integer('round')->unsigned();
-            $table->string('contract', 7);
+            $table->string('contract', 7)->nullable();
             $table->enum('declarer', [
                 'N',
                 'S',
@@ -28,7 +28,8 @@ return new class extends Migration {
             $table->string('lead', 2)->nullable();
             $table->string('tricks', 3)->nullable();
             $table->integer('score');
-            $table->boolean('ruling');
+            $table->boolean('ruling')->default(false);
+            $table->boolean('bye')->default(false);
             $table->integer('pointsNS');
             $table->integer('pointsEW');
             $table->timestamps();
