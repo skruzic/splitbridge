@@ -97,29 +97,6 @@ if (! function_exists('create_travellers')) {
         Collection $roundData,
         Collection $receivedData,
     ): Collection {
-        //$travellers = collect([]);
-        /*foreach ($roundData as $r) {
-            $boards = array_values(array_filter($receivedData, function ($item) use ($r) {
-                return $item['session_id'] == $r['session_id'] && $item['table'] == $r['table'] && $item['round'] == $r['round'] && $r['low_board'] <= $item['board'] && $item['board'] <= $r['high_board'];
-            }));
-
-            foreach ($boards as $board) {
-                $travellers[] = [
-                    'session_id' => $r['session_id'],
-                    'pairNS'     => $r['nspair'],
-                    'pairEW'     => $r['ewpair'],
-                    'table'      => $r['table'],
-                    'round'      => $r['round'],
-                    'board'      => $board['board'],
-                    'contract'   => $board['contract'],
-                    'lead'       => $board['lead'],
-                    'declarer'   => $board['declarer'],
-                    'tricks'     => $board['tricks'],
-                    'score'      => $board['score'],
-                    'ruling'     => $board['ruling'],
-                ];
-            }
-        }*/
         $travellers = $roundData->map(function ($round, $roundKey) use ($receivedData) {
             $boards = $receivedData->filter(fn ($receivedItem
             ) => $receivedItem['session_id'] == $round['session_id'] && $receivedItem['table'] == $round['table'] && $receivedItem['round'] == $round['round'] && $round['low_board'] <= $receivedItem['board'] && $receivedItem['board'] <= $round['high_board']);
@@ -156,7 +133,6 @@ if (! function_exists('create_travellers')) {
                 return $boards;
             }
         });
-        ds($travellers->flatten(1));
 
         return $travellers->flatten(1);
     }

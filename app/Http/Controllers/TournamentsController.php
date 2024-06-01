@@ -45,8 +45,6 @@ class TournamentsController extends Controller
 
         $sortedRanks = $ranks->sortByDesc('total', SORT_NUMERIC);
 
-        //ds($sortedRanks->values()->all());
-
         return view('tournaments.show', [
             't' => $tournament,
             'ranks' => $sortedRanks->values()->all(),
