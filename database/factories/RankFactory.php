@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use App\Models\Member;
-use App\Models\Tournament;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,9 +18,9 @@ class RankFactory extends Factory
     public function definition()
     {
         return [
-            'member_id'     => Member::inRandomOrder()->first()->id,
-            'rank'          => fake()->numberBetween(1, 10),
-            'points'        => fake()->numberBetween(1, 15),
+            'member_id' => Member::inRandomOrder()->first()->id,
+            'rank' => fake()->numberBetween(1, 10),
+            'points' => fake()->numberBetween(1, 15),
         ];
     }
 }

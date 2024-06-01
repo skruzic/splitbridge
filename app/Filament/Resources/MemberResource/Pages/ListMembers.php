@@ -22,9 +22,9 @@ class ListMembers extends ListRecords
     public function getTabs(): array
     {
         return [
-            'active'   => Tab::make('Aktivni'),
-            'inactive' => Tab::make('Neaktivni')->modifyQueryUsing(fn(Builder $query) => $query->onlyTrashed()),
-            'all'      => Tab::make('Svi')->modifyQueryUsing(fn(Builder $query) => $query->withTrashed()),
+            'active' => Tab::make('Aktivni'),
+            'inactive' => Tab::make('Neaktivni')->modifyQueryUsing(fn (Builder $query) => $query->onlyTrashed()),
+            'all' => Tab::make('Svi')->modifyQueryUsing(fn (Builder $query) => $query->withTrashed()),
         ];
     }
 }

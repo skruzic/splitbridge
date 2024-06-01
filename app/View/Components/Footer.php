@@ -9,6 +9,7 @@ use RyanChandler\FilamentNavigation\Models\Navigation;
 class Footer extends Component
 {
     public Navigation $menu;
+
     public FooterSettings $settings;
 
     /**

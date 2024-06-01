@@ -2,7 +2,6 @@
 
 namespace App\Filament\Widgets;
 
-use App\Casts\MoneyCast;
 use App\Models\Member;
 use App\Models\Payment;
 use App\Models\Tournament;
@@ -15,8 +14,8 @@ class StatsOverview extends BaseWidget
 
     protected function getCards(): array
     {
-        $fmt         = new \NumberFormatter('de_DE', \NumberFormatter::CURRENCY);
-        $amount      = round(Payment::whereYear('payment_date', 2024)->sum('amount') / 100, 2);
+        $fmt = new \NumberFormatter('de_DE', \NumberFormatter::CURRENCY);
+        $amount = round(Payment::whereYear('payment_date', 2024)->sum('amount') / 100, 2);
         $lastPayment = Payment::orderBy('payment_date', 'desc')->limit(1)->first();
 
         return [

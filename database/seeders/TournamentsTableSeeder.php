@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Rank;
 use App\Models\Tournament;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class TournamentsTableSeeder extends Seeder

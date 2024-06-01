@@ -9,14 +9,16 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables\Table;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
 
 class PageResource extends Resource
 {
     protected static ?string $model = Page::class;
+
     protected static ?string $modelLabel = 'stranica';
+
     protected static ?string $pluralModelLabel = 'stranice';
 
     protected static ?string $navigationIcon = 'heroicon-o-book-open';

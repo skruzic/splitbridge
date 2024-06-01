@@ -11,15 +11,17 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables\Columns\IconColumn;
-use Filament\Tables\Table;
 use Filament\Tables;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
 
 class ArticleResource extends Resource
 {
     protected static ?string $model = Article::class;
+
     protected static ?string $modelLabel = 'vijest';
+
     protected static ?string $pluralModelLabel = 'vijesti';
 
     protected static ?string $navigationIcon = 'heroicon-o-newspaper';
@@ -33,7 +35,7 @@ class ArticleResource extends Resource
                 RichEditor::make('body')->label('Sadržaj')->required(),
                 Toggle::make('sticky')->helperText('Zadržava vijest na vrhu početne stranice'),
                 Select::make('status')->options([
-                    'DRAFT'     => 'Draft',
+                    'DRAFT' => 'Draft',
                     'PUBLISHED' => 'Published',
                 ])->required()->default('PUBLISHED'),
                 //DateTimePicker::make('published_date')->native(false)->format('d.M.y.')->label('Vrijeme objave')->seconds(false)->default(now())->required(),
@@ -46,10 +48,10 @@ class ArticleResource extends Resource
             ->columns([
                 TextColumn::make('title')->label('Naslov'),
                 IconColumn::make('sticky')->boolean(),
-                IconColumn::make('status')->icon(fn(string $state): string => match ($state) {
+                IconColumn::make('status')->icon(fn (string $state): string => match ($state) {
                     'DRAFT' => 'heroicon-o-pencil',
                     'PUBLISHED' => 'heroicon-o-check-circle'
-                })->color(fn(string $state): string => match ($state) {
+                })->color(fn (string $state): string => match ($state) {
                     'DRAFT' => 'warning',
                     'PUBLISHED' => 'success'
                 }),
@@ -77,9 +79,9 @@ class ArticleResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index'  => Pages\ListArticles::route('/'),
+            'index' => Pages\ListArticles::route('/'),
             'create' => Pages\CreateArticle::route('/create'),
-            'edit'   => Pages\EditArticle::route('/{record}/edit'),
+            'edit' => Pages\EditArticle::route('/{record}/edit'),
         ];
     }
 }

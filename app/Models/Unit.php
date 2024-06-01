@@ -19,7 +19,7 @@ class Unit extends Model
     protected function names(): Attribute
     {
         return Attribute::make(
-            get: fn() => "$this->player1 - $this->player2"
+            get: fn () => "$this->player1 - $this->player2"
         );
     }
 }

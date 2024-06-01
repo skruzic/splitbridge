@@ -22,7 +22,7 @@ class Member extends Model
     protected function fullName(): Attribute
     {
         return Attribute::make(
-            get: fn() => $this->name . ' ' . $this->surname
+            get: fn () => $this->name.' '.$this->surname
         );
     }
 
@@ -34,14 +34,13 @@ class Member extends Model
     /**
      * Checks whether name is Member
      *
-     * @param $str
      *
      * @return bool
      */
     public static function isMember($str)
     {
         foreach (Member::all() as $member) {
-            $tmp = $member->name . ' ' . $member->surname;
+            $tmp = $member->name.' '.$member->surname;
 
             if ($tmp == trim($str)) {
                 return $member->id;

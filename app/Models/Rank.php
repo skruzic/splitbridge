@@ -25,10 +25,10 @@ class Rank extends Model
     public function scopeList($query)
     {
         $query->join('members', 'members.id', '=', 'ranks.member_id')
-              ->select('members.id', 'members.name', 'members.surname',
-                  DB::raw('SUM(points) AS point_count'))
-              ->groupBy('member_id')
-              ->orderBy('point_count', 'desc');
+            ->select('members.id', 'members.name', 'members.surname',
+                DB::raw('SUM(points) AS point_count'))
+            ->groupBy('member_id')
+            ->orderBy('point_count', 'desc');
     }
 
     public function scopeMonth($query, $year, $month)
@@ -44,7 +44,7 @@ class Rank extends Model
     public function scopeSeason($query)
     {
         $query->join('tournaments', 'tournaments.id', '=', 'ranks.tournament_id')
-              ->where('tournaments.season_id', Season::getCurrent()->id);
+            ->where('tournaments.season_id', Season::getCurrent()->id);
     }
 
     /*public static function month($year, $month)

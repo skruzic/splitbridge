@@ -2,14 +2,9 @@
 
 use Illuminate\Support\Collection;
 
-if ( ! function_exists('array_map_recursive')) {
+if (! function_exists('array_map_recursive')) {
     /**
      * Rekurzivna implementacija array_map funkcije
-     *
-     * @param $callback
-     * @param $array
-     *
-     * @return array
      */
     function array_map_recursive($callback, $array): array
     {
@@ -25,19 +20,15 @@ if ( ! function_exists('array_map_recursive')) {
     }
 }
 
-if ( ! function_exists('compute_ranks')) {
+if (! function_exists('compute_ranks')) {
     /**
      * Iz niza rezultata izračunava rangove
-     *
-     * @param  array  $results
-     *
-     * @return array
      */
     function compute_ranks(array $results): array
     {
         $ranks = [];
 
-        $occ     = array_count_values($results);
+        $occ = array_count_values($results);
         $results = array_unique($results);
 
         $i = 0;
@@ -53,17 +44,17 @@ if ( ! function_exists('compute_ranks')) {
     }
 }
 
-if ( ! function_exists('compute_points')) {
+if (! function_exists('compute_points')) {
     function compute_points(array $results, int $unit_points = 5, string $type = 'pair')
     {
         if ($type == 'pair') {
-            $points       = []; // poeni prema pravilima
-            $score        = []; // konacni poeni koji se dobiju nakon sto se izracuna dioba mjesta
+            $points = []; // poeni prema pravilima
+            $score = []; // konacni poeni koji se dobiju nakon sto se izracuna dioba mjesta
             $resultPoints = []; // poeni koji se dobiju za svaki rezultat
 
             $groupedResults = [];
-            $count          = count($results);
-            $positions_inv  = array_map(fn($n) => 1 / $n, range(1, count($results)));
+            $count = count($results);
+            $positions_inv = array_map(fn ($n) => 1 / $n, range(1, count($results)));
 
             /**
              * Izracun poena za svako mjesto prema novim pravilima
@@ -78,7 +69,7 @@ if ( ! function_exists('compute_points')) {
             }
 
             foreach ($groupedResults as $key => $value) {
-                $i     = 0;
+                $i = 0;
                 $total = 0;
                 foreach ($value as $v) {
                     $total += $v;
@@ -101,7 +92,7 @@ if ( ! function_exists('compute_points')) {
     }
 }
 
-if ( ! function_exists('create_travellers')) {
+if (! function_exists('create_travellers')) {
     function create_travellers(
         Collection $roundData,
         Collection $receivedData,
@@ -130,35 +121,35 @@ if ( ! function_exists('create_travellers')) {
             }
         }*/
         $travellers = $roundData->map(function ($round, $roundKey) use ($receivedData) {
-            $boards = $receivedData->filter(fn($receivedItem
+            $boards = $receivedData->filter(fn ($receivedItem
             ) => $receivedItem['session_id'] == $round['session_id'] && $receivedItem['table'] == $round['table'] && $receivedItem['round'] == $round['round'] && $round['low_board'] <= $receivedItem['board'] && $receivedItem['board'] <= $round['high_board']);
 
             if ($boards->count() > 0) {
-                return $boards->map(fn($board) => [
+                return $boards->map(fn ($board) => [
                     'session_id' => $round['session_id'],
-                    'pairNS'     => $round['nspair'],
-                    'pairEW'     => $round['ewpair'],
-                    'table'      => $round['table'],
-                    'round'      => $round['round'],
-                    'board'      => $board['board'],
-                    'contract'   => $board['contract'],
-                    'lead'       => $board['lead'],
-                    'declarer'   => $board['declarer'],
-                    'tricks'     => $board['tricks'],
-                    'score'      => $board['score'],
-                    'ruling'     => $board['ruling'],
-                    'bye'        => false,
+                    'pairNS' => $round['nspair'],
+                    'pairEW' => $round['ewpair'],
+                    'table' => $round['table'],
+                    'round' => $round['round'],
+                    'board' => $board['board'],
+                    'contract' => $board['contract'],
+                    'lead' => $board['lead'],
+                    'declarer' => $board['declarer'],
+                    'tricks' => $board['tricks'],
+                    'score' => $board['score'],
+                    'ruling' => $board['ruling'],
+                    'bye' => false,
                 ]);
             } else {
                 for ($i = $round['low_board']; $i <= $round['high_board']; $i++) {
                     $boards->push([
                         'session_id' => $round['session_id'],
-                        'pairNS'     => $round['nspair'],
-                        'pairEW'     => $round['ewpair'],
-                        'table'      => $round['table'],
-                        'round'      => $round['round'],
-                        'board'      => $i,
-                        'bye'        => true,
+                        'pairNS' => $round['nspair'],
+                        'pairEW' => $round['ewpair'],
+                        'table' => $round['table'],
+                        'round' => $round['round'],
+                        'board' => $i,
+                        'bye' => true,
                     ]);
                 }
 
@@ -166,14 +157,15 @@ if ( ! function_exists('create_travellers')) {
             }
         });
         ds($travellers->flatten(1));
+
         return $travellers->flatten(1);
     }
 }
 
-if ( ! function_exists('calculate_matchpoints')) {
+if (! function_exists('calculate_matchpoints')) {
     function calculate_matchpoints(Collection &$travellers): void
     {
-        $numResults    = $travellers->count();
+        $numResults = $travellers->count();
         $matchpointsNS = array_fill(0, $numResults, 0);
         $matchpointsEW = array_fill(0, $numResults, 0);
 
@@ -207,11 +199,11 @@ if ( ! function_exists('calculate_matchpoints')) {
     }
 }
 
-if ( ! function_exists('calculate_butler')) {
+if (! function_exists('calculate_butler')) {
     function calculate_butler(Collection &$travellers): void
     {
-        $numResults   = $travellers->count() - $travellers->filter(fn($t) => $t['bye'])->count();
-        $totalScore   = $travellers->sum(fn($t) => $t['bye'] ? 0 : $t['score']);
+        $numResults = $travellers->count() - $travellers->filter(fn ($t) => $t['bye'])->count();
+        $totalScore = $travellers->sum(fn ($t) => $t['bye'] ? 0 : $t['score']);
         $averageScore = round($totalScore / $numResults / 10) * 10;
 
         // Calculate Butler IMPs based on comparisons to the average score
@@ -219,42 +211,41 @@ if ( ! function_exists('calculate_butler')) {
             if ($item['bye']) {
 
             } else {
-                $difference       = $item['score'] - $averageScore;
-                $imps             = convert_to_imps($difference);
+                $difference = $item['score'] - $averageScore;
+                $imps = convert_to_imps($difference);
                 $item['pointsNS'] = $imps;
                 $item['pointsEW'] = -$imps;
             }
-
 
             return $item;
         });
     }
 }
 
-if ( ! function_exists('calculate_crossimps')) {
+if (! function_exists('calculate_crossimps')) {
     function calculate_crossimps(array &$travellers): void
     {
 
     }
 }
 
-if ( ! function_exists('convert_to_imps')) {
+if (! function_exists('convert_to_imps')) {
     function convert_to_imps(int $difference): int
     {
-        $sign       = ($difference > 0) - ($difference < 0);
+        $sign = ($difference > 0) - ($difference < 0);
         $difference = abs($difference);
 
         $impsTable = [
-            0  => 10,
-            1  => 40,
-            2  => 80,
-            3  => 120,
-            4  => 160,
-            5  => 210,
-            6  => 260,
-            7  => 310,
-            8  => 360,
-            9  => 420,
+            0 => 10,
+            1 => 40,
+            2 => 80,
+            3 => 120,
+            4 => 160,
+            5 => 210,
+            6 => 260,
+            7 => 310,
+            8 => 360,
+            9 => 420,
             10 => 490,
             11 => 590,
             12 => 740,
@@ -281,4 +272,3 @@ if ( ! function_exists('convert_to_imps')) {
         return $sign * 24;
     }
 }
-

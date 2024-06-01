@@ -5,7 +5,6 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\TournamentResource\Pages;
 use App\Filament\Resources\TournamentResource\RelationManagers;
 use App\Models\Tournament;
-use Filament\Actions\DeleteAction;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -15,12 +14,13 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Filament\Actions;
 
 class TournamentResource extends Resource
 {
     protected static ?string $model = Tournament::class;
+
     protected static ?string $modelLabel = 'turnir';
+
     protected static ?string $pluralModelLabel = 'turniri';
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
@@ -37,7 +37,7 @@ class TournamentResource extends Resource
                     'XIMP' => 'Cross IMPs',
                     'Tim' => 'Tim',
                 ])->label('Tip turnira'),
-                TextInput::make('remote_id')->label('HBS šifra turnira')
+                TextInput::make('remote_id')->label('HBS šifra turnira'),
             ]);
     }
 
@@ -71,7 +71,7 @@ class TournamentResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\RanksRelationManager::class
+            RelationManagers\RanksRelationManager::class,
         ];
     }
 
@@ -81,7 +81,7 @@ class TournamentResource extends Resource
             'index' => Pages\ListTournaments::route('/'),
             'create' => Pages\CreateTournament::route('/create'),
             'edit' => Pages\EditTournament::route('/{record}/edit'),
-            'view' => Pages\ViewTournament::route('/{record}')
+            'view' => Pages\ViewTournament::route('/{record}'),
         ];
     }
 }

@@ -22,9 +22,9 @@ class ListPayments extends ListRecords
     public function getTabs(): array
     {
         return [
-            'all'   => Tab::make('Sve'),
-            'income' => Tab::make('Uplate')->modifyQueryUsing(fn(Builder $query) => $query->where('type','=', 'income')),
-            'expense'      => Tab::make('Isplate')->modifyQueryUsing(fn(Builder $query) => $query->where('type','=', 'expense')),
+            'all' => Tab::make('Sve'),
+            'income' => Tab::make('Uplate')->modifyQueryUsing(fn (Builder $query) => $query->where('type', '=', 'income')),
+            'expense' => Tab::make('Isplate')->modifyQueryUsing(fn (Builder $query) => $query->where('type', '=', 'expense')),
         ];
     }
 }

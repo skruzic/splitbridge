@@ -22,7 +22,7 @@ class Payment extends Model
     ];
 
     protected $casts = [
-        'amount'       => MoneyCast::class,
+        'amount' => MoneyCast::class,
         'payment_date' => 'datetime',
     ];
 

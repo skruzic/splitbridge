@@ -17,9 +17,9 @@ class MemberFactory extends Factory
     public function definition()
     {
         return [
-            'surname'   => fake()->lastName(),
-            'name'      => fake()->firstName(),
-            'email'     => fake()->safeEmail(),
+            'surname' => fake()->lastName(),
+            'name' => fake()->firstName(),
+            'email' => fake()->safeEmail(),
             'crobridge' => fake()->randomNumber(5, true),
         ];
     }

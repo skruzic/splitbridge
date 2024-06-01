@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -24,11 +23,11 @@ class Page extends Model
         });
     }
 
-   public function getSlugOptions(): SlugOptions
-   {
-       // TODO: Implement getSlugOptions() method.
-       return SlugOptions::create()->generateSlugsFrom('title')->saveSlugsTo('slug');
-   }
+    public function getSlugOptions(): SlugOptions
+    {
+        // TODO: Implement getSlugOptions() method.
+        return SlugOptions::create()->generateSlugsFrom('title')->saveSlugsTo('slug');
+    }
 
     public function user(): BelongsTo
     {

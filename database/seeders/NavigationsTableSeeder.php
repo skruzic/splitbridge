@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use RyanChandler\FilamentNavigation\Models\Navigation;
 
@@ -16,9 +15,9 @@ class NavigationsTableSeeder extends Seeder
     public function run()
     {
         Navigation::create([
-            'name'   => 'Menu',
+            'name' => 'Menu',
             'handle' => 'menu',
-            'items'  => [],
+            'items' => [],
         ]);
     }
 }

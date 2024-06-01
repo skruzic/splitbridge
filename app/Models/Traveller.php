@@ -28,7 +28,7 @@ class Traveller extends Model
 
     protected $casts = [
         'ruling' => 'boolean',
-        'bye'    => 'boolean',
+        'bye' => 'boolean',
     ];
 
     public function board(): BelongsTo
@@ -39,7 +39,7 @@ class Traveller extends Model
     public function scopeByUnit(Builder $query, int $pairNumber): void
     {
         $query->where('pairNS', $pairNumber)
-              ->orWhere('pairEW', $pairNumber)
-              ->with('board');
+            ->orWhere('pairEW', $pairNumber)
+            ->with('board');
     }
 }

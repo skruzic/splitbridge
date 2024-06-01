@@ -3,19 +3,15 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\DocumentResource\Pages;
-use App\Filament\Resources\DocumentResource\RelationManagers;
 use App\Models\Document;
-use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\MarkdownEditor;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables\Table;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Tables\Table;
 
 class DocumentResource extends Resource
 {
@@ -42,14 +38,14 @@ class DocumentResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('title')
+                TextColumn::make('title'),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make()
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
@@ -66,9 +62,9 @@ class DocumentResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index'  => Pages\ListDocuments::route('/'),
+            'index' => Pages\ListDocuments::route('/'),
             'create' => Pages\CreateDocument::route('/create'),
-            'edit'   => Pages\EditDocument::route('/{record}/edit'),
+            'edit' => Pages\EditDocument::route('/{record}/edit'),
         ];
     }
 }

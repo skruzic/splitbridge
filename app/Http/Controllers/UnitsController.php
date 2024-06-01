@@ -61,14 +61,13 @@ class UnitsController extends Controller
                 $traveller['opp'] = $oppUnit['names'];
             }
 
-
             return $traveller;
         });
 
         return view('units.show', [
             'boards' => $boards,
-            't'      => $tournament,
-            'unit'   => $unit,
+            't' => $tournament,
+            'unit' => $unit,
         ]);
     }
 

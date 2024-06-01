@@ -7,7 +7,6 @@ use Filament\Forms\Components\DateTimePicker;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Filament\Navigation\NavigationGroup;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
@@ -27,10 +26,10 @@ class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
-        Table::$defaultDateDisplayFormat              = 'd.m.Y.';
-        Table::$defaultDateTimeDisplayFormat          = 'd.m.Y. H:i';
+        Table::$defaultDateDisplayFormat = 'd.m.Y.';
+        Table::$defaultDateTimeDisplayFormat = 'd.m.Y. H:i';
         DateTimePicker::$defaultDateTimeDisplayFormat = 'd.m.Y. H:i';
-        DatePicker::$defaultDateDisplayFormat         = 'd.m.Y.';
+        DatePicker::$defaultDateDisplayFormat = 'd.m.Y.';
 
         return $panel
             ->default()
