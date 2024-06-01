@@ -68,6 +68,7 @@ class UnitsController extends Controller
             'boards' => $boards,
             't' => $tournament,
             'unit' => $unit,
+            'top' => $tournament->type == 'MP' ? 6 : null
         ]);
     }
 
