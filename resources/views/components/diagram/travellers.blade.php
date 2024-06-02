@@ -20,17 +20,19 @@
         </x-table.header>
         <x-table.body>
             @foreach($travellers as $t)
-                <x-table.row>
-                    <x-table.cell>{{ $t['round'] }}.</x-table.cell>
-                    <x-table.cell>{{ $t['pairNS'] }}</x-table.cell>
-                    <x-table.cell>{{ $t['pairEW'] }}</x-table.cell>
-                    <x-table.cell>{{ $t['contract'] }}</x-table.cell>
-                    <x-table.cell>{{ $t['declarer'] }}</x-table.cell>
-                    <x-table.cell>{{ $t['lead'] }}</x-table.cell>
-                    <x-table.cell>{{ $t['score'] }}</x-table.cell>
-                    <x-table.cell>{{ $t['pointsNS'] }}</x-table.cell>
-                    <x-table.cell>{{ $t['pointsEW'] }}</x-table.cell>
-                </x-table.row>
+                @if ($t['pairNS'] != 0 && $t['pairEW'] != 0)
+                    <x-table.row>
+                        <x-table.cell>{{ $t['round'] }}.</x-table.cell>
+                        <x-table.cell>{{ $t['pairNS'] }}</x-table.cell>
+                        <x-table.cell>{{ $t['pairEW'] }}</x-table.cell>
+                        <x-table.cell>{{ $t['contract'] }}</x-table.cell>
+                        <x-table.cell>{{ $t['declarer'] }}</x-table.cell>
+                        <x-table.cell>{{ $t['lead'] }}</x-table.cell>
+                        <x-table.cell>{{ $t['score'] }}</x-table.cell>
+                        <x-table.cell>{{ $t['pointsNS'] }}</x-table.cell>
+                        <x-table.cell>{{ $t['pointsEW'] }}</x-table.cell>
+                    </x-table.row>
+                @endif
             @endforeach
         </x-table.body>
     </x-table.table>

@@ -30,7 +30,6 @@ return new class extends Migration
             $table->string('tricks', 3)->nullable();
             $table->integer('score');
             $table->boolean('ruling')->default(false);
-            $table->boolean('bye')->default(false);
             $table->integer('pointsNS');
             $table->integer('pointsEW');
             $table->timestamps();

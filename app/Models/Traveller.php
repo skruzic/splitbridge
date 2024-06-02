@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\MoneyCast;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -21,14 +22,14 @@ class Traveller extends Model
         'tricks',
         'score',
         'ruling',
-        'bye',
         'pointsNS',
         'pointsEW',
     ];
 
     protected $casts = [
-        'ruling' => 'boolean',
-        'bye' => 'boolean',
+        'ruling'   => 'boolean',
+        'pointsNS' => MoneyCast::class,
+        'pointsEW' => MoneyCast::class,
     ];
 
     public function board(): BelongsTo
@@ -39,7 +40,7 @@ class Traveller extends Model
     public function scopeByUnit(Builder $query, int $pairNumber): void
     {
         $query->where('pairNS', $pairNumber)
-            ->orWhere('pairEW', $pairNumber)
-            ->with('board');
+              ->orWhere('pairEW', $pairNumber)
+              ->with('board');
     }
 }

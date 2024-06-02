@@ -50,13 +50,8 @@ class UnitsController extends Controller
 
             $oppUnit = $tournament->units()->where('pairNumber', $oppNumber)->first();
 
-            if ($traveller['bye']) {
+            if ($traveller['pairNS'] == 0 || $traveller['pairEW'] == 0) {
                 $traveller['opp'] = 'Bye';
-                if ($oppNumber == $b['pairNS']) {
-                    $traveller['pointsEW'] = 3;
-                } else {
-                    $traveller['pointsNS'] = 3;
-                }
             } else {
                 $traveller['opp'] = $oppUnit['names'];
             }
@@ -66,9 +61,8 @@ class UnitsController extends Controller
 
         return view('units.show', [
             'boards' => $boards,
-            't' => $tournament,
-            'unit' => $unit,
-            'top' => $tournament->type == 'MP' ? 6 : null
+            't'      => $tournament,
+            'unit'   => $unit,
         ]);
     }
 

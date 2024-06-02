@@ -20,7 +20,6 @@ return new class extends Migration
             $table->text('body');
             $table->boolean('sticky');
             $table->enum('status', ['DRAFT', 'PUBLISHED'])->default('DRAFT');
-            $table->dateTime('published_date')->nullable();
             $table->timestamps();
         });
     }

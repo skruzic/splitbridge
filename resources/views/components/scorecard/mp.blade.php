@@ -1,12 +1,14 @@
 @props([
     'boards',
     'unit',
-    'top' => 6
+    'top' => 8
 ])
 
 @php
     $total = $boards->reduce(fn (?float $acc, $b) => $acc + ($unit['pairNumber'] == $b['pairNS'] ? $b['pointsNS'] : $b['pointsEW']), 0);
     $totalPercent = $total / (count($boards) * $top);
+
+
 @endphp
 
 <x-table.table>

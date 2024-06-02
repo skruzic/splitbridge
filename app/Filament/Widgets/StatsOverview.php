@@ -22,8 +22,8 @@ class StatsOverview extends BaseWidget
             Stat::make('Broj članova', Member::count()),
             Stat::make('Broj turnira', Tournament::count())->description('od listopada 2014. godine')->color('success'),
             Stat::make('Stanje blagajne',
-                $fmt->formatCurrency($amount,
-                    'EUR'))->description('na dan '.$lastPayment->payment_date->translatedFormat('jS F Y.')),
+                $fmt->formatCurrency($amount || 0,
+                    'EUR'))->description('na dan '.$lastPayment?->payment_date->translatedFormat('jS F Y.')),
         ];
     }
 }

@@ -29,9 +29,9 @@ class TournamentsController extends Controller
             });
 
             $total = $unitBoards->reduce(function (?float $acc, Traveller $traveller) use ($unit) {
-                if ($traveller['bye']) {
+                /*if ($traveller['bye']) {
                     return $acc + 3;
-                }
+                }*/
 
                 return $acc + ($unit['pairNumber'] == $traveller['pairNS'] ? $traveller['pointsNS'] : $traveller['pointsEW']);
             }, 0.0);

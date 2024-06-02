@@ -19,7 +19,7 @@
             <x-table.head colspan="2">Rezultat</x-table.head>
             <x-table.head>Poeni</x-table.head>
         </x-table.row>
-    </x-table.header>
+    </x-table.header>7
     <x-table.body>
         @foreach($boards as $b)
             <x-table.row>

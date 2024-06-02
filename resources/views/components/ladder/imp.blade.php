@@ -13,7 +13,6 @@
                     {{ $ranks[$i]['unit']['player1'] }} - {{ $ranks[$i]['unit']['player2'] }}
                     </a>
                 </x-table.cell>
-                <x-table.cell>{{ count($ranks[$i]['boards']) }}</x-table.cell>
                 <x-table.cell class="font-bold text-right">{{ $ranks[$i]['total'] }}</x-table.cell>
             </x-table.row>
         @endfor
