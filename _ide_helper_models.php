@@ -344,16 +344,18 @@ namespace App\Models{
  * @property int $pairNS
  * @property int $pairEW
  * @property int $round
- * @property string $contract
+ * @property string|null $contract
  * @property string|null $declarer
  * @property string|null $lead
+ * @property string|null $tricks
  * @property int $score
  * @property bool $ruling
- * @property int $pointsNS
- * @property int $pointsEW
+ * @property mixed $pointsNS
+ * @property mixed $pointsEW
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|Traveller byUnit()
+ * @property-read \App\Models\Board|null $board
+ * @method static \Illuminate\Database\Eloquent\Builder|Traveller byUnit(int $pairNumber)
  * @method static \Illuminate\Database\Eloquent\Builder|Traveller newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Traveller newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Traveller query()
@@ -370,6 +372,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Traveller whereRound($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Traveller whereRuling($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Traveller whereScore($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Traveller whereTricks($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Traveller whereUpdatedAt($value)
  */
 	class Traveller extends \Eloquent {}
@@ -386,6 +389,7 @@ namespace App\Models{
  * @property string $player2
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read mixed $names
  * @method static \Illuminate\Database\Eloquent\Builder|Unit newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Unit newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Unit query()

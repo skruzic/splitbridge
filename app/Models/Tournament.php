@@ -81,102 +81,8 @@ class Tournament extends Model
                 }
             }
 
-            if ($model->remote_id) {
-                $response = Http::get("https://bridge.hr/api/pair/$model->remote_id");
-
-                $units        = $response->json('data.units');
-                $sessions     = $response->json('data.sessions');
-                $roundData    = $response->collect('data.rounddata');
-                $receivedData = $response->collect('data.receiveddata');
-                $allPlayers   = collect($response->json('data.players'));
-                $boards       = $response->json('data.handRecords');
-
-                $numPairs = count($units);
-
-                // Sesije
-                $sessionModels = array_map(function ($item) {
-                    return new Session(['number' => $item['number']]);
-                }, $sessions);
-
-                $model->sessions()->saveMany($sessionModels);
-                $model->refresh();
-
-                // Bordovi
-                foreach ($boards as $board) {
-                    $currentSessionNumber = array_values(array_filter($sessions,
-                        fn($session) => $session['id'] === $board['session_id']))[0]['number'];
-
-                    $currentSession = $model->sessions()->where('number', $currentSessionNumber)->first();
-
-                    $currentSession->boards()->save(new Board([
-                        'number' => $board['board'],
-                        'dealer' => $board['dealer'],
-                        'vul'    => $board['vul'],
-                        'ns'     => $board['ns'],
-                        'nh'     => $board['nh'],
-                        'nd'     => $board['nd'],
-                        'nc'     => $board['nc'],
-                        'ss'     => $board['ss'],
-                        'sh'     => $board['sh'],
-                        'sd'     => $board['sd'],
-                        'sc'     => $board['sc'],
-                        'es'     => $board['es'],
-                        'eh'     => $board['eh'],
-                        'ed'     => $board['ed'],
-                        'ec'     => $board['ec'],
-                        'ws'     => $board['ws'],
-                        'wh'     => $board['wh'],
-                        'wd'     => $board['wd'],
-                        'wc'     => $board['wc'],
-                        'ddn'    => $board['dfn'],
-                        'dds'    => $board['dfs'],
-                        'dde'    => $board['dfe'],
-                        'ddw'    => $board['dfw'],
-                    ]));
-                }
-
-                // Parovi
-                $model->units()->createMany(array_map(function ($item) use ($allPlayers) {
-                    $p1 = $allPlayers->firstWhere('hbs_id', $item['p1']);
-                    $p2 = $allPlayers->firstWhere('hbs_id', $item['p2']);
-
-                    return [
-                        'pairNumber' => $item['number'],
-                        'player1'    => is_array($p1) ? "{$p1['ime']} {$p1['prezime']}" : $item['p1'],
-                        'player2'    => is_array($p2) ? "{$p2['ime']} {$p2['prezime']}" : $item['p1'],
-                    ];
-                }, $units));
-
-                $travellers = create_travellers($roundData, $receivedData);
-
-                // Grupiranje po sjednici i bordu (isti bordovi se mogu igrati u više sjednica)
-                $travellersBySessionByBoard = $travellers->groupBy([
-                    'session_id',
-                    'board',
-                ]);
-
-                $travellersBySessionByBoard->each(function ($itemsByBoard, $key) use ($sessions, $model, $numPairs) {
-                    $currentSessionNumber = array_values(array_filter($sessions,
-                        fn($session) => $session['id'] === $key))[0]['number'];
-
-                    $currentSession = $model->sessions()->where('number', $currentSessionNumber)->first();
-
-                    collect($itemsByBoard)->each(function ($item, $boardKey) use ($currentSession, $model, $numPairs) {
-                        if ($model->type == 'MP') {
-                            calculate_matchpoints($item);
-                        } elseif ($model->type == 'IMP') {
-                            calculate_butler($item, butler_exclusions($numPairs));
-                        } elseif ($model->type == 'XIMP') {
-                            calculate_crossimps($item);
-                        } else {
-                            // TODO: Team
-                        }
-
-                        $board = $currentSession->boards()->where('number', $boardKey)->first();
-                        $board->travellers()->createMany($item);
-                    });
-
-                });
+            if ($model->remote_id > 0) {
+                $this->parseHBS();
             }
         });
 
@@ -257,6 +163,105 @@ class Tournament extends Model
         }
 
         return $points;
+    }
+
+    public function parseHBS(): void
+    {
+        $response = Http::get("https://bridge.hr/api/pair/$this->remote_id");
+
+        $units        = $response->json('data.units');
+        $sessions     = $response->json('data.sessions');
+        $roundData    = $response->collect('data.rounddata');
+        $receivedData = $response->collect('data.receiveddata');
+        $allPlayers   = collect($response->json('data.players'));
+        $boards       = $response->json('data.handRecords');
+
+        $numPairs = count($units);
+
+        // Sesije
+        $sessionModels = array_map(function ($item) {
+            return new Session(['number' => $item['number']]);
+        }, $sessions);
+
+        $this->sessions()->saveMany($sessionModels);
+        $this->refresh();
+
+        // Bordovi
+        foreach ($boards as $board) {
+            $currentSessionNumber = array_values(array_filter($sessions,
+                fn($session) => $session['id'] === $board['session_id']))[0]['number'];
+
+            $currentSession = $this->sessions()->where('number', $currentSessionNumber)->first();
+
+            $currentSession->boards()->save(new Board([
+                'number' => $board['board'],
+                'dealer' => $board['dealer'],
+                'vul'    => $board['vul'],
+                'ns'     => $board['ns'],
+                'nh'     => $board['nh'],
+                'nd'     => $board['nd'],
+                'nc'     => $board['nc'],
+                'ss'     => $board['ss'],
+                'sh'     => $board['sh'],
+                'sd'     => $board['sd'],
+                'sc'     => $board['sc'],
+                'es'     => $board['es'],
+                'eh'     => $board['eh'],
+                'ed'     => $board['ed'],
+                'ec'     => $board['ec'],
+                'ws'     => $board['ws'],
+                'wh'     => $board['wh'],
+                'wd'     => $board['wd'],
+                'wc'     => $board['wc'],
+                'ddn'    => $board['dfn'],
+                'dds'    => $board['dfs'],
+                'dde'    => $board['dfe'],
+                'ddw'    => $board['dfw'],
+            ]));
+        }
+
+        // Parovi
+        $this->units()->createMany(array_map(function ($item) use ($allPlayers) {
+            $p1 = $allPlayers->firstWhere('hbs_id', $item['p1']);
+            $p2 = $allPlayers->firstWhere('hbs_id', $item['p2']);
+
+            return [
+                'pairNumber' => $item['number'],
+                'player1'    => is_array($p1) ? "{$p1['ime']} {$p1['prezime']}" : $item['p1'],
+                'player2'    => is_array($p2) ? "{$p2['ime']} {$p2['prezime']}" : $item['p1'],
+            ];
+        }, $units));
+
+        $travellers = create_travellers($roundData, $receivedData);
+
+        // Grupiranje po sjednici i bordu (isti bordovi se mogu igrati u više sjednica)
+        $travellersBySessionByBoard = $travellers->groupBy([
+            'session_id',
+            'board',
+        ]);
+
+        $travellersBySessionByBoard->each(function ($itemsByBoard, $key) use ($sessions, $numPairs) {
+            $currentSessionNumber = array_values(array_filter($sessions,
+                fn($session) => $session['id'] === $key))[0]['number'];
+
+            $currentSession = $this->sessions()->where('number', $currentSessionNumber)->first();
+
+            collect($itemsByBoard)->each(function ($item, $boardKey) use ($currentSession, $numPairs) {
+                if ($this->type == 'MP') {
+                    calculate_matchpoints($item);
+                } elseif ($this->type == 'IMP') {
+                    calculate_butler($item, butler_exclusions($numPairs));
+                } elseif ($this->type == 'XIMP') {
+                    calculate_crossimps($item);
+                } else {
+                    // TODO: Team
+                }
+
+                $board = $currentSession->boards()->where('number', $boardKey)->first();
+                $board->travellers()->createMany($item);
+            });
+
+        });
     }
 
     /**

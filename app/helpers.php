@@ -1,6 +1,10 @@
 <?php
 
+use App\Models\Board;
+use App\Models\Session;
+use App\Models\Tournament;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Http;
 
 if ( ! function_exists('array_map_recursive')) {
     /**
@@ -188,11 +192,9 @@ if ( ! function_exists('calculate_matchpoints')) {
 if ( ! function_exists('calculate_butler')) {
     function calculate_butler(Collection &$travellers, int $exclude = 0): void
     {
-        //$numResults   = $travellers->filter(fn($t) => $t['pairNS'] != 0 && $t['pairEW'] != 0)->count(); // bez baja
         $scores = $travellers->filter(fn($t
         ) => $t['pairNS'] != 0 && $t['pairEW'] != 0)->pluck('score')->sort()->values();
-        //$totalScore   = $travellers->sum(fn($t) => ($t['pairNS'] == 0 || $t['pairEW'] == 0) ? 0 : $t['score']);
-        //$averageScore = round($totalScore / $numResults / 10) * 10;
+
         $numScores = $scores->count();
 
         // Izbaci N najboljih i najgorih
@@ -200,17 +202,8 @@ if ( ! function_exists('calculate_butler')) {
 
         $averageScore = round($filteredScores->avg() / 10) * 10;
 
-        ds([
-            'board'          => $travellers[0]['board'],
-            'avg'            => $averageScore,
-            'scores'         => $scores,
-            'filteredScores' => $filteredScores,
-        ]);
-
         // Calculate Butler IMPs based on comparisons to the average score
         $travellers->transform(function ($item) use ($averageScore) {
-
-
             if ($item['pairNS'] == 0) {
                 $item['pointsEW'] = 3;
             } elseif

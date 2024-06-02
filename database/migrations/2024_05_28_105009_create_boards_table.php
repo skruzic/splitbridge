@@ -28,26 +28,26 @@ return new class extends Migration
                 'EW',
                 'All',
             ]);
-            $table->string('ns', 13);
-            $table->string('nh', 13);
-            $table->string('nd', 13);
-            $table->string('nc', 13);
-            $table->string('ss', 13);
-            $table->string('sh', 13);
-            $table->string('sd', 13);
-            $table->string('sc', 13);
-            $table->string('es', 13);
-            $table->string('eh', 13);
-            $table->string('ed', 13);
-            $table->string('ec', 13);
-            $table->string('ws', 13);
-            $table->string('wh', 13);
-            $table->string('wd', 13);
-            $table->string('wc', 13);
-            $table->string('ddn', 5);
-            $table->string('dds', 5);
-            $table->string('dde', 5);
-            $table->string('ddw', 5);
+            $table->string('ns', 13)->nullable();
+            $table->string('nh', 13)->nullable();
+            $table->string('nd', 13)->nullable();
+            $table->string('nc', 13)->nullable();
+            $table->string('ss', 13)->nullable();
+            $table->string('sh', 13)->nullable();
+            $table->string('sd', 13)->nullable();
+            $table->string('sc', 13)->nullable();
+            $table->string('es', 13)->nullable();
+            $table->string('eh', 13)->nullable();
+            $table->string('ed', 13)->nullable();
+            $table->string('ec', 13)->nullable();
+            $table->string('ws', 13)->nullable();
+            $table->string('wh', 13)->nullable();
+            $table->string('wd', 13)->nullable();
+            $table->string('wc', 13)->nullable();
+            $table->string('ddn', 5)->nullable();
+            $table->string('dds', 5)->nullable();
+            $table->string('dde', 5)->nullable();
+            $table->string('ddw', 5)->nullable();
             $table->timestamps();
         });
     }
