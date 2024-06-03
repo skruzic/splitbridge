@@ -13,7 +13,7 @@ class ParseTournaments extends Command
      *
      * @var string
      */
-    protected $signature = 'tournaments:parse-all {type : Tournament type}';
+    protected $signature = 'tournament:parse-all {type : Tournament type}';
 
     /**
      * The console command description.

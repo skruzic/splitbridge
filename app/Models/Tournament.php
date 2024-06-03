@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Exception;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -42,7 +44,20 @@ class Tournament extends Model
         parent::booted();
 
         static::creating(function ($model) {
+            DB::transaction();
             $model->season_id = Season::getCurrent()->id;
+
+            if ($model->remote_id > 0) {
+                try {
+                    $this->parseHBS();
+
+                    DB::commit();
+                }
+                catch(Exception $ex) {
+                    DB::rollBack();
+                    throw $ex;
+                }
+            }
         });
 
         static::created(function (Tournament $model) {
@@ -81,9 +96,7 @@ class Tournament extends Model
                 }
             }
 
-            if ($model->remote_id > 0) {
-                $this->parseHBS();
-            }
+
         });
 
         static::deleting(function (Tournament $model) {
@@ -180,11 +193,12 @@ class Tournament extends Model
 
         // Sesije
         $sessionModels = array_map(function ($item) {
-            return new Session(['number' => $item['number']]);
+            //return new Session(['number' => $item['number']]);
+            return ['number' => $item['number']];
         }, $sessions);
 
-        $this->sessions()->saveMany($sessionModels);
-        $this->refresh();
+        $this->sessions()->createMany($sessionModels);
+        //$this->refresh();
 
         // Bordovi
         foreach ($boards as $board) {

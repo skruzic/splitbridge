@@ -12,7 +12,7 @@ class ParseTournament extends Command
      *
      * @var string
      */
-    protected $signature = 'tournaments:parse {t}';
+    protected $signature = 'tournament:parse {t}';
 
     /**
      * The console command description.
@@ -30,6 +30,7 @@ class ParseTournament extends Command
 
         if ($t->remote_id > 0) {
             $t->parseHBS();
+            $this->info('Obrada turnira '. $this->argument('t') .' je bila uspješna!');
         } else {
             $this->warn('Turnir ' . $this->argument('t') . ' se ne može obraditi.');
         }
