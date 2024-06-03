@@ -17,7 +17,11 @@
                     <x-table.cell>{{ $t->date->format('d.m.Y.') }}</x-table.cell>
                     <x-table.cell>{{ $t->date->dayName }}</x-table.cell>
                     <x-table.cell>{{ $t->type }}</x-table.cell>
-                    @if($t->remote_id > 0)
+                    @if($t->sessions->count() > 0)
+                        <x-table.cell>
+                            <x-button variant="primaryOutline" size="sm" href="{{ route('tournaments.show', $t->id) }}">Rezultati</x-button>
+                        </x-table.cell>
+                    @elseif($t->remote_id > 0)
                         <x-table.cell>
                             <x-button variant="primaryOutline" size="sm" href="{{ url('https://bridge.hr/tournaments/pairs/'.$t->remote_id) }}" class="btn btn-outline-primary btn-sm"
                                target="_blank">Rezultati</x-button>
