@@ -182,27 +182,22 @@ class Tournament extends Model
     {
         $response = Http::get("https://bridge.hr/api/pair/$this->remote_id");
 
-        $units        = $response->json('data.units');
-        $sessions     = $response->json('data.sessions');
+        $units        = $response->collect('data.units');
+        $sessions     = $response->collect('data.sessions');
         $roundData    = $response->collect('data.rounddata');
         $receivedData = $response->collect('data.receiveddata');
-        $allPlayers   = collect($response->json('data.players'));
-        $boards       = $response->json('data.handRecords');
+        $allPlayers   = $response->collect('data.players');
+        $handRecords  = $response->collect('data.handRecords');
 
         $numPairs = count($units);
 
         // Sesije
-        $sessionModels = array_map(function ($item) {
-            //return new Session(['number' => $item['number']]);
-            return ['number' => $item['number']];
-        }, $sessions);
-
-        $this->sessions()->createMany($sessionModels);
+        $this->sessions()->createMany($sessions->map(fn($sess) => ['number' => $sess['number']]));
         $this->refresh();
 
 
         // Parovi
-        $this->units()->createMany(array_map(function ($item) use ($allPlayers) {
+        $this->units()->createMany($units->transform(function ($item) use ($allPlayers) {
             $p1 = $allPlayers->firstWhere('hbs_id', $item['p1']);
             $p2 = $allPlayers->firstWhere('hbs_id', $item['p2']);
 
@@ -211,12 +206,15 @@ class Tournament extends Model
                 'player1'    => is_array($p1) ? "{$p1['ime']} {$p1['prezime']}" : $item['p1'],
                 'player2'    => is_array($p2) ? "{$p2['ime']} {$p2['prezime']}" : $item['p1'],
             ];
-        }, $units));
+        }));
 
         $travellers = create_travellers($roundData, $receivedData);
 
+        //$low = $roundData->min('low_board');
+        //$high = $roundData->max('high_board');
+
         // Bordovi
-        foreach ($boards as $board) {
+        /*foreach ($boards as $board) {
             $currentSessionNumber = array_values(array_filter($sessions,
                 fn($session) => $session['id'] === $board['session_id']))[0]['number'];
 
@@ -247,7 +245,7 @@ class Tournament extends Model
                 'dde'    => $board['dfe'],
                 'ddw'    => $board['dfw'],
             ]));
-        }
+        }*/
 
         // Grupiranje po sjednici i bordu (isti bordovi se mogu igrati u više sjednica)
         $travellersBySessionByBoard = $travellers->groupBy([
@@ -255,13 +253,10 @@ class Tournament extends Model
             'board',
         ]);
 
-        $travellersBySessionByBoard->each(function ($itemsByBoard, $key) use ($sessions, $numPairs) {
-            $currentSessionNumber = array_values(array_filter($sessions,
-                fn($session) => $session['id'] === $key))[0]['number'];
+        $travellersBySessionByBoard->values()->each(function ($itemsByBoard, $key) use ($numPairs, $handRecords) {
+            $currentSession = $this->sessions()->where('number', $key + 1)->first();
 
-            $currentSession = $this->sessions()->where('number', $currentSessionNumber)->first();
-
-            collect($itemsByBoard)->each(function ($item, $boardKey) use ($currentSession, $numPairs) {
+            collect($itemsByBoard)->each(function ($item, $boardKey) use ($currentSession, $numPairs, $handRecords) {
                 if ($this->type == 'MP') {
                     calculate_matchpoints($item);
                 } elseif ($this->type == 'IMP') {
@@ -272,9 +267,10 @@ class Tournament extends Model
                     // TODO: Team
                 }
 
-                $board = $currentSession->boards()->where('number', $boardKey)->firstOrCreate([
+
+                $board      = $currentSession->boards()->where('number', $boardKey)->firstOrCreate([
                     'number' => $boardKey,
-                    'dealer' => Dealer::cases()[$boardKey % 4]->value,
+                    'dealer' => Dealer::cases()[($boardKey - 1) % 4]->value,
                     'vul'    => [
                         'None',
                         'NS',
@@ -292,13 +288,39 @@ class Tournament extends Model
                         'None',
                         'NS',
                         'EW',
-                    ][$boardKey % 16],
+                    ][($boardKey - 1) % 16],
                 ]);
+                $handRecord = $handRecords->filter(fn($item) => $item['board'] == $boardKey)->first();
+                if ($handRecord) {
+                    $board->update([
+                        'ns'  => $handRecord['ns'],
+                        'nh'  => $handRecord['nh'],
+                        'nd'  => $handRecord['nd'],
+                        'nc'  => $handRecord['nc'],
+                        'ss'  => $handRecord['ss'],
+                        'sh'  => $handRecord['sh'],
+                        'sd'  => $handRecord['sd'],
+                        'sc'  => $handRecord['sc'],
+                        'es'  => $handRecord['es'],
+                        'eh'  => $handRecord['eh'],
+                        'ed'  => $handRecord['ed'],
+                        'ec'  => $handRecord['ec'],
+                        'ws'  => $handRecord['ws'],
+                        'wh'  => $handRecord['wh'],
+                        'wd'  => $handRecord['wd'],
+                        'wc'  => $handRecord['wc'],
+                        'ddn' => $handRecord['dfn'],
+                        'dds' => $handRecord['dfs'],
+                        'dde' => $handRecord['dfe'],
+                        'ddw' => $handRecord['dfw'],
+                    ]);
+                }
                 $board->travellers()->createMany($item);
             });
 
         });
     }
+
 
     /**
      * Vraća zadnjih N turnira

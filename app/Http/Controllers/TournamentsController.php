@@ -19,6 +19,7 @@ class TournamentsController extends Controller
     public function show(Tournament $tournament)
     {
         $boards = $tournament->boards()->get();
+        ds($boards);
         $ranks = $tournament->units()->get()->map(function (Unit $unit, int $key) use ($boards) {
             $unitBoards = $boards->map(function (Board $board) use ($unit) {
                 return $board
