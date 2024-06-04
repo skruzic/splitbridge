@@ -186,6 +186,8 @@ if ( ! function_exists('calculate_matchpoints')) {
 
             return $item;
         });
+
+        neuberg($travellers);
     }
 }
 
@@ -288,5 +290,30 @@ if ( ! function_exists('butler_exclusions')) {
         }
 
         return 0;
+    }
+}
+if ( ! function_exists('neuberg')) {
+    function neuberg(Collection &$travellers): void
+    {
+        $num_scores       = $travellers->count();
+        $num_valid_scores = $num_scores - $travellers->filter(fn($item
+            ) => isset($item['ruling']) && $item['ruling'])->count();
+
+        $travellers->transform(function ($item, $index) use ($num_scores, $num_valid_scores) {
+            if ( ! isset($item['ruling']) || ! $item['ruling']) {
+                // Bez presude
+                if ($item['pairNS'] != 0) {
+                    $item['pointsNS'] = $num_scores / $num_valid_scores * ($item['pointsNS'] + 1) - 1;
+                }
+
+                if ($item['pairEW'] != 0) {
+                    $item['pointsEW'] = $num_scores / $num_valid_scores * ($item['pointsEW'] + 1) - 1;
+                }
+            }
+
+            // Bez presude ne diramo
+
+            return $item;
+        });
     }
 }

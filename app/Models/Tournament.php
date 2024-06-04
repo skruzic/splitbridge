@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\Dealer;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -44,20 +45,7 @@ class Tournament extends Model
         parent::booted();
 
         static::creating(function ($model) {
-            DB::transaction();
             $model->season_id = Season::getCurrent()->id;
-
-            if ($model->remote_id > 0) {
-                try {
-                    $this->parseHBS();
-
-                    DB::commit();
-                }
-                catch(Exception $ex) {
-                    DB::rollBack();
-                    throw $ex;
-                }
-            }
         });
 
         static::created(function (Tournament $model) {
@@ -92,6 +80,18 @@ class Tournament extends Model
                         $rank->rank          = $position;
                         $rank->points        = $points[$i];
                         $rank->save();
+                    }
+                }
+
+                if ($model->remote_id > 0) {
+                    DB::beginTransaction();
+                    try {
+                        $model->parseHBS();
+
+                        DB::commit();
+                    } catch (Exception $ex) {
+                        DB::rollBack();
+                        throw $ex;
                     }
                 }
             }
@@ -198,7 +198,22 @@ class Tournament extends Model
         }, $sessions);
 
         $this->sessions()->createMany($sessionModels);
-        //$this->refresh();
+        $this->refresh();
+
+
+        // Parovi
+        $this->units()->createMany(array_map(function ($item) use ($allPlayers) {
+            $p1 = $allPlayers->firstWhere('hbs_id', $item['p1']);
+            $p2 = $allPlayers->firstWhere('hbs_id', $item['p2']);
+
+            return [
+                'pairNumber' => $item['number'],
+                'player1'    => is_array($p1) ? "{$p1['ime']} {$p1['prezime']}" : $item['p1'],
+                'player2'    => is_array($p2) ? "{$p2['ime']} {$p2['prezime']}" : $item['p1'],
+            ];
+        }, $units));
+
+        $travellers = create_travellers($roundData, $receivedData);
 
         // Bordovi
         foreach ($boards as $board) {
@@ -234,20 +249,6 @@ class Tournament extends Model
             ]));
         }
 
-        // Parovi
-        $this->units()->createMany(array_map(function ($item) use ($allPlayers) {
-            $p1 = $allPlayers->firstWhere('hbs_id', $item['p1']);
-            $p2 = $allPlayers->firstWhere('hbs_id', $item['p2']);
-
-            return [
-                'pairNumber' => $item['number'],
-                'player1'    => is_array($p1) ? "{$p1['ime']} {$p1['prezime']}" : $item['p1'],
-                'player2'    => is_array($p2) ? "{$p2['ime']} {$p2['prezime']}" : $item['p1'],
-            ];
-        }, $units));
-
-        $travellers = create_travellers($roundData, $receivedData);
-
         // Grupiranje po sjednici i bordu (isti bordovi se mogu igrati u više sjednica)
         $travellersBySessionByBoard = $travellers->groupBy([
             'session_id',
@@ -271,7 +272,28 @@ class Tournament extends Model
                     // TODO: Team
                 }
 
-                $board = $currentSession->boards()->where('number', $boardKey)->first();
+                $board = $currentSession->boards()->where('number', $boardKey)->firstOrCreate([
+                    'number' => $boardKey,
+                    'dealer' => Dealer::cases()[$boardKey % 4]->value,
+                    'vul'    => [
+                        'None',
+                        'NS',
+                        'EW',
+                        'All',
+                        'NS',
+                        'EW',
+                        'All',
+                        'None',
+                        'EW',
+                        'All',
+                        'None',
+                        'NS',
+                        'All',
+                        'None',
+                        'NS',
+                        'EW',
+                    ][$boardKey % 16],
+                ]);
                 $board->travellers()->createMany($item);
             });
 
