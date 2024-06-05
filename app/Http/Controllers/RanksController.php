@@ -11,16 +11,6 @@ class RanksController extends Controller
 {
     public function list()
     {
-        /*$ranks = DB::table('ranks')
-                   ->join('members', 'members.id', '=', 'ranks.member_id')
-                   ->join('tournaments', 'tournaments.id', '=', 'ranks.tournament_id')
-                   ->select('members.id', 'members.first_name', 'members.last_name',
-                       DB::raw('SUM(points) AS point_count'))
-                   ->where('tournaments.season_id', Season::getCurrent()['id'])
-                   ->groupBy('member_id')
-                   ->orderBy('point_count', 'desc')
-                   ->get();*/
-
         $ranks = Rank::list()->season()->get();
 
         return view('ranks.list', ['ranks' => $ranks, 'season' => Season::getCurrent(), 'count' => 1]);

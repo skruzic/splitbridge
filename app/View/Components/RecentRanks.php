@@ -17,7 +17,7 @@ class RecentRanks extends Component
      */
     public function __construct()
     {
-        $this->ranks = Rank::top(3)->get();
+        $this->ranks = Rank::top(5)->get();
     }
 
     /**
