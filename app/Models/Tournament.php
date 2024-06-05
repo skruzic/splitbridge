@@ -191,7 +191,7 @@ class Tournament extends Model
         $allPlayers   = $response->collect('data.players');
         $handRecords  = $response->collect('data.handRecords');
 
-        $numPairs = count($units);
+        $numPairs = $units->count();
 
         // Sesije
         $this->sessions()->createMany($sessions->map(fn($sess) => ['number' => $sess['number']]));
@@ -259,11 +259,11 @@ class Tournament extends Model
             $currentSession = $this->sessions()->where('number', $key + 1)->first();
 
             collect($itemsByBoard)->each(function ($item, $boardKey) use ($currentSession, $numPairs, $handRecords) {
-                if ($this->type == 'MP') {
+                if ($this->type->value == 'MP') {
                     calculate_matchpoints($item);
-                } elseif ($this->type == 'IMP') {
+                } elseif ($this->type->value == 'IMP') {
                     calculate_butler($item, butler_exclusions($numPairs));
-                } elseif ($this->type == 'XIMP') {
+                } elseif ($this->type->value == 'XIMP') {
                     calculate_crossimps($item);
                 } else {
                     // TODO: Team

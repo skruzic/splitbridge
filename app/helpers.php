@@ -311,8 +311,7 @@ if ( ! function_exists('neuberg')) {
                 }
             }
 
-            // Bez presude ne diramo
-
+            // Presude ne diramo
             return $item;
         });
     }
