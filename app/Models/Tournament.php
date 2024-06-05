@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\Dealer;
+use App\Enums\TournamentType;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -26,6 +27,7 @@ class Tournament extends Model
     protected $casts = [
         'data' => 'array',
         'date' => 'datetime',
+        'type' => TournamentType::class,
     ];
 
     protected $with = [

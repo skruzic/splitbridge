@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\Status;
 use App\Filament\Resources\ArticleResource\Pages;
 use App\Models\Article;
 use Filament\Forms\Components\DateTimePicker;
@@ -34,11 +35,7 @@ class ArticleResource extends Resource
                 RichEditor::make('summary')->label('Sažetak')->nullable(),
                 RichEditor::make('body')->label('Sadržaj')->required(),
                 Toggle::make('sticky')->helperText('Zadržava vijest na vrhu početne stranice'),
-                Select::make('status')->options([
-                    'DRAFT' => 'Draft',
-                    'PUBLISHED' => 'Published',
-                ])->required()->default('PUBLISHED'),
-                //DateTimePicker::make('published_date')->native(false)->format('d.M.y.')->label('Vrijeme objave')->seconds(false)->default(now())->required(),
+                Select::make('status')->options(Status::class)->required()->default(Status::Published),
             ])->columns(1);
     }
 
@@ -48,14 +45,7 @@ class ArticleResource extends Resource
             ->columns([
                 TextColumn::make('title')->label('Naslov'),
                 IconColumn::make('sticky')->boolean(),
-                IconColumn::make('status')->icon(fn (string $state): string => match ($state) {
-                    'DRAFT' => 'heroicon-o-pencil',
-                    'PUBLISHED' => 'heroicon-o-check-circle'
-                })->color(fn (string $state): string => match ($state) {
-                    'DRAFT' => 'warning',
-                    'PUBLISHED' => 'success'
-                }),
-                //TextColumn::make('published_date')->dateTime()->sortable()->label('Vrijeme objave'),
+                IconColumn::make('status')->label('Objavljeno'),
             ])
             ->filters([
                 //
@@ -79,9 +69,9 @@ class ArticleResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListArticles::route('/'),
+            'index'  => Pages\ListArticles::route('/'),
             'create' => Pages\CreateArticle::route('/create'),
-            'edit' => Pages\EditArticle::route('/{record}/edit'),
+            'edit'   => Pages\EditArticle::route('/{record}/edit'),
         ];
     }
 }
