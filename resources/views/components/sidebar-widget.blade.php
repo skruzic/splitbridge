@@ -3,9 +3,9 @@
     'description' => '',
 ])
 
-<div class="rounded-lg border bg-card text-card-foreground shadow-sm border-none shadow-none">
+<div class="rounded-lg border bg-card text-card-foreground border-none shadow-none">
     <div class="flex flex-col space-y-1.5 p-6">
-        <h3 class="text-2xl font-semibold leading-none tracking-tight">{{ $title }}</h3>
+        <h3 class="text-2xl font-semibold leading-none tracking-tight text-primary">{{ $title }}</h3>
         <p class="text-sm text-muted-foreground">{{ $description }}</p>
     </div>
     <div class="p-6 pt-0">
