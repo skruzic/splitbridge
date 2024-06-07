@@ -15,6 +15,6 @@ class MembersController extends Controller
 
     public function show(Member $member)
     {
-        return view('members.show', ['member' => $member, 'ranks' => $member->ranks]);
+        return view('members.show', ['member' => $member]);
     }
 }
