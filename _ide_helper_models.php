@@ -20,7 +20,7 @@ namespace App\Models{
  * @property string|null $summary
  * @property string $body
  * @property int $sticky
- * @property string $status
+ * @property \App\Enums\Status $status
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder|Article newModelQuery()
@@ -47,26 +47,26 @@ namespace App\Models{
  * @property int $number
  * @property string $dealer
  * @property string $vul
- * @property string $ns
- * @property string $nh
- * @property string $nd
- * @property string $nc
- * @property string $ss
- * @property string $sh
- * @property string $sd
- * @property string $sc
- * @property string $es
- * @property string $eh
- * @property string $ed
- * @property string $ec
- * @property string $ws
- * @property string $wh
- * @property string $wd
- * @property string $wc
- * @property string $ddn
- * @property string $dds
- * @property string $dde
- * @property string $ddw
+ * @property string|null $ns
+ * @property string|null $nh
+ * @property string|null $nd
+ * @property string|null $nc
+ * @property string|null $ss
+ * @property string|null $sh
+ * @property string|null $sd
+ * @property string|null $sc
+ * @property string|null $es
+ * @property string|null $eh
+ * @property string|null $ed
+ * @property string|null $ec
+ * @property string|null $ws
+ * @property string|null $wh
+ * @property string|null $wd
+ * @property string|null $wc
+ * @property string|null $ddn
+ * @property string|null $dds
+ * @property string|null $dde
+ * @property string|null $ddw
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Session|null $session
@@ -303,8 +303,10 @@ namespace App\Models{
  * 
  *
  * @property int $id
+ * @property string|null $name
  * @property \Illuminate\Support\Carbon $date
- * @property string $type
+ * @property \App\Enums\TournamentType $type
+ * @property float $coefficient
  * @property int $season_id
  * @property string $results
  * @property int|null $remote_id
@@ -323,9 +325,11 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Tournament newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Tournament newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Tournament query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Tournament whereCoefficient($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tournament whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tournament whereDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tournament whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tournament whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tournament whereRemoteId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tournament whereResults($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tournament whereSeasonId($value)
@@ -418,8 +422,6 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
- * @property-read int|null $tokens_count
  * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()

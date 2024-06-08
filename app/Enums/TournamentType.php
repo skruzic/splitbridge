@@ -7,7 +7,7 @@ use Filament\Support\Contracts\HasLabel;
 
 enum TournamentType: string implements HasLabel, HasColor
 {
-    case MP = 'MP';
+    case Matchpoints = 'MP';
     case Butler = 'IMP';
     case CrossIMP = 'XIMP';
     case Timski = 'Tim';
@@ -20,7 +20,7 @@ enum TournamentType: string implements HasLabel, HasColor
     public function getColor(): string
     {
         return match ($this) {
-            self::MP => 'info',
+            self::Matchpoints => 'info',
             self::Butler => 'danger',
             self::CrossIMP => 'danger',
             self::Timski => 'warning'

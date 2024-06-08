@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\Coefficient;
 use App\Enums\Dealer;
 use App\Enums\TournamentType;
 use Exception;
@@ -18,16 +19,18 @@ class Tournament extends Model
     use HasFactory;
 
     protected $fillable = [
+        'name',
         'date',
         'type',
+        'coefficient',
         'results',
         'remote_id',
     ];
 
     protected $casts = [
-        'data' => 'array',
-        'date' => 'datetime',
-        'type' => TournamentType::class,
+        'date'        => 'date',
+        'type'        => TournamentType::class,
+        'coefficient' => Coefficient::class,
     ];
 
     protected $with = [

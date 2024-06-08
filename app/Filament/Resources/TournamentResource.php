@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\Coefficient;
 use App\Enums\TournamentType;
 use App\Filament\Resources\TournamentResource\Pages;
 use App\Filament\Resources\TournamentResource\RelationManagers;
@@ -32,8 +33,10 @@ class TournamentResource extends Resource
             ->schema([
                 Textarea::make('results')->required()->rows(4)->label('Rezultati turnira u JSON formatu')->columnSpanFull(),
                 DatePicker::make('date')->required()->default(now())->native(false)->label('Datum'),
-                Select::make('type')->options(TournamentType::class),
+                Select::make('type')->required()->options(TournamentType::class)->label('Obračun'),
                 TextInput::make('remote_id')->label('HBS šifra turnira'),
+                Select::make('coefficient')->required()->options(Coefficient::class)->default(Coefficient::Club)->label('Koeficijent turnira')->helperText('Ostaviti prazno za uobičajene klupske turnire'),
+                TextInput::make('name')->label('Naziv')->helperText('Ostaviti prazno za uobičajene klupske turnire')->columnSpanFull(),
             ]);
     }
 
