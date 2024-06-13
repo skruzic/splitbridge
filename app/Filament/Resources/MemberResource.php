@@ -63,7 +63,7 @@ class MemberResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            MemberResource\RelationManagers\RanksRelationManager::class,
         ];
     }
 
@@ -75,23 +75,6 @@ class MemberResource extends Resource
             'edit'   => Pages\EditMember::route('/{record}/edit'),
             'view'   => Pages\ViewMember::route('/{record}'),
         ];
-    }
-
-    public static function infolist(Infolist $infolist): Infolist
-    {
-        return $infolist->schema([
-            TextEntry::make('surname')->label('Prezime'),
-            TextEntry::make('name')->label('Ime'),
-            TextEntry::make('email')->label('E-mail'),
-            TextEntry::make('crobridge')->label('HBS broj'),
-
-            RepeatableEntry::make('ranks')->schema([
-                TextEntry::make('tournament.date')->label('Datum')->date('d.m.Y.'),
-                TextEntry::make('tournament.type')->label('Tip turnira')->badge(),
-                TextEntry::make('rank')->label('Mjesto')->suffix('.'),
-                TextEntry::make('points')->numeric(2)->label('Bodovi'),
-            ])->columns(4),
-        ]);
     }
 
     public static function getNavigationBadge(): ?string
