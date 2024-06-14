@@ -5,7 +5,9 @@ module.exports = {
         './resources/**/*.blade.php',
         './resources/**/*.js',
         './resources/**/*.vue',
-        "./node_modules/flowbite/**/*.js"
+        "./node_modules/flowbite/**/*.js",
+        "./vendor/lara-zeus/core/resources/views/**/*.blade.php",
+        "./vendor/lara-zeus/bolt/resources/views/themes/**/*.blade.php"
     ],
     prefix: '',
     theme: {
