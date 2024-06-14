@@ -13,6 +13,7 @@
         "filament/spatie-laravel-settings-plugin": "^3.0",
         "guzzlehttp/guzzle": "^7.2",
         "kub-at/php-simple-html-dom-parser": "^1.9",
+        "lara-zeus/bolt": "^3.0",
         "laravel/framework": "^11.0",
         "laravel/tinker": "^2.7",
         "mallardduck/blade-boxicons": "^2.4",

@@ -10,6 +10,7 @@ use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
+use Filament\SpatieLaravelTranslatablePlugin;
 use Filament\Support\Colors\Color;
 use Filament\Tables\Table;
 use Filament\Widgets;
@@ -20,16 +21,17 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use LaraZeus\Bolt\BoltPlugin;
 use RyanChandler\FilamentNavigation\FilamentNavigation;
 
 class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
-        Table::$defaultDateDisplayFormat = 'd.m.Y.';
-        Table::$defaultDateTimeDisplayFormat = 'd.m.Y. H:i';
+        Table::$defaultDateDisplayFormat              = 'd.m.Y.';
+        Table::$defaultDateTimeDisplayFormat          = 'd.m.Y. H:i';
         DateTimePicker::$defaultDateTimeDisplayFormat = 'd.m.Y. H:i';
-        DatePicker::$defaultDateDisplayFormat = 'd.m.Y.';
+        DatePicker::$defaultDateDisplayFormat         = 'd.m.Y.';
 
         return $panel
             ->default()
@@ -62,6 +64,10 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ])->plugin(FilamentNavigation::make());
+            ])->plugins([
+                FilamentNavigation::make(),
+                SpatieLaravelTranslatablePlugin::make()->defaultLocales([config('app.locale')]),
+                BoltPlugin::make()
+            ]);
     }
 }
