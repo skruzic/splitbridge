@@ -53,21 +53,12 @@
     <div id="fb-root"></div>
     <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v15.0"
             nonce="Id2w4Cd1"></script>
-    <header
-        class="fixed z-10 top-0 left-0 right-0 flex items-center h-[72px] bg-white transition-all shadow-md">
-        <div class="max-w-6xl mx-auto w-full flex items-center justify-between">
-            <div>
-                <img src="{{ asset('img/logo.png') }}" alt="" width="82px" height="40px">
-            </div>
 
-            <div class="flex items-center space-x-4">
-                <x-menu/>
-            </div>
-        </div>
-    </header>
-    <main id="main" class="mt-[72px] mx-auto max-w-6xl">
-        <section class="py-16">
-            <div class="grid grid-cols-3 gap-4">
+    <x-header/>
+
+    <main id="main" class="mt-[72px] mx-auto max-w-screen-xl">
+        <section class="pb-16 px-4">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
                 <div class="col-span-2">@yield('content')</div>
                 <aside class="space-y-4">
                     <x-sidebar-widget title="Turniri" description="Rezultati posljednjih turnira">
@@ -83,18 +74,5 @@
 
     <x-footer/>
 
-    <script type="text/javascript"
-            src="{{ asset('https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('/js/jquery.text-align.js') }}"></script>
-    <script type="text/javascript">
-        $(function() {
-            $('#dec tbody tr td:nth-child(1)').textAlign('.');
-            $('#dec tbody tr td:nth-child(3)').textAlign('.');
-            $('#member tbody tr td:nth-child(3)').textAlign('.');
-            $('#member tbody tr th:last-child').textAlign('.');
-        });
-    </script>
-    <script type="text/javascript"
-            src="{{ asset('//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js') }}"></script>
 </body>
 </html>

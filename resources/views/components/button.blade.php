@@ -5,7 +5,6 @@
     'type',
     'variant' => 'default',
     'size' => 'default',
-    'class' => '',
 ])
 
 @php

@@ -6,8 +6,8 @@
         <x-table.header>
             <x-table.row>
                 <x-table.head>Datum</x-table.head>
-                <x-table.head>Naziv</x-table.head>
-                <x-table.head>Dan</x-table.head>
+                <x-table.head class="hidden md:table-cell">Naziv</x-table.head>
+                <x-table.head class="hidden md:table-cell">Dan</x-table.head>
                 <x-table.head>Obračun</x-table.head>
                 <x-table.head><x-lucide-eye class="size-4" /></x-table.head>
             </x-table.row>
@@ -16,8 +16,8 @@
             @foreach ($tournaments as $t)
                 <x-table.row>
                     <x-table.cell>{{ $t->date->format('d.m.Y.') }}</x-table.cell>
-                    <x-table.cell>{{ $t->name ?? 'Parski turnir' }}</x-table.cell>
-                    <x-table.cell>{{ $t->date->dayName }}</x-table.cell>
+                    <x-table.cell class="hidden md:table-cell">{{ $t->name ?? 'Parski turnir' }}</x-table.cell>
+                    <x-table.cell class="hidden md:table-cell">{{ $t->date->dayName }}</x-table.cell>
                     <x-table.cell>{{ $t->type->name }}</x-table.cell>
                     @if($t->sessions->count() > 0)
                         <x-table.cell>

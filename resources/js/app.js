@@ -1,14 +1,6 @@
-document.addEventListener('DOMContentLoaded', function() {
-    /*const dropdownButton = document.getElementById('dropdownNavbarLink');
-    const dropdownMenu = document.getElementById('dropdownNavbar');
+import 'flowbite';
 
-    dropdownButton.addEventListener('mouseover', () => {
-        dropdownMenu.classList.toggle('hidden');
-    });
-
-    dropdownButton.addEventListener('mouseout', () => {
-        dropdownMenu.classList.toggle('hidden');
-    });*/
+/*document.addEventListener('DOMContentLoaded', function() {
 
     const dropdownToggles = document.querySelectorAll("#dropdown-toggle")
 
@@ -42,3 +34,4 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     })
 });
+*/

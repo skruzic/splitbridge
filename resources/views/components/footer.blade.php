@@ -1,5 +1,5 @@
 <footer>
-    <div class="container grid grid-cols-4 pt-16 pb-8">
+    <div class="container grid grid-cols-2 lg:grid-cols-4 pt-16 pb-8 gap-4">
         <div>
             <h3 class="text-3xl mb-2">Bridge klub Split</h3>
             <address class="not-italic mb-1">
@@ -7,13 +7,13 @@
             </address>
         </div>
         <div>
-            <h3 class="text-base font-bold pb-3">Turniri</h3>
+            <h3 class="text-base font-bold pb-3 text-primary">Turniri</h3>
             <div class="text-sm">
                 {!! $settings->working_hours !!}
             </div>
         </div>
         <div>
-            <h3 class="text-base font-bold pb-3">Korisni linkovi</h3>
+            <h3 class="text-base font-bold pb-3 text-primary">Korisni linkovi</h3>
             <ul>
                 @foreach ($menu->items as $item)
                     @if (!$item['children'])
@@ -32,7 +32,7 @@
             </ul>
         </div>
         <div>
-            <h3 class="text-base font-bold pb-3">Društvene mreže</h3>
+            <h3 class="text-base font-bold pb-3 text-primary">Društvene mreže</h3>
             <p>Posjetite nas na našim stranicama na društvenim mrežama</p>
             <div class="social-links mt-3">
                 <a href="https://www.facebook.com/bksplit" class="facebook" target="_blank"><i

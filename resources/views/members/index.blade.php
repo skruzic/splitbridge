@@ -9,8 +9,8 @@
                 <x-table.row>
                     <x-table.head>Prezime</x-table.head>
                     <x-table.head>Ime</x-table.head>
-                    <x-table.head>HBS #</x-table.head>
-                    <x-table.head><i class="bi bi-eye"/></x-table.head>
+                    <x-table.head class="hidden md:table-cell">HBS #</x-table.head>
+                    <x-table.head><x-lucide-eye class="size-4" /></x-table.head>
                 </x-table.row>
             </x-table.header>
             <x-table.body>
@@ -18,14 +18,14 @@
                     <x-table.row>
                         <x-table.cell>{{ $member->surname }}</x-table.cell>
                         <x-table.cell>{{ $member->name }}</x-table.cell>
-                        <x-table.cell>{{ $member->crobridge }}</x-table.cell>
+                        <x-table.cell class="hidden md:table-cell">{{ $member->crobridge }}</x-table.cell>
                         <x-table.cell class="space-x-2">
                             <x-button variant="primaryOutline" size="sm" href="{{ route('members.show', $member->id) }}">
                                 <x-lucide-info class="size-4 mr-2"/>
                                 Detalji
                             </x-button>
                             @if ($member->crobridge)
-                                <x-button variant="outline" size="sm" href="https://bridge.hr/ranking/{{$member->crobridge}}" target="_blank">
+                                <x-button variant="outline" size="sm" href="https://bridge.hr/ranking/{{$member->crobridge}}" target="_blank" class="hidden md:inline-flex">
                                     <x-lucide-user class="size-4 mr-2"/>
                                    HBS profil
                                 </x-button>
