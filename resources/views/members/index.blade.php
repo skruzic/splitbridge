@@ -1,6 +1,8 @@
-@extends('layouts.master_sidebar')
+<x-layout.sidebar>
+    <x-slot:title>
+        Članovi kluba
+    </x-slot:title>
 
-@section('content')
     <h1 class="text-4xl mb-4">Članovi kluba</h1>
 
     <div class="relative w-full overflow-auto">
@@ -36,8 +38,5 @@
             </x-table.body>
         </x-table.table>
     </div>
-@stop
+</x-layout.sidebar>
 
-@section('title')
-    Članovi kluba ::
-@stop

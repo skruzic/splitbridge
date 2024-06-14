@@ -6,7 +6,11 @@
     <link rel="shortcut icon" href="{{ asset('img/favicon.ico') }}">
 
     <title>
-        @yield('title') Bridge klub Split
+        @if (isset($title))
+            {{ $title }} :: Bridge klub Split
+        @else
+            Bridge klub Split
+        @endif
     </title>
     <!-- Primary Meta Tags -->
     <meta name="title" content="Bridge klub Split">
@@ -59,7 +63,7 @@
 
     <main id="main" class="mt-[72px] mx-auto max-w-screen-xl">
         <section class="pb-16 px-4">
-            @yield('content')
+            {{ $slot }}
         </section>
     </main>
 

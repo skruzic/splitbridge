@@ -1,6 +1,8 @@
-@extends('layouts.master')
+<x-layout.app>
+    <x-slot:title>
+        Turniri
+    </x-slot:title>
 
-@section('content')
     <h1 class="text-4xl mb-4">Klupski turniri</h1>
     <x-table.table>
         <x-table.header>
@@ -36,8 +38,4 @@
         </x-table.body>
     </x-table.table>
     {{ $tournaments->links() }}
-@stop
-
-@section('title')
-    Turniri ::
-@stop
+</x-layout.app>

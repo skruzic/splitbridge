@@ -1,6 +1,8 @@
-@extends('layouts.master_sidebar')
+<x-layout.sidebar>
+    <x-slot:title>
+        Dokumenti
+    </x-slot:title>
 
-@section('content')
    <h1 class="text-4xl mb-4">Dokumenti</h1>
     @if($documents->isEmpty())
         <p class="lead">Trenutno nema objavljenih dokumenata!</p>
@@ -24,4 +26,4 @@
         </x-table.table>
 
     @endif
-@endsection
+</x-layout.sidebar>

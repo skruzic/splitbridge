@@ -1,6 +1,4 @@
-@extends('layouts.master_sidebar')
-
-@section('content')
+<x-layout.sidebar>
     <h1 class="text-4xl mb-4">Rang lista: {{ \Carbon\Carbon::parse($date)->isoFormat('MMMM YYYY.') }}</h1>
     <x-table.table>
         <x-table.header>
@@ -50,8 +48,8 @@
             @endif
         </ul>
     </nav>
-@stop
 
-@section('title')
-    Rang lista - {{ \Carbon\Carbon::parse($date)->isoFormat('MMMM YYYY.') }} ::
-@stop
+    <x-slot:title>
+        Rang lista - {{ \Carbon\Carbon::parse($date)->isoFormat('MMMM YYYY.') }}
+    </x-slot:title>
+</x-layout.sidebar>

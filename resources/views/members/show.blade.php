@@ -1,6 +1,8 @@
-@extends('layouts.master_sidebar')
+<x-layout.sidebar>
+    <x-slot:title>
+        {{ $member->name }} {{ $member->surname }}
+    </x-slot:title>
 
-@section('content')
     <h1 class="text-4xl mb-4">{{ $member->name }} {{ $member->surname }}</h1>
 
     <x-separator/>
@@ -62,8 +64,4 @@
             </x-table.footer>
         </x-table.table>
     @endif
-@stop
-
-@section('title')
-    {{ $member->name }} {{ $member->surname }} ::
-@stop
+</x-layout.sidebar>>

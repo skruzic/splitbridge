@@ -6,7 +6,11 @@
     <link rel="shortcut icon" href="{{ asset('img/favicon.ico') }}">
 
     <title>
-        @yield('title') Bridge klub Split
+        @if (isset($title))
+            {{ $title }} :: Bridge klub Split
+        @else
+            Bridge klub Split
+        @endif
     </title>
     <meta name="title" content="Bridge klub Split">
     <meta name="description" content="Bridge klub Split - bridge turniri, tečajevi, natjecanja">
@@ -59,7 +63,7 @@
     <main id="main" class="mt-[72px] mx-auto max-w-screen-xl">
         <section class="pb-16 px-4">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-                <div class="col-span-2">@yield('content')</div>
+                <div class="col-span-2">{{ $slot }}</div>
                 <aside class="space-y-4">
                     <x-sidebar-widget title="Turniri" description="Rezultati posljednjih turnira">
                         <x-recent-tournaments/>

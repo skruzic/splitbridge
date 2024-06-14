@@ -1,6 +1,4 @@
-@extends('layouts.master_sidebar')
-
-@section('content')
+<x-layout.sidebar>
     @if ($articles->isEmpty())
         <p class="lead">Trenutno nema objavljenih vijesti!</p>
     @else
@@ -25,4 +23,4 @@
         @endforeach
         {{$articles->links() }}
     @endif
-@endsection
+</x-layout.sidebar>

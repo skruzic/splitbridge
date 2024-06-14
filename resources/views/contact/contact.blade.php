@@ -1,6 +1,8 @@
-@extends('layouts.master')
+<x-layout.app>
+    <x-slot:title>
+        Kontakt
+    </x-slot:title>
 
-@section('content')
     @if (Session::has('success'))
         <div class="alert alert-success">
             {{ session('success') }}
@@ -73,8 +75,4 @@
             </form>
         </div>
     </section>
-@stop
-
-@section('title')
-    Kontakt ::
-@stop
+</x-layout.app>

@@ -29,5 +29,5 @@
 @isset($href)
     <a href="{{ $href }}" {{ $attributes->class(['inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50', $variantClasses, $sizeClasses]) }}>{{ $slot }}</a>
 @else
-    <button {{ $attributes->class(['inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50', $variantClasses, $sizeClasses])->merge(['type'=>'button', 'class'=>$class]) }}>{{ $slot }}</button>
+    <button {{ $attributes->class(['inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50', $variantClasses, $sizeClasses])->merge(['type'=>'button']) }}>{{ $slot }}</button>
 @endisset

@@ -1,6 +1,4 @@
-@extends('layouts.master_sidebar')
-
-@section('content')
+<x-layout.sidebar>
     <h1 class="text-4xl mb-4">Rang lista za sezonu {{ $season->title }}</h1>
     <x-table.table>
         <x-table.header>
@@ -20,8 +18,8 @@
             @endforeach
         </x-table.body>
     </x-table.table>
-@stop
 
-@section('title')
-    Rang lista za sezonu {{ $season->title }} ::
-@stop
+    <x-slot:title>
+        Rang lista za sezonu {{ $season->title }}
+    </x-slot:title>
+</x-layout.sidebar>
