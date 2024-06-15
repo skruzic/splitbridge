@@ -4,12 +4,14 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\MemberResource\Pages;
 use App\Models\Member;
+use App\Models\User;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\RepeatableEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
+use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -39,9 +41,15 @@ class MemberResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('surname')->label('Prezime')->sortable(),
-                TextColumn::make('name')->label('Ime'),
-                TextColumn::make('email')->label('E-mail'),
+                TextColumn::make('surname')->label('Prezime')->sortable()->weight(FontWeight::Bold),
+                TextColumn::make('name')->label('Ime')->weight(FontWeight::Bold),
+                TextColumn::make('email')->label('E-mail')->copyable(),
+                TextColumn::make('status')->state(fn(Member $record
+                ) => $record->deleted_at == null ? 'Aktivan' : 'Neaktivan')->badge()->color(fn(string $state
+                ) => match ($state) {
+                    'Aktivan' => 'success',
+                    'Neaktivan' => 'danger'
+                }),
                 TextColumn::make('crobridge')->label('HBS broj'),
             ])
             ->filters([

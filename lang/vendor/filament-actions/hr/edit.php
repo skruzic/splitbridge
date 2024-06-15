@@ -4,16 +4,16 @@ return [
 
     'single' => [
 
-        'label' => 'Edit',
+        'label' => 'Uredi',
 
         'modal' => [
 
-            'heading' => 'Edit :label',
+            'heading' => 'Uredi :label',
 
             'actions' => [
 
                 'save' => [
-                    'label' => 'Save changes',
+                    'label' => 'Sačuvaj promjene',
                 ],
 
             ],
@@ -23,7 +23,7 @@ return [
         'notifications' => [
 
             'saved' => [
-                'title' => 'Saved',
+                'title' => 'Sačuvano',
             ],
 
         ],

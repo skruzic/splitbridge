@@ -4,16 +4,16 @@ return [
 
     'single' => [
 
-        'label' => 'View',
+        'label' => 'Pregled',
 
         'modal' => [
 
-            'heading' => 'View :label',
+            'heading' => 'Pregledaj :label',
 
             'actions' => [
 
                 'close' => [
-                    'label' => 'Close',
+                    'label' => 'Zatvori',
                 ],
 
             ],

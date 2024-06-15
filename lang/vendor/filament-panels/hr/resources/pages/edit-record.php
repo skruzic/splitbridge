@@ -2,20 +2,20 @@
 
 return [
 
-    'title' => 'Edit :label',
+    'title' => 'Uredi :label',
 
-    'breadcrumb' => 'Edit',
+    'breadcrumb' => 'Uredi',
 
     'form' => [
 
         'actions' => [
 
             'cancel' => [
-                'label' => 'Cancel',
+                'label' => 'Poništi',
             ],
 
             'save' => [
-                'label' => 'Save changes',
+                'label' => 'Sačuvaj promjene',
             ],
 
         ],
@@ -25,7 +25,7 @@ return [
     'content' => [
 
         'tab' => [
-            'label' => 'Edit',
+            'label' => 'Uredi',
         ],
 
     ],
@@ -33,7 +33,7 @@ return [
     'notifications' => [
 
         'saved' => [
-            'title' => 'Saved',
+            'title' => 'Sačuvano',
         ],
 
     ],

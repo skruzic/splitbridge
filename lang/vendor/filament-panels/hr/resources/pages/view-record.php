@@ -9,7 +9,7 @@ return [
     'content' => [
 
         'tab' => [
-            'label' => 'View',
+            'label' => 'Pregled',
         ],
 
     ],
