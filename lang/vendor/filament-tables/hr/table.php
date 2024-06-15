@@ -96,7 +96,7 @@ return [
 
     'empty' => [
 
-        'heading' => 'No :model',
+        'heading' => 'Nema zapisa',
 
         'description' => 'Create a :model to get started.',
 

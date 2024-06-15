@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\PaymentType;
 use App\Filament\Resources\PaymentResource\Pages;
 use App\Models\Member;
 use App\Models\Payment;
@@ -11,6 +12,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
@@ -33,18 +35,19 @@ class PaymentResource extends Resource
             ->schema([
                 TextInput::make('seq')->label('Broj računa')->helperText('Ovo polje se popunjava automatski')->disabled(),
                 DatePicker::make('payment_date')->required()->default(now())->native(false)->displayFormat('d.m.Y.')->label('Datum'),
-                Radio::make('type')->options([
-                    'income' => 'Uplata',
-                    'expense' => 'Isplata',
-                ])->required()->label('Tip'),
+                Radio::make('type')->options(PaymentType::class)->required()->label('Tip'),
                 TextInput::make('amount')->numeric()->step(0.01)->prefixIcon('bx-euro')->required()->label('Iznos')->columnSpanFull(),
-                Select::make('member_id')->relationship(name: 'member', modifyQueryUsing: fn (Builder $query
-                ) => $query->orderBy('surname')->orderBy('name'))->getOptionLabelFromRecordUsing(fn (Member $record
-                ) => "{$record->surname} {$record->name}")->searchable([
-                    'name',
-                    'surname',
-                ])->preload()->requiredWithout('payer_name')->label('Član'),
-                TextInput::make('payer_name')->requiredWithout('member_id')->label('Platitelj'),
+                Select::make('member_id')
+                      ->relationship(name: 'member', modifyQueryUsing: fn(Builder $query
+                      ) => $query->orderBy('surname')->orderBy('name'))->getOptionLabelFromRecordUsing(fn(Member $record
+                    ) => "{$record->surname} {$record->name}")->searchable([
+                        'name',
+                        'surname',
+                    ])->preload()->requiredWithout('payer_name')->label('Član')->live(),
+                TextInput::make('payer_name')
+                         ->requiredWithout('member_id')
+                         ->label('Platitelj')
+                         ->disabled(fn(Get $get): bool => ! ! $get('member_id')),
                 Textarea::make('description')->columnSpanFull()->required()->label('Opis plaćanja'),
             ]);
     }
@@ -53,22 +56,20 @@ class PaymentResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('seq')->label('Broj računa')->prefix(function (Payment $payment) {
-                    return "{$payment->payment_date->year}-";
-                }),
-                TextColumn::make('member_id')->label('Opis')->state(fn (Payment $record
-                ) => $record->member_id ? $record->member->fullName : $record->payer_name)->description(fn (
-                    Payment $record
-                ): string => $record->description),
-                //TextColumn::make('description')->words(10),
+                TextColumn::make('seq')
+                          ->label('Broj računa')
+                          ->prefix(fn(Payment $payment) => "{$payment->payment_date->year}-"),
+                TextColumn::make('member_id')
+                          ->label('Opis')
+                          ->state(fn(Payment $record
+                          ) => $record->member_id ? $record->member->fullName : $record->payer_name)
+                          ->description(fn(Payment $record): string => $record->description),
                 TextColumn::make('payment_date')->date(),
-                TextColumn::make('amount')->money('EUR')->label('Iznos')->color(function ($state) {
-                    if ($state >= 0) {
-                        return 'success';
-                    } else {
-                        return 'danger';
-                    }
-                })->alignRight(),
+                TextColumn::make('amount')
+                          ->money('EUR', locale: 'de')
+                          ->label('Iznos')
+                          ->color(fn($state) => $state > 0 ? 'success' : 'danger')
+                          ->alignRight(),
 
             ])
             ->filters([
@@ -94,9 +95,9 @@ class PaymentResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListPayments::route('/'),
+            'index'  => Pages\ListPayments::route('/'),
             'create' => Pages\CreatePayment::route('/create'),
-            'edit' => Pages\EditPayment::route('/{record}/edit'),
+            'edit'   => Pages\EditPayment::route('/{record}/edit'),
         ];
     }
 }
