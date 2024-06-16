@@ -2,17 +2,20 @@
 
 namespace App\Models;
 
+use App\Enums\Status;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Spatie\Sluggable\HasSlug;
-use Spatie\Sluggable\SlugOptions;
 
 class Page extends Model
 {
-    use HasFactory, HasSlug;
+    use HasFactory;
 
     protected $fillable = ['title', 'body', 'status', 'user_id'];
+
+    protected $casts = [
+        'status' => Status::class
+    ];
 
     protected static function booted()
     {
@@ -23,11 +26,11 @@ class Page extends Model
         });
     }
 
-    public function getSlugOptions(): SlugOptions
+    /*public function getSlugOptions(): SlugOptions
     {
         // TODO: Implement getSlugOptions() method.
         return SlugOptions::create()->generateSlugsFrom('title')->saveSlugsTo('slug');
-    }
+    }*/
 
     public function user(): BelongsTo
     {
