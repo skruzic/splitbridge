@@ -37,7 +37,7 @@ class ParseTournaments extends Command
                 '>',
                 0,
             ],
-        ])->pluck('id');
+        ])->doesntHave('sessions')->pluck('id');
 
         $this->withProgressBar($tournaments, fn(int $id) => Artisan::call('tournament:parse', ['t' => $id]));
     }
