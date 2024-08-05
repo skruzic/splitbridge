@@ -1,14 +1,14 @@
-@extends('layouts.master_sidebar')
-
-@section('content')
-    <h1>Sezone</h1>
-    <div class="list-group">
+<x-layout.sidebar>
+    <h1 class="text-4xl mb-4">Sezone</h1>
+    <ul>
         @foreach ($seasons as $season)
-            <a class="list-group-item list-group-item-action" href="{{ route('ranks.season', ['id' => $season->id]) }}">{{ $season->title }}</a>
+            <li>
+                <a href="{{ route('ranks.season', ['id' => $season->id]) }}">{{ $season->title }}</a>
+            </li>
         @endforeach
-    </div>
-@stop
+    </ul>
 
-@section('title')
-    Sezone ::
-@stop
+    <x-slot:title>
+        Sezone
+    </x-slot:title>
+</x-layout.sidebar>

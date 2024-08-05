@@ -1,35 +1,37 @@
-@extends('layouts.master')
+<x-layout.app>
+    <x-slot:title>
+        Turniri
+    </x-slot:title>
 
-@section('content')
-    <h1>Klupski turniri</h1>
-    <table class="table table-responsive table-hover align-middle">
-        <thead>
-            <tr>
-                <th scope="col">Datum</th>
-                <th scope="col">Dan</th>
-                <th scope="col">Obračun</th>
-                <th scope="col"><i class="bi-eye"/></th>
-            </tr>
-        </thead>
-        <tbody>
+    <h1 class="text-4xl mb-4">Klupski turniri</h1>
+    <x-table.table>
+        <x-table.header>
+            <x-table.row>
+                <x-table.head>Datum</x-table.head>
+                <x-table.head class="hidden md:table-cell">Naziv</x-table.head>
+                <x-table.head class="hidden md:table-cell">Dan</x-table.head>
+                <x-table.head>Obračun</x-table.head>
+                <x-table.head><x-lucide-eye class="size-4" /></x-table.head>
+            </x-table.row>
+        </x-table.header>
+        <x-table.body>
             @foreach ($tournaments as $t)
-                <tr>
-                    <td>{{ $t->date->format('d.m.Y.') }}</td>
-                    <td>{{ $t->date->dayName }}</td>
-                    <td>{{ $t->type }}</td>
+                <x-table.row>
+                    <x-table.cell>{{ $t->date->format('d.m.Y.') }}</x-table.cell>
+                    <x-table.cell class="hidden md:table-cell">{{ $t->name ?? 'Parski turnir' }}</x-table.cell>
+                    <x-table.cell class="hidden md:table-cell">{{ $t->date->dayName }}</x-table.cell>
+                    <x-table.cell>{{ $t->type }}</x-table.cell>
                     @if($t->remote_id > 0)
-                        <td><a href="{{ url('https://bridge.hr/tournaments/pairs/'.$t->remote_id) }}" class="btn btn-outline-primary btn-sm"
-                               target="_blank">Rezultati</a></td>
+                        <x-table.cell>
+                            <x-button variant="primaryOutline" size="sm" href="{{ url('https://bridge.hr/tournaments/pairs/'.$t->remote_id) }}" class="btn btn-outline-primary btn-sm"
+                                      target="_blank">Rezultati</x-button>
+                        </x-table.cell>
                     @else
-                        <td><button disabled class="btn btn-outline btn-sm" target="_blank">Rezultati</button></td>
+                        <x-table.cell><x-button disabled variant="outline" size="sm" target="_blank">Rezultati</x-button></x-table.cell>
                     @endif
-                </tr>
+                </x-table.row>
             @endforeach
-        </tbody>
-    </table>
+        </x-table.body>
+    </x-table.table>
     {{ $tournaments->links() }}
-@stop
-
-@section('title')
-    Turniri ::
-@stop
+</x-layout.app>

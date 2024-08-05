@@ -1,35 +1,41 @@
-@extends('layouts.master_sidebar')
+<x-layout.sidebar>
+    <x-slot:title>
+        Članovi kluba
+    </x-slot:title>
 
-@section('content')
-    <h1>Članovi kluba</h1>
+    <h1 class="text-4xl mb-4">Članovi kluba</h1>
 
-    <table class="table table-responsive table-hover align-middle">
-        <thead>
-            <tr>
-                <th scope="col">Prezime</th>
-                <th scope="col">Ime</th>
-                <th scope="col">HBS #</th>
-                <th scope="col"><i class="bi bi-eye"/></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($members as $member)
-                <tr>
-                    <td>{{ $member->surname }}</td>
-                    <td>{{ $member->name }}</td>
-                    <td>{{ $member->crobridge }}</td>
-                    <td>
-                        <a href="{{ route('members.show', $member->id) }}" class="btn btn-outline-primary btn-sm"><i class="bi bi-info-circle-fill"></i> Detalji</a>
-                        @if ($member->crobridge)
-                            <a href="https://bridge.hr/ranking/{{$member->crobridge}}" target="_blank" class="btn btn-outline-secondary btn-sm"><i class="bi bi-person"></i> HBS profil</a>
-                        @endif
-                    </td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
-@stop
-
-@section('title')
-    Članovi kluba ::
-@stop
+    <div class="relative w-full overflow-auto">
+        <x-table.table>
+            <x-table.header>
+                <x-table.row>
+                    <x-table.head>Prezime</x-table.head>
+                    <x-table.head>Ime</x-table.head>
+                    <x-table.head class="hidden md:table-cell">HBS #</x-table.head>
+                    <x-table.head><x-lucide-eye class="size-4" /></x-table.head>
+                </x-table.row>
+            </x-table.header>
+            <x-table.body>
+                @foreach ($members as $member)
+                    <x-table.row>
+                        <x-table.cell>{{ $member->surname }}</x-table.cell>
+                        <x-table.cell>{{ $member->name }}</x-table.cell>
+                        <x-table.cell class="hidden md:table-cell">{{ $member->crobridge }}</x-table.cell>
+                        <x-table.cell class="space-x-2">
+                            <x-button variant="primaryOutline" size="sm" href="{{ route('members.show', $member->id) }}">
+                                <x-lucide-info class="size-4 mr-2"/>
+                                Detalji
+                            </x-button>
+                            @if ($member->crobridge)
+                                <x-button variant="outline" size="sm" href="https://bridge.hr/ranking/{{$member->crobridge}}" target="_blank" class="hidden md:inline-flex">
+                                    <x-lucide-user class="size-4 mr-2"/>
+                                    HBS profil
+                                </x-button>
+                            @endif
+                        </x-table.cell>
+                    </x-table.row>
+                @endforeach
+            </x-table.body>
+        </x-table.table>
+    </div>
+</x-layout.sidebar>

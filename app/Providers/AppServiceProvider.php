@@ -11,6 +11,7 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Number;
 use Illuminate\Support\ServiceProvider;
 use RyanChandler\FilamentNavigation\FilamentNavigation;
 
@@ -38,6 +39,9 @@ class AppServiceProvider extends ServiceProvider
 
         // Jezik za datume
         Carbon::setLocale('hr');
+
+        // Jezik za format brojeva
+        Number::useLocale('hr');
 
         // Paginacija
         Paginator::defaultView('vendor.pagination.bootstrap-5');

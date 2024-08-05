@@ -6,7 +6,11 @@
     <link rel="shortcut icon" href="{{ asset('img/favicon.ico') }}">
 
     <title>
-        @yield('title') Bridge klub Split
+        @if (isset($title))
+            {{ $title }} :: Bridge klub Split
+        @else
+            Bridge klub Split
+        @endif
     </title>
     <meta name="title" content="Bridge klub Split">
     <meta name="description" content="Bridge klub Split - bridge turniri, tečajevi, natjecanja">
@@ -27,12 +31,10 @@
     <link
         href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,600,600i,700,700i"
         rel="stylesheet">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
-
-    @vite('resources/js/app.js')
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body>
+<body class="min-h-screen bg-background font-sans antialiased">
     <!-- Google Tag Manager -->
     <noscript>
         <iframe src="//www.googletagmanager.com/ns.html?id=GTM-TKHF7X"
@@ -55,40 +57,26 @@
     <div id="fb-root"></div>
     <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v15.0"
             nonce="Id2w4Cd1"></script>
-    <header id="header" class="fixed-top d-flex align-items-center">
-        <x-main-menu/>
-    </header>
-    <main id="main">
-        <section>
-            <div class="container">
-                <div class="row justify-content-between">
-                    <div class="col-lg-8 pt-5 pt-lg-0">
-                        @yield('content')
-                    </div>
-                    <div class="col-lg-4 pt-5 pt-lg-0">
-                        <x-recent-tournaments/>
-                        <x-recent-ranks/>
-                    </div>
-                </div>
 
+    <x-header/>
+
+    <main id="main" class="mt-[72px] mx-auto max-w-screen-xl">
+        <section class="pb-16 px-4">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                <div class="col-span-2">{{ $slot }}</div>
+                <aside class="space-y-4">
+                    <x-sidebar-widget title="Turniri" description="Rezultati posljednjih turnira">
+                        <x-recent-tournaments/>
+                    </x-sidebar-widget>
+                    <x-sidebar-widget title="Rang lista" :description="now()->translatedFormat('F Y.')">
+                        <x-recent-ranks/>
+                    </x-sidebar-widget>
+                </aside>
             </div>
         </section>
     </main>
 
     <x-footer/>
 
-    <script type="text/javascript"
-            src="{{ asset('https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('/js/jquery.text-align.js') }}"></script>
-    <script type="text/javascript">
-        $(function() {
-            $('#dec tbody tr td:nth-child(1)').textAlign('.');
-            $('#dec tbody tr td:nth-child(3)').textAlign('.');
-            $('#member tbody tr td:nth-child(3)').textAlign('.');
-            $('#member tbody tr th:last-child').textAlign('.');
-        });
-    </script>
-    <script type="text/javascript"
-            src="{{ asset('//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js') }}"></script>
 </body>
 </html>

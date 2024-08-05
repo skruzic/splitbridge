@@ -1,27 +1,25 @@
-@extends('layouts.master_sidebar')
-
-@section('content')
-    <h1>Rang lista za sezonu {{ $season->title }}</h1>
-    <table class="table table-striped" id="dec">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Član</th>
-                <th>Bodovi</th>
-            </tr>
-        </thead>
-        <tbody>
+<x-layout.sidebar>
+    <h1 class="text-4xl mb-4">Rang lista za sezonu {{ $season->title }}</h1>
+    <x-table.table>
+        <x-table.header>
+            <x-table.row>
+                <x-table.head>#</x-table.head>
+                <x-table.head>Član</x-table.head>
+                <x-table.head>Bodovi</x-table.head>
+            </x-table.row>
+        </x-table.header>
+        <x-table.body>
             @foreach ($ranks as $rank)
-                <tr>
-                    <td>{{ $count++ }}.</td>
-                    <td><a href="{{ route('members.show', $rank->id) }}">{{ $rank->surname}} {{$rank->name }}</a></td>
-                    <td>{{ number_format($rank->point_count, 2, ',') }}</td>
-                </tr>
+                <x-table.row>
+                    <x-table.cell>{{ $count++ }}.</x-table.cell>
+                    <x-table.cell><a href="{{ route('members.show', $rank->id) }}">{{ $rank->surname}} {{$rank->name }}</a></x-table.cell>
+                    <x-table.cell>{{ number_format($rank->point_count, 2, ',') }}</x-table.cell>
+                </x-table.row>
             @endforeach
-        </tbody>
-    </table>
-@stop
+        </x-table.body>
+    </x-table.table>
 
-@section('title')
-    Rang lista za sezonu {{ $season->title }} ::
-@stop
+    <x-slot:title>
+        Rang lista za sezonu {{ $season->title }}
+    </x-slot:title>
+</x-layout.sidebar>
