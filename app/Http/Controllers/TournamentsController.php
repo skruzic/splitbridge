@@ -19,30 +19,30 @@ class TournamentsController extends Controller
     public function show(Tournament $tournament)
     {
         $boards = $tournament->boards()->get();
-        $ranks = $tournament->units()->get()->map(function (Unit $unit, int $key) use ($boards) {
+        $ranks  = $tournament->units()->get()->map(function (Unit $unit, int $key) use ($boards) {
             $unitBoards = $boards->map(function (Board $board) use ($unit) {
                 return $board
                     ->travellers()
                     ->get()
-                    ->first(fn (Traveller $traveller
+                    ->first(fn(Traveller $traveller
                     ) => $traveller['pairNS'] == $unit['pairNumber'] || $traveller['pairEW'] == $unit['pairNumber']);
-            });
+            })->filter(); // Filterom uklanjamo null vrijednosti za bordove koje par nije igrao
 
-            $total = $unitBoards->reduce(function (?float $acc, Traveller $traveller) use ($unit) {
+            $total = $unitBoards->reduce(function (?float $acc, ?Traveller $traveller) use ($unit) {
                 return $acc + ($unit['pairNumber'] == $traveller['pairNS'] ? $traveller['pointsNS'] : $traveller['pointsEW']);
             }, 0.0);
 
             return [
-                'unit' => $unit,
-                'boards' => $unitBoards,
-                'total' => $total,
+                'unit'   => $unit,
+                'boards' => $unitBoards->count(),
+                'total'  => $total,
             ];
         });
 
         $sortedRanks = $ranks->sortByDesc('total', SORT_NUMERIC);
 
         return view('tournaments.show', [
-            't' => $tournament,
+            't'     => $tournament,
             'ranks' => $sortedRanks->values()->all(),
         ]);
     }
