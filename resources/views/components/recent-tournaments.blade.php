@@ -4,8 +4,9 @@
             <div class="relative">
                 <h4 class="text-lg font-bold mb-2">
                     @if($t->remote_id > 0)
-                        <a href="{{ url('https://bridge.hr/tournaments/pairs/'.$t->remote_id) }}" target="_blank" class="hover:text-primary">
-                            {{ $t->type->name == 'Tim' ? 'Timski turnir' : 'Parski turnir - '.$t->type->name }}
+                        <a href="{{ url('https://bridge.hr/tournaments/pairs/'.$t->remote_id) }}" target="_blank"
+                           class="hover:text-primary">
+                            {{ !is_null($t->name) ? $t->name : ($t->type->name == 'Tim' ? 'Timski turnir' : 'Parski turnir - '.$t->type->name) }}
                         </a>
                     @else
                         <a href="{{ asset($t->results) }}" target="_blank" class="hover:text-primary">
