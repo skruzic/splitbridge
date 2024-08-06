@@ -38,7 +38,7 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
 
         // Jezik za datume
-        Carbon::setLocale('hr');
+        Carbon::setLocale(config('app.locale'));
 
         // Jezik za format brojeva
         Number::useLocale('hr');

@@ -43,6 +43,12 @@ class MemberResource extends Resource
                 TextColumn::make('surname')->label('Prezime')->sortable(),
                 TextColumn::make('name')->label('Ime'),
                 TextColumn::make('email')->label('E-mail'),
+                TextColumn::make('status')->state(fn(Member $record
+                ) => $record->deleted_at == null ? 'Aktivan' : 'Neaktivan')->badge()->color(fn(string $state
+                ) => match ($state) {
+                    'Aktivan' => 'success',
+                    'Neaktivan' => 'danger'
+                }),
                 TextColumn::make('crobridge')->label('HBS broj'),
             ])
             ->filters([
@@ -64,17 +70,17 @@ class MemberResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            MemberResource\RelationManagers\RanksRelationManager::class
         ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListMembers::route('/'),
+            'index'  => Pages\ListMembers::route('/'),
             'create' => Pages\CreateMember::route('/create'),
-            'edit' => Pages\EditMember::route('/{record}/edit'),
-            'view' => Pages\ViewMember::route('/{record}')
+            'edit'   => Pages\EditMember::route('/{record}/edit'),
+            'view'   => Pages\ViewMember::route('/{record}'),
         ];
     }
 
@@ -84,7 +90,7 @@ class MemberResource extends Resource
             TextEntry::make('surname'),
             TextEntry::make('name'),
             TextEntry::make('email'),
-            TextEntry::make('crobridge')->label('HBS broj')
+            TextEntry::make('crobridge')->label('HBS broj'),
         ]);
     }
 }

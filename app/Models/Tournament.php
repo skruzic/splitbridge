@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\TournamentType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -20,8 +21,8 @@ class Tournament extends Model
     ];
 
     protected $casts = [
-        'data' => 'array',
-        'date' => 'datetime',
+        'date' => 'date',
+        'type' => TournamentType::class,
     ];
 
     protected static function booted()
@@ -34,17 +35,17 @@ class Tournament extends Model
 
         static::created(function ($model) {
             if ($model->results) {
-                $json = json_decode($model->results, true);
-                $ranks = array_map(function($item) {
+                $json   = json_decode($model->results, true);
+                $ranks  = array_map(function ($item) {
                     return $item['rank'];
                 }, $json);
                 $points = compute_points($ranks);
 
                 // Unos u rang listu
-                for ($i = 0;$i<count($json);$i++) {
+                for ($i = 0; $i < count($json); $i++) {
                     $position = $json[$i]['rank'];
-                    $p1 = $json[$i]['p1'];
-                    $p2 = $json[$i]['p2'];
+                    $p1       = $json[$i]['p1'];
+                    $p2       = $json[$i]['p2'];
 
                     // Provjera prvog igraca i unos ranga
                     if (is_numeric($p1) && Member::findByMemberID($p1)) {

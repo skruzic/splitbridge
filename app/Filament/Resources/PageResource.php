@@ -2,16 +2,20 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\Status;
 use App\Filament\Resources\PageResource\Pages;
 use App\Models\Page;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Resources\Resource;
-use Filament\Tables\Table;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
+use Illuminate\Support\Str;
 
 class PageResource extends Resource
 {
@@ -25,11 +29,35 @@ class PageResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('title')->required()->label('Naslov'),
-                TextInput::make('slug'),
+                TextInput::make('title')->live(true)->required()->label('Naslov')->afterStateUpdated(function (
+                    Get $get,
+                    Set $set,
+                    ?string $operation,
+                    ?string $old,
+                    ?string $state,
+                    ?Page $record
+                ) {
+                    if ($operation == 'edit' && $record->status == Status::Published) {
+                        return;
+                    }
+
+                    if (($get('slug') ?? '') !== Str::slug($old)) {
+                        return;
+                    }
+
+                    $set('slug', Str::slug($state));
+                }),
+                TextInput::make('slug')
+                         ->required()
+                         ->maxLength(255)
+                         ->unique(Page::class, 'slug', fn($record) => $record)
+                         ->disabled(fn(
+                             ?string $operation,
+                             ?Page $record
+                         ) => $operation == 'edit' && $record->status == Status::Published),
                 RichEditor::make('body')->label('Sadržaj'),
                 Select::make('status')->options([
-                    'DRAFT' => 'Draft',
+                    'DRAFT'     => 'Draft',
                     'PUBLISHED' => 'Published',
                 ])->required(),
             ])->columns(1);
@@ -63,9 +91,9 @@ class PageResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListPages::route('/'),
+            'index'  => Pages\ListPages::route('/'),
             'create' => Pages\CreatePage::route('/create'),
-            'edit' => Pages\EditPage::route('/{record}/edit'),
+            'edit'   => Pages\EditPage::route('/{record}/edit'),
         ];
     }
 }

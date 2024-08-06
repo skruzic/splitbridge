@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\TournamentType;
 use App\Filament\Resources\TournamentResource\Pages;
 use App\Filament\Resources\TournamentResource\RelationManagers;
 use App\Models\Tournament;
@@ -30,13 +31,8 @@ class TournamentResource extends Resource
         return $form
             ->schema([
                 Textarea::make('results')->required()->rows(4)->label('Rezultati turnira u JSON formatu')->columnSpanFull(),
-                DatePicker::make('date')->required()->default(now())->native(false)->displayFormat('d.m.Y.')->label('Datum'),
-                Select::make('type')->required()->options([
-                    'MP' => 'MP',
-                    'IMP' => 'IMP',
-                    'XIMP' => 'Cross IMPs',
-                    'Tim' => 'Tim',
-                ])->label('Tip turnira'),
+                DatePicker::make('date')->required()->default(now())->native(false)->label('Datum'),
+                Select::make('type')->required()->options(TournamentType::class)->label('Obračun'),
                 TextInput::make('remote_id')->label('HBS šifra turnira')
             ]);
     }
@@ -45,8 +41,8 @@ class TournamentResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('date')->date('d.m.Y.')->sortable()->label('Datum'),
-                TextColumn::make('type')->label('Tip turnira'),
+                TextColumn::make('date')->date()->sortable()->label('Datum'),
+                TextColumn::make('type')->label('Tip turnira')->badge(),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('type')->options([

@@ -7,9 +7,9 @@ use App\Models\Season;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
 use Filament\Tables;
-use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 
 class SeasonResource extends Resource
@@ -33,18 +33,13 @@ class SeasonResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('title')->label('Naslov'),
-                IconColumn::make('current')->boolean()->label('Tekuća'),
+                ToggleColumn::make('current')->label('Tekuća')->beforeStateUpdated(fn(Season $record
+                ) => Season::where('id', '!=', $record->id)->update(['current' => false])),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\Action::make('CUSTOM')->icon('heroicon-o-check')->label('Postavi za tekuću')->color('success')->requiresConfirmation()->tooltip('Set this season as current')->action(function (
-                    Season $record
-                ) {
-                    $record->current = true;
-                    $record->save();
-                }),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
