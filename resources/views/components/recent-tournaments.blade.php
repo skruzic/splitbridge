@@ -6,7 +6,7 @@
                     @if($t->remote_id > 0)
                         <a href="{{ url('https://bridge.hr/tournaments/pairs/'.$t->remote_id) }}" target="_blank"
                            class="hover:text-primary">
-                            {{ $t->type == 'Tim' ? 'Timski turnir' : 'Parski turnir - '.$t->type }}
+                            {{ $t->type->value == 'Tim' ? 'Timski turnir' : 'Parski turnir - '.$t->type->name }}
                         </a>
                     @else
                         <a href="{{ asset($t->results) }}" target="_blank" class="hover:text-primary">
