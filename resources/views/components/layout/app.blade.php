@@ -61,7 +61,7 @@
 
     <x-header />
 
-    <main id="main" class="mt-[72px] mx-auto max-w-screen-xl">
+    <main id="main" class="mt-[72px] mx-auto max-w-(--breakpoint-xl)">
         <section class="pb-16 px-4">
             {{ $slot }}
         </section>

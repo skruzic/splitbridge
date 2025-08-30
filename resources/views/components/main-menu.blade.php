@@ -35,7 +35,7 @@
                     </svg>
                 </button>
                 <div id="{{ \Illuminate\Support\Str::slug($item['label']) }}"
-                     class="z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
+                     class="z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44">
                     <ul class="py-2 text-sm text-gray-700">
                         @foreach ($item['children'] as $child)
                             <li><a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"

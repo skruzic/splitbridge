@@ -16,7 +16,7 @@ class MainMenu extends Component
      */
     public function __construct()
     {
-        $this->menu = Navigation::fromHandle('menu');
+        //$this->menu = Navigation::fromHandle('menu');
     }
 
     /**
@@ -24,6 +24,7 @@ class MainMenu extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.main-menu');
+        //return view('components.main-menu');
+        return '';
     }
 }

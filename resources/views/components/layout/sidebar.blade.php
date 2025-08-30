@@ -60,7 +60,7 @@
 
     <x-header/>
 
-    <main id="main" class="mt-[72px] mx-auto max-w-screen-xl">
+    <main id="main" class="mt-[72px] mx-auto max-w-(--breakpoint-xl)">
         <section class="pb-16 px-4">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
                 <div class="col-span-2">{{ $slot }}</div>
