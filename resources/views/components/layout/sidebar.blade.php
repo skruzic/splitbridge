@@ -31,10 +31,17 @@
     <link
         href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,600,600i,700,700i"
         rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&amp;family=Playfair+Display:wght@400;700;900&amp;display=swap"
+        rel="stylesheet"/>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet"/>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="min-h-screen bg-background font-sans antialiased">
+<body
+    class="bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark font-sans antialiased transition-colors duration-300 selection:bg-primary selection:text-white">
     <!-- Google Tag Manager -->
     <noscript>
         <iframe src="//www.googletagmanager.com/ns.html?id=GTM-TKHF7X"
@@ -59,21 +66,16 @@
             nonce="Id2w4Cd1"></script>
 
     <x-header/>
-
-    <main id="main" class="mt-[72px] mx-auto max-w-(--breakpoint-xl)">
-        <section class="pb-16 px-4">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-                <div class="col-span-2">{{ $slot }}</div>
-                <aside class="space-y-4">
-                    <x-sidebar-widget title="Turniri" description="Rezultati posljednjih turnira">
-                        <x-recent-tournaments/>
-                    </x-sidebar-widget>
-                    <x-sidebar-widget title="Rang lista" :description="now()->translatedFormat('F Y.')">
-                        <x-recent-ranks/>
-                    </x-sidebar-widget>
-                </aside>
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="flex flex-col lg:flex-row gap-16">
+            <div class="lg:w-2/3 space-y-20">
+                {{$slot}}
             </div>
-        </section>
+            <aside class="lg:w-1/3 space-y-8">
+                <x-recent-tournaments />
+                <x-recent-ranks />
+            </aside>
+        </div>
     </main>
 
     <x-footer/>

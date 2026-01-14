@@ -24,11 +24,14 @@ class Rank extends Model
 
     public function scopeList($query)
     {
-        $query->join('members', 'members.id', '=', 'ranks.member_id')
-              ->select('members.id', 'members.name', 'members.surname',
-                  DB::raw('SUM(points) AS point_count'))
-              ->groupBy('member_id')
-              ->orderBy('point_count', 'desc');
+        // Group by all non-aggregated selected columns so ONLY_FULL_GROUP_BY
+        // mode (MySQL/MariaDB default) doesn't raise an error. Return the
+        // builder so callers can further chain scopes.
+        return $query->join('members', 'members.id', '=', 'ranks.member_id')
+                     ->select('members.id', 'members.name', 'members.surname',
+                         DB::raw('SUM(points) AS point_count'))
+                     ->groupBy('members.id', 'members.name', 'members.surname')
+                     ->orderBy('point_count', 'desc');
     }
 
     public function scopeMonth($query, $year, $month)

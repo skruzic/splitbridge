@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Season;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -17,7 +18,7 @@ return new class extends Migration
             $table->id();
             $table->date('date');
             $table->string('type');
-            $table->foreignId('season_id');
+            $table->foreignIdFor(Season::class);
             $table->text('results');
             $table->timestamps();
         });

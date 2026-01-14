@@ -66,6 +66,8 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ])->plugins([]);
+            ])->plugins([
+                \Biostate\FilamentMenuBuilder\FilamentMenuBuilderPlugin::make(),
+            ]);
     }
 }

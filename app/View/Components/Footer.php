@@ -10,7 +10,7 @@ use RyanChandler\FilamentNavigation\Models\Navigation;
 
 class Footer extends Component
 {
-    public Navigation $menu;
+    //public Navigation $menu;
     public FooterSettings $settings;
 
     /**
@@ -20,7 +20,7 @@ class Footer extends Component
      */
     public function __construct(FooterSettings $settings)
     {
-        $this->menu = Navigation::fromHandle('menu');
+        //$this->menu = Navigation::fromHandle('menu');
         $this->settings = $settings;
     }
 
